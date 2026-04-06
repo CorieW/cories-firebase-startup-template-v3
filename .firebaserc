@@ -1,0 +1,10 @@
+{
+  "projects": {
+    "default": "demo-startup-template"
+  },
+  "etags": {
+    "demo-startup-template": {
+      "extensionInstances": {}
+    }
+  }
+}

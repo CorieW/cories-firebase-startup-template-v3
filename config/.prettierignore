@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+lib/
+coverage/
+playwright-report/
+test-results/
+**/dist/
+**/build/
+**/lib/
+**/coverage/
+**/.vitest/
+**/.nitro/
+**/.output/
+**/.output/**
+**/.tanstack/
+**/.vinxi/
+**/playwright-report/
+**/test-results/
+
+# Package files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+*.min.js
+*.min.css
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Documentation with special formatting
+README.md

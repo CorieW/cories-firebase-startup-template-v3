@@ -1,0 +1,42 @@
+# AGENTS hierarchy validation workflow for AGENTS and validator changes.
+
+name: Validate AGENTS
+
+on:
+  pull_request:
+    paths:
+      - '**/AGENTS.md'
+      - '.github/workflows/validate-agents.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  push:
+    paths:
+      - '**/AGENTS.md'
+      - '.github/workflows/validate-agents.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  workflow_dispatch:
+
+jobs:
+  validate-agents:
+    name: Validate AGENTS Hierarchy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate AGENTS files
+        run: pnpm run agents:check --strict-placeholders

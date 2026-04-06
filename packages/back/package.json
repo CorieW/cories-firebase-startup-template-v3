@@ -1,0 +1,30 @@
+{
+  "name": "@cories-firebase-startup-template-v3/back",
+  "version": "0.0.0",
+  "main": "./lib/index.js",
+  "scripts": {
+    "toggle-tgz-dependency": "pnpm --dir ../common run pack && node ../../scripts/toggle-common-dependency.js ./package.json --to=tgz",
+    "build": "rm -rf lib && tsc",
+    "build:watch": "nodemon --watch ../common/lib --watch src --ext ts --exec \"pnpm run build\"",
+    "start": "concurrently \"pnpm run build\" \"firebase emulators:start --only functions,firestore\"",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "dependencies": {
+    "@cories-firebase-startup-template-v3/common": "link:../common",
+    "dotenv": "^16.5.0",
+    "firebase-functions": "^6.3.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "vitest": "^4.0.18"
+  },
+  "peerDependencies": {
+    "firebase": "^11.0.0",
+    "firebase-admin": "^13.0.0"
+  },
+  "private": true
+}

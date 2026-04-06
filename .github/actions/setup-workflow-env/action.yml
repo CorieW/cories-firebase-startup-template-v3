@@ -1,0 +1,44 @@
+# GitHub Action definition used across workflows.
+
+name: Setup Workflow Env
+description: Populate shared workflow environment variables from vars/secrets with CI defaults.
+
+inputs:
+  github-vars-json:
+    description: JSON-serialized GitHub vars context
+    required: false
+    default: '{}'
+  private-key:
+    description: Optional PRIVATE_KEY secret override
+    required: false
+    default: ''
+  better-auth-secret:
+    description: Optional BETTER_AUTH_SECRET secret override
+    required: false
+    default: ''
+  google-client-secret:
+    description: Optional GOOGLE_CLIENT_SECRET secret override
+    required: false
+    default: ''
+  autumn-secret-key:
+    description: Optional AUTUMN_SECRET_KEY secret override
+    required: false
+    default: ''
+  resend-api-key:
+    description: Optional RESEND_API_KEY secret override
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Export shared workflow env
+      shell: bash
+      env:
+        GITHUB_VARS_JSON: ${{ inputs.github-vars-json }}
+        WORKFLOW_PRIVATE_KEY: ${{ inputs.private-key }}
+        WORKFLOW_BETTER_AUTH_SECRET: ${{ inputs.better-auth-secret }}
+        WORKFLOW_GOOGLE_CLIENT_SECRET: ${{ inputs.google-client-secret }}
+        WORKFLOW_AUTUMN_SECRET_KEY: ${{ inputs.autumn-secret-key }}
+        WORKFLOW_RESEND_API_KEY: ${{ inputs.resend-api-key }}
+      run: node scripts/export-ci-env.mjs

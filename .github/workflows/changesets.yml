@@ -1,0 +1,68 @@
+# Pull request workflow that requires a changeset when workspace packages change.
+
+name: Changesets
+
+on:
+  pull_request:
+    paths:
+      - '.changeset/**'
+      - '.github/workflows/changesets.yml'
+      - 'package.json'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  changesets:
+    name: Verify Changesets
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Fetch base branch
+        run: git fetch origin "${{ github.base_ref }}" --depth=1
+
+      - name: Require a changeset for package changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE_REF="origin/${{ github.base_ref }}"
+          PACKAGE_CHANGES="$(git diff --name-only "${BASE_REF}"...HEAD -- packages)"
+          CHANGESET_FILES="$(git diff --name-only "${BASE_REF}"...HEAD | grep -E '^\.changeset/[^/]+\.md$' | grep -v '^\.changeset/README\.md$' || true)"
+
+          if [ -z "${PACKAGE_CHANGES}" ]; then
+            echo "No workspace package changes detected."
+            exit 0
+          fi
+
+          if [ -z "${CHANGESET_FILES}" ]; then
+            echo "Package changes were detected, but no changeset markdown files were added."
+            echo "Run 'pnpm changeset' and commit the generated .changeset/*.md file."
+            exit 1
+          fi
+
+          echo "Detected changeset files:"
+          echo "${CHANGESET_FILES}"
+
+      - name: Validate pending changesets
+        run: pnpm exec changeset status --since="origin/${{ github.base_ref }}"

@@ -1,0 +1,33 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "billingLedger",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "entryType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAtMs",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "billingLedger",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "entryType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "metadata.invoiceId",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

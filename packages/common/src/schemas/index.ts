@@ -1,0 +1,4 @@
+/**
+ * Schema export barrel.
+ */
+export {};

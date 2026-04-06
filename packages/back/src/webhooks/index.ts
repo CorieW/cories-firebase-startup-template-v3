@@ -1,0 +1,4 @@
+/**
+ * Webhook export barrel.
+ */
+export {};

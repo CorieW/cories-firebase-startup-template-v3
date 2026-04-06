@@ -1,0 +1,27 @@
+{
+  "name": "@cories-firebase-startup-template-v3/common",
+  "version": "0.0.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "build": "rm -rf lib && tsc && tsc -p tsconfig.esm.json && pnpm run pack",
+    "build:watch": "nodemon --watch src --ext js,ts,json --exec \"rm -rf lib && tsc && tsc -p tsconfig.esm.json\"",
+    "pack": "pnpm pack && node ../../scripts/pack-common.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "default": "./lib/index.js"
+    }
+  },
+  "files": [
+    "lib/**",
+    "README.md",
+    "package.json"
+  ],
+  "private": true
+}
