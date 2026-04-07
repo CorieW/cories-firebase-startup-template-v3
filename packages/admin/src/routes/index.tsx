@@ -76,7 +76,9 @@ function AdminHomePage() {
         'Verify whether billing diagnostics are ready before investigating customer issues.',
       href: ADMIN_BILLING_ROUTE_PATH,
       kicker: 'Revenue',
-      metric: overview.billingConfigured ? 'Billing configured' : 'Billing unavailable',
+      metric: overview.billingConfigured
+        ? 'Billing configured'
+        : 'Billing unavailable',
       title: 'Open billing diagnostics',
     },
     {
@@ -164,7 +166,8 @@ function AdminHomePage() {
                     : dangerMutedTextClass
                 }`}
               >
-                Autumn secret detected: {overview.billingConfigured ? 'yes' : 'no'}
+                Autumn secret detected:{' '}
+                {overview.billingConfigured ? 'yes' : 'no'}
               </p>
             </div>
 
@@ -176,8 +179,8 @@ function AdminHomePage() {
                 {formatAdminNumber(overview.stats.activeAdmins)} active
               </p>
               <p className='m-0 text-sm leading-6 text-[var(--admin-ink-soft)]'>
-                {formatAdminNumber(overview.stats.disabledAdmins)} disabled admin
-                accounts remain outside the active rotation.
+                {formatAdminNumber(overview.stats.disabledAdmins)} disabled
+                admin accounts remain outside the active rotation.
               </p>
             </div>
 
@@ -198,10 +201,7 @@ function AdminHomePage() {
 
       <section className='grid gap-4 lg:grid-cols-2'>
         {workspaceCards.map(card => (
-          <article
-            key={card.href}
-            className={`${subtleCardClass} min-w-0 p-6`}
-          >
+          <article key={card.href} className={`${subtleCardClass} min-w-0 p-6`}>
             <div className='space-y-3'>
               <span className={badgeClass}>{card.kicker}</span>
               <div className='space-y-2'>

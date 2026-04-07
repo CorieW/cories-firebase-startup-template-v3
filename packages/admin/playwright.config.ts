@@ -1,5 +1,5 @@
 /**
- * Playwright test configuration.
+ * Playwright test configuration for the admin data-display suites.
  */
 import { defineConfig, devices } from '@playwright/test';
 
@@ -8,7 +8,7 @@ const reuseExistingServer =
   !process.env.CI && process.env.PLAYWRIGHT_REUSE_EXISTING_SERVER === '1';
 
 /**
- * Playwright config for the admin smoke journey.
+ * Playwright config for seeded admin shell, data-display, and audit journeys.
  */
 export default defineConfig({
   testDir: './tests/e2e',
@@ -16,9 +16,9 @@ export default defineConfig({
   expect: {
     timeout: 10_000,
   },
-  fullyParallel: true,
+  fullyParallel: false,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: 1,
   reporter: process.env.CI ? [['github'], ['html']] : [['list'], ['html']],
   use: {
     baseURL,

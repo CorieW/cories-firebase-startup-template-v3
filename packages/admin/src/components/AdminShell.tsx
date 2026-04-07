@@ -87,7 +87,9 @@ export function AdminShell({
 
   return (
     <div className='min-h-screen'>
-      <div className={`${containerClass} grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]`}>
+      <div
+        className={`${containerClass} grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]`}
+      >
         <aside className='lg:sticky lg:top-5 lg:self-start'>
           <div className={`${cardClass} flex flex-col gap-6 p-5`}>
             <AdminAppBrand />

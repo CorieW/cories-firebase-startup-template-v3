@@ -21,7 +21,6 @@ import type {
   AdminUserDetail,
   AdminUserMembership,
 } from '../lib/server/user-data';
-import { secondaryButtonClass, subtleCardClass } from '../lib/ui';
 
 const DATA_UNAVAILABLE_DESCRIPTION =
   'This data is unavailable right now. Check the admin billing configuration and customer state, then try again.';
@@ -122,40 +121,58 @@ function UserDetailPage() {
             title='No organizations found'
           />
         ) : (
-          <div className='grid gap-4 lg:grid-cols-2'>
-            {organizations.map(organization => (
-              <article
-                key={organization.key}
-                className={`${subtleCardClass} flex flex-col gap-4 p-4`}
-              >
-                <div className='space-y-2'>
-                  <div>
-                    <h3 className='m-0 text-base font-semibold'>
-                      {formatAdminText(organization.organizationName)}
-                    </h3>
-                    <p className='mt-1 mb-0 break-all font-mono text-xs text-[var(--admin-ink-soft)]'>
+          <div className='overflow-x-auto'>
+            <table className='min-w-full border-separate border-spacing-0 text-sm'>
+              <thead>
+                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Organization
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Organization ID
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Joined
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Details
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {organizations.map(organization => (
+                  <tr key={organization.key}>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <div className='font-medium'>
+                        {formatAdminText(organization.organizationName)}
+                      </div>
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top font-mono text-xs'>
                       {formatAdminText(organization.organizationId)}
-                    </p>
-                  </div>
-                  <p className='m-0 text-sm text-[var(--admin-ink-soft)]'>
-                    Joined {formatAdminDateTime(organization.createdAt)}
-                  </p>
-                </div>
-
-                {organization.organizationId ? (
-                  <div>
-                    <Link
-                      className={secondaryButtonClass}
-                      params={{ organizationId: organization.organizationId }}
-                      search={{ page: 1, search: '' }}
-                      to='/organizations/$organizationId'
-                    >
-                      Open organization
-                    </Link>
-                  </div>
-                ) : null}
-              </article>
-            ))}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {formatAdminDateTime(organization.createdAt)}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {organization.organizationId ? (
+                        <Link
+                          className='font-semibold text-[var(--admin-primary)]'
+                          params={{
+                            organizationId: organization.organizationId,
+                          }}
+                          search={{ page: 1, search: '' }}
+                          to='/organizations/$organizationId'
+                        >
+                          Open organization
+                        </Link>
+                      ) : (
+                        'Unavailable'
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </AdminPanel>

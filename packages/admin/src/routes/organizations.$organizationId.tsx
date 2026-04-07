@@ -1,7 +1,7 @@
 /**
  * Organization detail route for read-only admin inspection.
  */
-import { createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import {
   AdminEmptyState,
   AdminJsonPreview,
@@ -20,7 +20,6 @@ import type {
   AdminOrganizationBillingSummary,
   AdminOrganizationDetail,
 } from '../lib/server/organization-data';
-import { badgeClass } from '../lib/ui';
 
 const DATA_UNAVAILABLE_DESCRIPTION =
   'This data is unavailable right now. Check the admin billing configuration and customer state, then try again.';
@@ -110,6 +109,78 @@ function OrganizationDetailPage() {
             },
           ]}
         />
+      </AdminPanel>
+
+      <AdminPanel
+        description='Current members ordered by most recent membership creation.'
+        title={`Members (${detail.members.length})`}
+      >
+        {detail.members.length === 0 ? (
+          <AdminEmptyState
+            description='No organization members were found for this record.'
+            title='No members found'
+          />
+        ) : (
+          <div className='overflow-x-auto'>
+            <table className='min-w-full border-separate border-spacing-0 text-sm'>
+              <thead>
+                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Member
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    User ID
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Role
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Joined
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Details
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {detail.members.map(member => (
+                  <tr key={member.id}>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <div className='font-medium'>
+                        {formatAdminText(member.name)}
+                      </div>
+                      <div className='mt-1 text-[var(--admin-ink-soft)]'>
+                        {formatAdminText(member.email)}
+                      </div>
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top font-mono text-xs'>
+                      {formatAdminText(member.userId)}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top capitalize'>
+                      {formatAdminText(member.role)}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {formatAdminDateTime(member.createdAt)}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {member.userId ? (
+                        <Link
+                          className='font-semibold text-[var(--admin-primary)]'
+                          params={{ userId: member.userId }}
+                          to='/users/$userId'
+                        >
+                          Open profile
+                        </Link>
+                      ) : (
+                        'Unavailable'
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </AdminPanel>
 
       <AdminPanel
@@ -259,79 +330,6 @@ function OrganizationDetailPage() {
                           Expires {formatAdminDateTime(subscription.expiresAt)}
                         </div>
                       ) : null}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </AdminPanel>
-
-      <AdminPanel
-        description='Member roles from the current organization membership snapshot.'
-        title='Member roles'
-      >
-        <div className='flex flex-wrap gap-3'>
-          {Object.entries(detail.memberRoleCounts).length === 0 ? (
-            <span className={badgeClass}>No roles recorded</span>
-          ) : (
-            Object.entries(detail.memberRoleCounts).map(([role, count]) => (
-              <span key={role} className={badgeClass}>
-                {role}: {count}
-              </span>
-            ))
-          )}
-        </div>
-      </AdminPanel>
-
-      <AdminPanel
-        description='Current members ordered by most recent membership creation.'
-        title={`Members (${detail.members.length})`}
-      >
-        {detail.members.length === 0 ? (
-          <AdminEmptyState
-            description='No organization members were found for this record.'
-            title='No members found'
-          />
-        ) : (
-          <div className='overflow-x-auto'>
-            <table className='min-w-full border-separate border-spacing-0 text-sm'>
-              <thead>
-                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                    Member
-                  </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                    User ID
-                  </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                    Role
-                  </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                    Joined
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {detail.members.map(member => (
-                  <tr key={member.id}>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
-                      <div className='font-medium'>
-                        {formatAdminText(member.name)}
-                      </div>
-                      <div className='mt-1 text-[var(--admin-ink-soft)]'>
-                        {formatAdminText(member.email)}
-                      </div>
-                    </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top font-mono text-xs'>
-                      {formatAdminText(member.userId)}
-                    </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top capitalize'>
-                      {formatAdminText(member.role)}
-                    </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
-                      {formatAdminDateTime(member.createdAt)}
                     </td>
                   </tr>
                 ))}

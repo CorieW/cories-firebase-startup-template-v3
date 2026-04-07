@@ -160,6 +160,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - The admin shell uses a fixed dark theme to keep the internal tooling visual treatment consistent
 - Admin listing routes keep pagination state in URL search params so filters and page position can be shared directly
 - The admin user detail page can also show a read-only personal Autumn wallet balance when `AUTUMN_SECRET_KEY` is configured for the admin app
+- Admin Playwright coverage seeds Firestore auth and admin records locally, then switches between billing-unavailable and real Autumn-backed billing assertions based on whether the admin test environment exposes `AUTUMN_SECRET_KEY`
 - Better Auth UI owns sign-in, sign-up, account, organization, member, and invitation flows
 - Autumn owns subscription checkout, billing portal, invoices, and seat-linked billing state
 - App-owned profile documents live in Firestore `users/{id}`, while Better Auth writes auth and organization data to `auth_*` collections
@@ -181,7 +182,6 @@ firebase apphosting:backends:create --project <your-project-id>
 - Integration tests: `pnpm test:integration`
 - CI-equivalent test run: `pnpm test:ci`
 - E2E tests: `pnpm test:e2e`
-- Admin E2E tests: `pnpm --dir packages/admin test:e2e`
 - Coverage: `pnpm test:coverage`
 
 ## Deployment

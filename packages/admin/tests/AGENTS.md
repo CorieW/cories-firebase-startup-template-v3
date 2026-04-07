@@ -4,6 +4,7 @@ Package-level admin tests grouped by source area and end-to-end admin flows.
 
 ## Directories
 
+- `e2e/`: Playwright fixtures and end-to-end admin coverage.
 - `lib/`: Unit tests for shared admin helpers and server-side data modules.
 
 ## Files
