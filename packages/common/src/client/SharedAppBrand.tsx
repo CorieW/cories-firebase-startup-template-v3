@@ -1,5 +1,5 @@
 /**
- * Shared app brand lockup used by marketing and dashboard wrappers.
+ * Shared app brand lockup used by frontend app wrappers.
  */
 import type { ReactNode } from 'react';
 
@@ -12,7 +12,7 @@ interface SharedAppBrandProps {
   mark?: ReactNode;
   markClassName: string;
   rootClassName: string;
-  subtitle: ReactNode;
+  subtitle?: ReactNode;
   subtitleClassName?: string;
   title?: ReactNode;
   titleClassName?: string;
@@ -28,7 +28,7 @@ export function SharedAppBrand({
   markClassName,
   renderRoot,
   rootClassName,
-  subtitle,
+  subtitle = 'Better Auth + Autumn',
   subtitleClassName = 'block text-xs text-[var(--ink-soft)]',
   title = 'Firebase Starter',
   titleClassName = 'block text-sm font-extrabold',

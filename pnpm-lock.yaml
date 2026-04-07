@@ -147,7 +147,7 @@ importers:
         version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^3.0.5
-        version: 3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18(vitest@4.0.18))(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/back:
     dependencies:
@@ -345,10 +345,13 @@ importers:
         version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^3.0.5
-        version: 3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18(vitest@4.0.18))(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/marketing:
     dependencies:
+      '@cories-firebase-startup-template-v3/common':
+        specifier: file:../common/cories-firebase-startup-template-v3-common.tgz
+        version: file:packages/common/cories-firebase-startup-template-v3-common.tgz
       '@radix-ui/react-slot':
         specifier: ^1.2.4
         version: 1.2.4(@types/react@19.2.13)(react@19.2.4)
@@ -403,7 +406,7 @@ importers:
         version: 7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
       vitest:
         specifier: ^3.0.5
-        version: 3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
+        version: 3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18(vitest@4.0.18))(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
 
 packages:
 
@@ -722,7 +725,7 @@ packages:
     resolution: {integrity: sha512-CdTLvIOPiCNuH71pyDu3rA+Q0n65cmAbXnwWH84rKGiFumFzkmHNT8KHTMEchcxN+Kl8I54xGUhJ7l3E7X396Q==}
 
   '@cories-firebase-startup-template-v3/common@file:packages/common/cories-firebase-startup-template-v3-common.tgz':
-    resolution: {integrity: sha512-qN76FOkBmLwrSxcm5nZ4uVTMoXwrn1xBhIVpkv9N8GK0PujapQwOAoW+sjz/OJhZ4z2KIkE5Ghqwx3E6UEezGw==, tarball: file:packages/common/cories-firebase-startup-template-v3-common.tgz}
+    resolution: {integrity: sha512-rtxCB0me2fnZ8R0VVNDfungcZpMSGBgChWlfsZ8546uw0acntefFa6+Ks7iLhgvkFDLPX17EqZg9Lo5LGqS4Pw==, tarball: file:packages/common/cories-firebase-startup-template-v3-common.tgz}
     version: 0.0.0
 
   '@csstools/color-helpers@6.0.2':
@@ -13716,7 +13719,7 @@ snapshots:
     optionalDependencies:
       vite: 7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
 
-  vitest@3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2):
+  vitest@3.2.4(@types/node@22.19.11)(@vitest/ui@4.0.18(vitest@4.0.18))(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@2.0.1))(lightningcss@1.30.2)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/expect': 3.2.4

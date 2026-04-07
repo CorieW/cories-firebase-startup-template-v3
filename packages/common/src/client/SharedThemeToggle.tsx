@@ -8,90 +8,19 @@ import {
   useLayoutEffect,
   useState,
 } from 'react';
+import {
+  THEME_STORAGE_KEY,
+  applyThemeMode,
+  readThemeMode,
+  type ThemeMode,
+} from './theme.js';
 
-const THEME_STORAGE_KEY = 'theme';
 const useIsomorphicLayoutEffect =
   typeof window === 'undefined' ? useEffect : useLayoutEffect;
-
-type ThemeMode = 'light' | 'dark' | 'system';
 type ThemeIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
 function joinClassNames(...values: Array<string | undefined>): string {
   return values.filter(Boolean).join(' ');
-}
-
-function parseThemeMode(mode: string | null | undefined): ThemeMode | null {
-  if (mode === 'light' || mode === 'dark' || mode === 'system') {
-    return mode;
-  }
-
-  return null;
-}
-
-function resolveThemeMode(
-  mode: ThemeMode,
-  systemPrefersDark: boolean
-): 'light' | 'dark' {
-  if (mode === 'system') {
-    return systemPrefersDark ? 'dark' : 'light';
-  }
-
-  return mode;
-}
-
-function getSystemPrefersDark(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
-}
-
-function readStoredThemeMode(): ThemeMode | null {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  try {
-    return parseThemeMode(window.localStorage.getItem(THEME_STORAGE_KEY));
-  } catch {
-    return null;
-  }
-}
-
-function readThemeMode(root: HTMLElement): ThemeMode {
-  const fromPreference = parseThemeMode(
-    root.getAttribute('data-theme-preference')
-  );
-  const fromStorage = readStoredThemeMode();
-  const fromResolvedTheme = parseThemeMode(root.getAttribute('data-theme'));
-
-  return fromPreference ?? fromStorage ?? fromResolvedTheme ?? 'system';
-}
-
-function applyThemeMode(
-  mode: ThemeMode,
-  root: HTMLElement,
-  systemPrefersDark = getSystemPrefersDark()
-): void {
-  const resolvedMode = resolveThemeMode(mode, systemPrefersDark);
-
-  root.classList.remove('light', 'dark');
-  root.classList.add(resolvedMode);
-  root.setAttribute('data-theme', resolvedMode);
-  root.setAttribute('data-theme-preference', mode);
-  root.style.colorScheme = resolvedMode;
-
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(
-      new CustomEvent('themechange', {
-        detail: {
-          preference: mode,
-          resolved: resolvedMode,
-        },
-      })
-    );
-  }
 }
 
 function getCurrentMode(): ThemeMode {

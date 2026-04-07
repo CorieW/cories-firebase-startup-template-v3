@@ -4,6 +4,7 @@
 @layer theme, base, utilities;
 @import 'tailwindcss';
 @import '@daveyplate/better-auth-ui/css';
+@import '../../common/src/client/shared-theme.css';
 @plugin "@tailwindcss/typography";
 
 @theme {
@@ -11,18 +12,6 @@
 }
 
 :root {
-  --bg: #f4f0e8;
-  --surface: #fcfaf6;
-  --surface-soft: #f4efe5;
-  --surface-emphasis: #ebe3d6;
-  --ink: #171412;
-  --ink-soft: #6d6458;
-  --line: #ece4d9;
-  --line-strong: #dcccb5;
-  --primary: #c7a03b;
-  --primary-strong: #b58e2e;
-  --primary-ink: #18120a;
-  --accent: #8b7b60;
   --ring: #dcccb5;
   --sidebar: #f8f3ea;
   --sidebar-line: #ddd2c3;
@@ -60,23 +49,7 @@
   --sidebar-foreground: var(--ink);
 }
 
-:root[data-theme='light'] {
-  color-scheme: light;
-}
-
 :root[data-theme='dark'] {
-  --bg: #15120f;
-  --surface: #1d1915;
-  --surface-soft: #24201b;
-  --surface-emphasis: #2c2721;
-  --ink: #f6efe4;
-  --ink-soft: #b7ac9b;
-  --line: #342c23;
-  --line-strong: #514533;
-  --primary: #d2b05a;
-  --primary-strong: #e0bf69;
-  --primary-ink: #171109;
-  --accent: #948467;
   --ring: #514533;
   --sidebar: #17130f;
   --sidebar-line: #302920;
@@ -95,7 +68,6 @@
   --warning-surface: #3d2b16;
   --danger: #fca5a5;
   --danger-surface: #4a1f1f;
-  color-scheme: dark;
 }
 
 @layer base {

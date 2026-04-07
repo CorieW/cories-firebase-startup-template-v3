@@ -12,6 +12,7 @@ Marketing app source for the static landing page, including the top-level shell,
 - `App.tsx`: Composes the marketing page sections into the root application shell.
 - `main.tsx`: Mounts the React marketing app into the Vite entrypoint.
 - `styles.css`: Defines the marketing site's design tokens, layout utilities, and global styles.
+- `theme-init.ts`: Applies the shared frontend theme preference before React mounts.
 
 ## Writing Rules
 

@@ -1,7 +1,7 @@
 /**
  * Brand mark and text lockup for the marketing site.
  */
-import { SharedAppBrand } from '../../../common/src/client';
+import { SharedAppBrand } from '@cories-firebase-startup-template-v3/common/client';
 
 const brandSizeClasses = {
   compact: {
@@ -43,7 +43,6 @@ export default function AppBrand({
         </a>
       )}
       rootClassName={brandClasses.root}
-      subtitle='Marketing + Dashboard'
       subtitleClassName={brandClasses.subtitle}
       titleClassName={brandClasses.title}
     />

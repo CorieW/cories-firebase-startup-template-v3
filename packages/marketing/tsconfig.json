@@ -4,6 +4,13 @@
     "target": "ES2022",
     "jsx": "react-jsx",
     "module": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "@cories-firebase-startup-template-v3/common": ["../common/src/index.ts"],
+      "@cories-firebase-startup-template-v3/common/client": [
+        "../common/src/client/index.ts"
+      ]
+    },
     "moduleResolution": "bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client", "node"],

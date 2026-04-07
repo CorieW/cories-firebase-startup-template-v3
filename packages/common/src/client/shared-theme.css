@@ -1,0 +1,33 @@
+/* Shared light and dark palette tokens for the dashboard and marketing apps. */
+
+:root {
+  --bg: #f4f0e8;
+  --surface: #fcfaf6;
+  --surface-soft: #f4efe5;
+  --surface-emphasis: #ebe3d6;
+  --ink: #171412;
+  --ink-soft: #6d6458;
+  --line: #ece4d9;
+  --line-strong: #dcccb5;
+  --primary: #c7a03b;
+  --primary-strong: #b58e2e;
+  --primary-ink: #18120a;
+  --accent: #8b7b60;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #15120f;
+  --surface: #1d1915;
+  --surface-soft: #24201b;
+  --surface-emphasis: #2c2721;
+  --ink: #f6efe4;
+  --ink-soft: #b7ac9b;
+  --line: #342c23;
+  --line-strong: #514533;
+  --primary: #d2b05a;
+  --primary-strong: #e0bf69;
+  --primary-ink: #171109;
+  --accent: #948467;
+  color-scheme: dark;
+}

@@ -9,33 +9,7 @@
       name="description"
       content="A polished marketing site for the Firebase Starter template."
     />
-    <script>
-      (function () {
-        var root = document.documentElement;
-        var parse = function (value) {
-          return value === 'light' || value === 'dark' || value === 'system'
-            ? value
-            : null;
-        };
-        var preference =
-          parse(window.localStorage.getItem('theme')) || 'system';
-        var prefersDark =
-          window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var resolved =
-          preference === 'system'
-            ? prefersDark
-              ? 'dark'
-              : 'light'
-            : preference;
-
-        root.classList.remove('light', 'dark');
-        root.classList.add(resolved);
-        root.setAttribute('data-theme', resolved);
-        root.setAttribute('data-theme-preference', preference);
-        root.style.colorScheme = resolved;
-      })();
-    </script>
+    <script type="module" src="/src/theme-init.ts"></script>
   </head>
   <body>
     <div id="root"></div>

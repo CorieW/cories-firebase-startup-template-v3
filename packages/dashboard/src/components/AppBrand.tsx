@@ -1,7 +1,7 @@
 /**
  * Shared brand mark and text component.
  */
-import { SharedAppBrand } from '../../../common/src/client';
+import { SharedAppBrand } from '@cories-firebase-startup-template-v3/common/client';
 import { Link } from '@tanstack/react-router';
 
 const brandRootClass =
@@ -34,7 +34,6 @@ export default function AppBrand({
         </Link>
       )}
       rootClassName={brandRootClass}
-      subtitle='Better Auth + Autumn'
     />
   );
 }

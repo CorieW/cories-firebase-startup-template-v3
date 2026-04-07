@@ -3,3 +3,4 @@
  */
 export * from './SharedAppBrand.js';
 export * from './SharedThemeToggle.js';
+export * from './theme.js';

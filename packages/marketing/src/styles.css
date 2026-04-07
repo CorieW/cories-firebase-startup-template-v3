@@ -3,23 +3,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @layer theme, base, utilities;
 @import 'tailwindcss';
+@import '../../common/src/client/shared-theme.css';
 
 @theme {
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --bg: #f4f0e8;
-  --surface: #fcfaf6;
-  --surface-soft: #f4efe5;
-  --surface-emphasis: #ebe3d6;
-  --ink: #171412;
-  --ink-soft: #6d6458;
-  --line: #ece4d9;
-  --line-strong: #dcccb5;
-  --primary: #c7a03b;
-  --primary-ink: #18120a;
-  --accent: #8b7b60;
   --ring: rgba(199, 160, 59, 0.24);
   --hero-a: rgba(199, 160, 59, 0.16);
   --hero-b: rgba(23, 20, 18, 0.08);
@@ -28,21 +18,9 @@
   --info: #1d4ed8;
   --shadow-card: 0 20px 48px rgba(91, 72, 39, 0.08);
   --shadow-soft: 0 32px 80px rgba(91, 72, 39, 0.12);
-  color-scheme: light;
 }
 
 :root[data-theme='dark'] {
-  --bg: #15120f;
-  --surface: #1d1915;
-  --surface-soft: #24201b;
-  --surface-emphasis: #2c2721;
-  --ink: #f6efe4;
-  --ink-soft: #b7ac9b;
-  --line: #342c23;
-  --line-strong: #514533;
-  --primary: #d2b05a;
-  --primary-ink: #171109;
-  --accent: #948467;
   --ring: rgba(210, 176, 90, 0.26);
   --hero-a: rgba(210, 176, 90, 0.14);
   --hero-b: rgba(255, 255, 255, 0.06);
@@ -51,7 +29,6 @@
   --info: #93c5fd;
   --shadow-card: 0 20px 48px rgba(0, 0, 0, 0.28);
   --shadow-soft: 0 34px 90px rgba(0, 0, 0, 0.36);
-  color-scheme: dark;
 }
 
 @layer base {

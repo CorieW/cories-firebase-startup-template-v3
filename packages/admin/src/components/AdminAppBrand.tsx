@@ -1,7 +1,7 @@
 /**
  * Shared admin brand lockup for the sidebar.
  */
-import { SharedAppBrand } from '../../../common/src/client';
+import { SharedAppBrand } from '@cories-firebase-startup-template-v3/common/client';
 import { Link } from '@tanstack/react-router';
 import { ADMIN_HOME_ROUTE_PATH } from '../lib/route-paths';
 
@@ -24,7 +24,6 @@ export function AdminAppBrand() {
         </Link>
       )}
       rootClassName={brandRootClass}
-      subtitle='Better Auth + Autumn'
     />
   );
 }
