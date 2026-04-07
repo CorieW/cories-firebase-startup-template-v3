@@ -2,8 +2,10 @@
  * Shared section heading used across the marketing page.
  */
 import type { ReactNode } from 'react';
+import { Badge } from '../ui/badge';
 
 interface SectionHeadingProps {
+  eyebrow?: string;
   title: string;
   description: ReactNode;
   align?: 'left' | 'center' | 'right';
@@ -14,6 +16,7 @@ interface SectionHeadingProps {
  * Renders a consistent heading block for landing page sections.
  */
 export default function SectionHeading({
+  eyebrow,
   title,
   description,
   align = 'left',
@@ -27,8 +30,15 @@ export default function SectionHeading({
         : '';
 
   return (
-    <div className={`flex max-w-2xl flex-col gap-5 sm:gap-6 ${alignmentClass}`}>
+    <div
+      className={`flex w-full max-w-2xl flex-col gap-5 sm:gap-6 ${alignmentClass}`}
+    >
       <div className='space-y-4'>
+        {eyebrow ? (
+          <Badge variant='muted' className='w-fit'>
+            {eyebrow}
+          </Badge>
+        ) : null}
         <h2 className='m-0 text-[clamp(2rem,4vw,3.4rem)] leading-[1] font-bold tracking-[-0.05em] text-[var(--ink)]'>
           {title}
         </h2>

@@ -26,6 +26,8 @@
   --hero-c: rgba(255, 255, 255, 0.52);
   --success: #166534;
   --info: #1d4ed8;
+  --shadow-card: 0 20px 48px rgba(91, 72, 39, 0.08);
+  --shadow-soft: 0 32px 80px rgba(91, 72, 39, 0.12);
   color-scheme: light;
 }
 
@@ -47,6 +49,8 @@
   --hero-c: rgba(36, 32, 27, 0.64);
   --success: #86efac;
   --info: #93c5fd;
+  --shadow-card: 0 20px 48px rgba(0, 0, 0, 0.28);
+  --shadow-soft: 0 34px 90px rgba(0, 0, 0, 0.36);
   color-scheme: dark;
 }
 
@@ -58,7 +62,10 @@
   body {
     margin: 0;
     min-width: 320px;
-    background: var(--bg);
+    background:
+      radial-gradient(circle at top left, var(--hero-a), transparent 24rem),
+      radial-gradient(circle at top right, var(--hero-c), transparent 28rem),
+      var(--bg);
     color: var(--ink);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
@@ -87,8 +94,55 @@
 }
 
 @layer utilities {
+  .marketing-shell {
+    position: relative;
+    overflow: clip;
+    background:
+      radial-gradient(
+        circle at top left,
+        var(--hero-a),
+        transparent min(28rem, 48vw)
+      ),
+      radial-gradient(
+        circle at top right,
+        var(--hero-c),
+        transparent min(36rem, 56vw)
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--surface) 74%, transparent),
+        transparent 28rem
+      ),
+      var(--bg);
+  }
+
+  .marketing-shell::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in srgb, var(--line) 24%, transparent),
+        transparent
+      )
+      center top / min(1120px, calc(100vw - 2rem)) 100% no-repeat;
+    opacity: 0.45;
+  }
+
+  .marketing-container {
+    width: min(100% - 2rem, 1180px);
+    margin-inline: auto;
+  }
+
   .marketing-main {
-    padding-block: clamp(2rem, 4vw, 3.25rem) clamp(5rem, 8vw, 7rem);
+    padding-block: clamp(1.25rem, 3vw, 2rem) clamp(5rem, 8vw, 7rem);
+  }
+
+  .marketing-hero {
+    min-height: auto;
+    padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 7vw, 5rem);
   }
 
   .marketing-section {
@@ -97,5 +151,17 @@
 
   .marketing-section-tight {
     padding-block: clamp(3rem, 6vw, 4.25rem);
+  }
+}
+
+@media (width >= 40rem) {
+  .marketing-container {
+    width: min(100% - 3rem, 1180px);
+  }
+}
+
+@media (width >= 64rem) {
+  .marketing-hero {
+    min-height: calc(100svh - clamp(6.25rem, 12vw, 7.75rem));
   }
 }

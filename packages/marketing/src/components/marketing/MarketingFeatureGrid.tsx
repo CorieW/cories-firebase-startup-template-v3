@@ -57,33 +57,55 @@ const features = [
   },
 ];
 
+const featureCardClasses = [
+  'xl:col-span-2',
+  'xl:col-span-2',
+  'xl:col-span-2',
+  'xl:col-span-3',
+  'xl:col-span-3',
+  'xl:col-span-6',
+];
+
 /**
  * Shows the landing page's key benefits in a card grid.
  */
 export default function MarketingFeatureGrid() {
   return (
-    <section id='features' className='marketing-section space-y-10'>
-      <SectionHeading
-        title='A marketing page that amplifies the template instead of distracting from it.'
-        description='Every section is tuned to make the starter feel more premium while staying consistent with the authenticated dashboard experience.'
-      />
-      <div className='grid gap-5 md:grid-cols-2 xl:grid-cols-3'>
-        {features.map(({ title, description, Icon }) => (
-          <Card key={title} className='h-full'>
-            <CardHeader>
-              <div className='inline-flex h-12 w-12 items-center justify-center rounded-[18px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,var(--surface-soft))]'>
-                <Icon
-                  className='h-5 w-5 text-[var(--primary)]'
-                  aria-hidden='true'
-                />
-              </div>
-              <CardTitle>{title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>{description}</CardDescription>
-            </CardContent>
-          </Card>
-        ))}
+    <section id='features' className='marketing-section'>
+      <div className='marketing-container space-y-10'>
+        <SectionHeading
+          eyebrow='Feature set'
+          title='A marketing page that amplifies the template instead of distracting from it.'
+          description='Every section is tuned to make the starter feel more premium while staying consistent with the authenticated dashboard experience.'
+        />
+        <div className='grid gap-5 md:grid-cols-2 xl:grid-cols-6'>
+          {features.map(({ title, description, Icon }, index) => (
+            <Card
+              key={title}
+              className={`h-full ${
+                index === features.length - 1
+                  ? 'border-[color-mix(in_srgb,var(--primary)_24%,var(--line-strong))] bg-[color-mix(in_srgb,var(--surface-emphasis)_82%,var(--surface)_18%)]'
+                  : ''
+              } ${featureCardClasses[index]}`}
+            >
+              <CardHeader className='gap-4'>
+                <p className='m-0 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-soft)]'>
+                  0{index + 1}
+                </p>
+                <div className='inline-flex h-12 w-12 items-center justify-center rounded-[18px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,var(--surface-soft))]'>
+                  <Icon
+                    className='h-5 w-5 text-[var(--primary)]'
+                    aria-hidden='true'
+                  />
+                </div>
+                <CardTitle>{title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{description}</CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
   );

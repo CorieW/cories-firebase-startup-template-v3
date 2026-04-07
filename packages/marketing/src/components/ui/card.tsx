@@ -14,7 +14,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-[28px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[var(--surface)] text-[var(--ink)]',
+        'rounded-[28px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[var(--surface)] text-[var(--ink)] shadow-[var(--shadow-card)]',
         className
       )}
       {...props}

@@ -23,19 +23,17 @@ export default function App() {
   }, []);
 
   return (
-    <div id='top' className='min-h-screen bg-[var(--bg)] text-[var(--ink)]'>
-      <div className='mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8'>
-        <MarketingHeader />
-        <main className='marketing-main'>
-          <MarketingHero />
-          <MarketingSocialProof />
-          <MarketingFeatureGrid />
-          <MarketingStoryGrid />
-          <MarketingTestimonials />
-          <MarketingPricing />
-        </main>
-        <MarketingFooter />
-      </div>
+    <div id='top' className='marketing-shell min-h-screen text-[var(--ink)]'>
+      <MarketingHeader />
+      <main className='marketing-main'>
+        <MarketingHero />
+        <MarketingSocialProof />
+        <MarketingFeatureGrid />
+        <MarketingStoryGrid />
+        <MarketingTestimonials />
+        <MarketingPricing />
+      </main>
+      <MarketingFooter />
     </div>
   );
 }
