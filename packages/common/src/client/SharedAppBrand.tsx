@@ -1,10 +1,10 @@
 /**
  * Shared app brand lockup used by marketing and dashboard wrappers.
  */
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 function joinClassNames(...values: Array<string | undefined>): string {
-  return values.filter(Boolean).join(" ");
+  return values.filter(Boolean).join(' ');
 }
 
 interface SharedAppBrandProps {
@@ -24,14 +24,14 @@ interface SharedAppBrandProps {
  */
 export function SharedAppBrand({
   className,
-  mark = "C",
+  mark = 'C',
   markClassName,
   renderRoot,
   rootClassName,
   subtitle,
-  subtitleClassName = "block text-xs text-[var(--ink-soft)]",
-  title = "Firebase Starter",
-  titleClassName = "block text-sm font-extrabold",
+  subtitleClassName = 'block text-xs text-[var(--ink-soft)]',
+  title = 'Firebase Starter',
+  titleClassName = 'block text-sm font-extrabold',
 }: SharedAppBrandProps) {
   return renderRoot({
     className: joinClassNames(rootClassName, className),

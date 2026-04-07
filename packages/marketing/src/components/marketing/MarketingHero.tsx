@@ -106,7 +106,7 @@ export default function MarketingHero() {
             <CardTitle className='max-w-[14ch] text-3xl sm:text-4xl'>
               One brand system from homepage to app shell.
             </CardTitle>
-          <CardDescription className='max-w-xl text-base'>
+            <CardDescription className='max-w-xl text-base'>
               The marketing package extends the dashboard&apos;s palette and
               surfaces into a landing page with more motion, more hierarchy, and
               stronger storytelling.

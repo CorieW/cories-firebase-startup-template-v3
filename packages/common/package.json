@@ -2,26 +2,27 @@
   "name": "@cories-firebase-startup-template-v3/common",
   "version": "0.0.0",
   "main": "./lib/index.js",
+  "module": "./lib/esm/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "build": "rm -rf lib && tsc && tsc -p tsconfig.esm.json && pnpm run pack",
-    "build:watch": "nodemon --watch src --ext js,ts,json --exec \"rm -rf lib && tsc && tsc -p tsconfig.esm.json\"",
+    "build": "rm -rf lib && tsc && tsc -p tsconfig.esm.json && mkdir -p lib/esm && printf '{\"type\":\"module\"}\\n' > lib/esm/package.json && pnpm run pack",
+    "build:watch": "nodemon --watch src --ext js,ts,json --exec \"rm -rf lib && tsc && tsc -p tsconfig.esm.json && mkdir -p lib/esm && printf '{\\\"type\\\":\\\"module\\\"}\\\\n' > lib/esm/package.json\"",
     "pack": "pnpm pack && node ../../scripts/pack-common.js"
   },
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
-      "import": "./lib/index.js",
+      "import": "./lib/esm/index.js",
       "require": "./lib/index.js",
-      "default": "./lib/index.js"
+      "default": "./lib/esm/index.js"
     },
     "./client": {
       "types": "./lib/client/index.d.ts",
-      "import": "./lib/client/index.js",
+      "import": "./lib/esm/client/index.js",
       "require": "./lib/client/index.js",
-      "default": "./lib/client/index.js"
+      "default": "./lib/esm/client/index.js"
     }
   },
   "files": [

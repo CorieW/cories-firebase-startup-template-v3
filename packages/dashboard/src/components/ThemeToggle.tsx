@@ -1,9 +1,9 @@
 /**
  * Theme switcher component.
  */
-import { SharedThemeToggle } from "../../../common/src/client";
-import { Monitor, Moon, Sun } from "lucide-react";
-import { useToast } from "./toast/ToastProvider";
+import { SharedThemeToggle } from '../../../common/src/client';
+import { Monitor, Moon, Sun } from 'lucide-react';
+import { useToast } from './toast/ToastProvider';
 
 interface ThemeToggleProps {
   fullWidth?: boolean;
@@ -14,16 +14,16 @@ export default function ThemeToggle({ fullWidth = true }: ThemeToggleProps) {
 
   return (
     <SharedThemeToggle
-      buttonClassName="min-h-8"
+      buttonClassName='min-h-8'
       fullWidth={fullWidth}
       icons={{
         light: Sun,
         dark: Moon,
         system: Monitor,
       }}
-      onModeChange={(nextMode) => {
+      onModeChange={nextMode => {
         toast.info({
-          title: "Theme updated",
+          title: 'Theme updated',
           description: `Switched to ${nextMode} mode.`,
         });
       }}
