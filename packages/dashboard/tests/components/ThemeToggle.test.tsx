@@ -38,30 +38,51 @@ describe('ThemeToggle', () => {
   function renderThemeToggle() {
     render(
       <ToastProvider>
-        <ThemeToggle fullWidth={false} />
+        <ThemeToggle />
       </ToastProvider>
     );
   }
 
-  it('initializes pressed state from the document preference', () => {
+  function openThemeMenu() {
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: 'Theme preference: Dark' }),
+      {
+        button: 0,
+        ctrlKey: false,
+      }
+    );
+  }
+
+  it('initializes the dropdown trigger from the document preference', async () => {
     renderThemeToggle();
 
     expect(
-      screen
-        .getByRole('button', { name: 'Dark mode' })
-        .getAttribute('aria-pressed')
-    ).toBe('true');
-    expect(
-      screen
-        .getByRole('button', { name: 'Light mode' })
-        .getAttribute('aria-pressed')
-    ).toBe('false');
+      screen.getByRole('button', {
+        name: 'Theme preference: Dark',
+      })
+    ).not.toBeNull();
+
+    openThemeMenu();
+
+    await waitFor(() => {
+      expect(
+        screen
+          .getByRole('menuitemradio', { name: 'Dark' })
+          .getAttribute('aria-checked')
+      ).toBe('true');
+      expect(
+        screen
+          .getByRole('menuitemradio', { name: 'Light' })
+          .getAttribute('aria-checked')
+      ).toBe('false');
+    });
   });
 
   it('writes localStorage and document theme attributes when selecting a mode', async () => {
     renderThemeToggle();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Light mode' }));
+    openThemeMenu();
+    fireEvent.click(screen.getByRole('menuitemradio', { name: 'Light' }));
 
     await waitFor(() => {
       expect(window.localStorage.getItem('theme')).toBe('light');
@@ -70,10 +91,8 @@ describe('ThemeToggle', () => {
         document.documentElement.getAttribute('data-theme-preference')
       ).toBe('light');
       expect(
-        screen
-          .getByRole('button', { name: 'Light mode' })
-          .getAttribute('aria-pressed')
-      ).toBe('true');
+        screen.getByRole('button', { name: 'Theme preference: Light' })
+      ).not.toBeNull();
     });
 
     expect(screen.getByText('Theme updated')).not.toBeNull();
@@ -90,10 +109,8 @@ describe('ThemeToggle', () => {
 
     await waitFor(() => {
       expect(
-        screen
-          .getByRole('button', { name: 'Light mode' })
-          .getAttribute('aria-pressed')
-      ).toBe('true');
+        screen.getByRole('button', { name: 'Theme preference: Light' })
+      ).not.toBeNull();
     });
   });
 });

@@ -67,7 +67,7 @@ export default function SignedInSidebar({
       ) : null}
 
       <div className='fixed right-4 top-4 z-40 hidden min-[980px]:block'>
-        <ThemeToggle fullWidth={false} />
+        <ThemeToggle />
       </div>
 
       {isMenuOpen ? (
@@ -87,14 +87,17 @@ export default function SignedInSidebar({
         <div className='flex h-full flex-col p-4'>
           <div className='flex items-start justify-between'>
             <AppBrand />
-            <button
-              type='button'
-              onClick={closeMenu}
-              aria-label='Close navigation menu'
-              className='mt-2 inline-flex h-8 w-8 items-center justify-center rounded-[10px] border border-[var(--line)] text-[var(--ink-soft)] transition-[background-color,border-color,color] hover:border-[var(--line-strong)] hover:bg-[var(--surface)] hover:text-[var(--ink)] min-[980px]:hidden'
-            >
-              <X aria-hidden='true' className='h-4 w-4' />
-            </button>
+            <div className='mt-2 flex items-center gap-2 min-[980px]:hidden'>
+              <ThemeToggle />
+              <button
+                type='button'
+                onClick={closeMenu}
+                aria-label='Close navigation menu'
+                className='inline-flex h-8 w-8 items-center justify-center rounded-[10px] border border-[var(--line)] text-[var(--ink-soft)] transition-[background-color,border-color,color] hover:border-[var(--line-strong)] hover:bg-[var(--surface)] hover:text-[var(--ink)]'
+              >
+                <X aria-hidden='true' className='h-4 w-4' />
+              </button>
+            </div>
           </div>
 
           <nav className='mt-[1.15rem] flex flex-col gap-[0.3rem]'>

@@ -24,7 +24,7 @@ export default function SignedOutHeader({ isAuthRoute }: SignedOutHeaderProps) {
           <AppBrand />
         </div>
         <div className='fixed right-4 top-4 z-40'>
-          <ThemeToggle fullWidth={false} />
+          <ThemeToggle />
         </div>
       </>
     );
@@ -36,7 +36,7 @@ export default function SignedOutHeader({ isAuthRoute }: SignedOutHeaderProps) {
     >
       <AppBrand />
       <div className='flex items-center gap-2'>
-        <ThemeToggle fullWidth={false} />
+        <ThemeToggle />
         <Link
           to='/sign-in/$'
           params={{ _splat: '' }}

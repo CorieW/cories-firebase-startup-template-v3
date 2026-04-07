@@ -3,7 +3,6 @@
  */
 import { OrganizationSwitcher, UserButton } from '@daveyplate/better-auth-ui';
 import { panelMutedClass } from '../../lib/ui';
-import ThemeToggle from '../ThemeToggle';
 import { Skeleton } from '../ui/skeleton';
 import { sidebarDropdownClassNames } from './signed-in-sidebar.constants';
 
@@ -18,10 +17,6 @@ export default function SidebarAccountPanel({
 }) {
   return (
     <div className='mt-auto grid gap-3'>
-      <div className='min-[980px]:hidden'>
-        <ThemeToggle />
-      </div>
-
       {isSessionPending ? (
         <>
           <div className={`${panelMutedClass} p-2`} aria-hidden='true'>
