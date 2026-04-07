@@ -21,6 +21,6 @@ describe("admin route guards", () => {
 
   it("keeps protected admin routes out of the public allowlist", () => {
     expect(isAdminPublicRoute("/users")).toBe(false);
-    expect(isAdminPublicRoute("/billing")).toBe(false);
+    expect(isAdminPublicRoute("/audit")).toBe(false);
   });
 });

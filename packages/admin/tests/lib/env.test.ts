@@ -8,30 +8,51 @@ afterEach(() => {
 });
 
 describe("getAdminExternalToolLinks", () => {
-  it("returns configured sidebar tool links", async () => {
-    vi.stubEnv("AUTUMN_ADMIN_URL", " https://app.useautumn.com ");
+  it("returns configured sidebar tool links from ADMIN_EXTERNAL_TOOLS", async () => {
     vi.stubEnv(
-      "FIREBASE_CONSOLE_URL",
-      "https://console.firebase.google.com/project/demo/overview",
+      "ADMIN_EXTERNAL_TOOLS",
+      JSON.stringify([
+        {
+          label: " Firebase ",
+          href: " https://console.firebase.google.com/project/demo/overview ",
+        },
+        {
+          label: "Autumn",
+          href: "https://app.useautumn.com",
+        },
+        {
+          label: "",
+          href: "https://example.com/ignored",
+        },
+      ]),
     );
 
     const { getAdminExternalToolLinks } = await import("@/lib/server/env");
 
-    expect(getAdminExternalToolLinks()).toEqual({
-      autumn: "https://app.useautumn.com",
-      firebase: "https://console.firebase.google.com/project/demo/overview",
-    });
+    expect(getAdminExternalToolLinks()).toEqual([
+      {
+        label: "Firebase",
+        href: "https://console.firebase.google.com/project/demo/overview",
+      },
+      {
+        label: "Autumn",
+        href: "https://app.useautumn.com",
+      },
+    ]);
   });
 
-  it("treats blank values as unavailable", async () => {
-    vi.stubEnv("AUTUMN_ADMIN_URL", "   ");
-    vi.stubEnv("FIREBASE_CONSOLE_URL", "");
+  it("returns no tools for blank, invalid, or empty config", async () => {
+    vi.stubEnv("ADMIN_EXTERNAL_TOOLS", "[]");
 
-    const { getAdminExternalToolLinks } = await import("@/lib/server/env");
+    let envModule = await import("@/lib/server/env");
+    expect(envModule.getAdminExternalToolLinks()).toEqual([]);
 
-    expect(getAdminExternalToolLinks()).toEqual({
-      autumn: undefined,
-      firebase: undefined,
-    });
+    vi.stubEnv("ADMIN_EXTERNAL_TOOLS", "not-json");
+    envModule = await import("@/lib/server/env");
+    expect(envModule.getAdminExternalToolLinks()).toEqual([]);
+
+    vi.stubEnv("ADMIN_EXTERNAL_TOOLS", "   ");
+    envModule = await import("@/lib/server/env");
+    expect(envModule.getAdminExternalToolLinks()).toEqual([]);
   });
 });

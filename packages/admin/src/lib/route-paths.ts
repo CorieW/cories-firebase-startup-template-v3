@@ -5,7 +5,6 @@ export const ADMIN_HOME_ROUTE_PATH = "/";
 export const ADMIN_AUTH_API_ROUTE_PREFIX = "/api/auth";
 export const ADMIN_USERS_ROUTE_PATH = "/users";
 export const ADMIN_ORGANIZATIONS_ROUTE_PATH = "/organizations";
-export const ADMIN_BILLING_ROUTE_PATH = "/billing";
 export const ADMIN_AUDIT_ROUTE_PATH = "/audit";
 export const ADMIN_SIGN_IN_ROUTE_PREFIX = "/sign-in";
 export const ADMIN_FORGOT_PASSWORD_ROUTE_PATH = "/sign-in/forgot-password";
@@ -16,7 +15,6 @@ export const ADMIN_NAV_ROUTE_PATHS = [
   ADMIN_HOME_ROUTE_PATH,
   ADMIN_USERS_ROUTE_PATH,
   ADMIN_ORGANIZATIONS_ROUTE_PATH,
-  ADMIN_BILLING_ROUTE_PATH,
   ADMIN_AUDIT_ROUTE_PATH,
 ] as const;
 

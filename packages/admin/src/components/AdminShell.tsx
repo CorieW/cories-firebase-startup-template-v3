@@ -6,7 +6,6 @@ import type { ReactNode } from 'react';
 import { AdminAppBrand } from './AdminAppBrand';
 import {
   ADMIN_AUDIT_ROUTE_PATH,
-  ADMIN_BILLING_ROUTE_PATH,
   ADMIN_HOME_ROUTE_PATH,
   ADMIN_ORGANIZATIONS_ROUTE_PATH,
   ADMIN_SIGN_OUT_ROUTE_PATH,
@@ -42,10 +41,6 @@ const navItems = [
     to: ADMIN_ORGANIZATIONS_ROUTE_PATH,
   },
   {
-    label: 'Billing',
-    to: ADMIN_BILLING_ROUTE_PATH,
-  },
-  {
     label: 'Audit',
     to: ADMIN_AUDIT_ROUTE_PATH,
   },
@@ -53,9 +48,6 @@ const navItems = [
 
 const sidebarNavButtonClass =
   'block rounded-[18px] px-4 py-3 text-sm font-semibold bg-[var(--admin-surface)] text-[var(--admin-ink)] transition hover:bg-[var(--admin-surface-strong)]';
-
-const sidebarDisabledButtonClass =
-  'block cursor-not-allowed rounded-[18px] px-4 py-3 text-sm font-semibold bg-[var(--admin-surface)] text-[var(--admin-ink-soft)] opacity-60';
 
 /**
  * Renders navigation and context around protected admin routes.
@@ -68,18 +60,6 @@ export function AdminShell({
   const pathname = useRouterState({
     select: state => state.location.pathname,
   });
-  const externalLinks = [
-    {
-      href: externalToolLinks.autumn,
-      label: 'Autumn',
-      missingReason: 'Set AUTUMN_ADMIN_URL to enable this link.',
-    },
-    {
-      href: externalToolLinks.firebase,
-      label: 'Firebase',
-      missingReason: 'Set FIREBASE_CONSOLE_URL to enable this link.',
-    },
-  ];
   const containerClass =
     pathname === ADMIN_HOME_ROUTE_PATH
       ? widePageContainerClass
@@ -120,39 +100,26 @@ export function AdminShell({
               </ul>
             </nav>
 
-            <div className='space-y-3'>
-              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-                External Tools
-              </p>
+            {externalToolLinks.length > 0 ? (
               <div className='space-y-3'>
-                {externalLinks.map(link => (
-                  <div key={link.label} className='space-y-1.5'>
-                    {link.href ? (
-                      <a
-                        className={sidebarNavButtonClass}
-                        href={link.href}
-                        rel='noreferrer'
-                        target='_blank'
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <span
-                        aria-disabled='true'
-                        className={sidebarDisabledButtonClass}
-                      >
-                        {link.label}
-                      </span>
-                    )}
-                    {!link.href ? (
-                      <p className='m-0 text-xs leading-5 text-[var(--admin-danger)]'>
-                        {link.missingReason}
-                      </p>
-                    ) : null}
-                  </div>
-                ))}
+                <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                  External Tools
+                </p>
+                <div className='space-y-3'>
+                  {externalToolLinks.map(link => (
+                    <a
+                      key={`${link.label}-${link.href}`}
+                      className={sidebarNavButtonClass}
+                      href={link.href}
+                      rel='noreferrer'
+                      target='_blank'
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
 
             <div className='mt-auto space-y-4 border-t border-[var(--admin-line)] pt-4 text-sm'>
               <div>

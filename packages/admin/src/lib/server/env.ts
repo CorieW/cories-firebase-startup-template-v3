@@ -1,10 +1,12 @@
 /**
  * Admin server environment accessors for auth, billing, email, and Firebase credentials.
  */
-export interface AdminExternalToolLinks {
-  autumn: string | undefined;
-  firebase: string | undefined;
+export interface AdminExternalToolLink {
+  label: string;
+  href: string;
 }
+
+export type AdminExternalToolLinks = AdminExternalToolLink[];
 
 const DEFAULT_ADMIN_APP_URL = "http://localhost:3002";
 const DEFAULT_BETTER_AUTH_SECRET =
@@ -33,6 +35,55 @@ function readEnv(...keys: string[]): string | undefined {
   }
 
   return undefined;
+}
+
+function normalizeExternalToolLink(
+  value: unknown,
+): AdminExternalToolLink | undefined {
+  if (!value || typeof value !== "object") {
+    return undefined;
+  }
+
+  const label =
+    "label" in value && typeof value.label === "string"
+      ? trimString(value.label)
+      : undefined;
+  const href =
+    "href" in value && typeof value.href === "string"
+      ? trimString(value.href)
+      : undefined;
+
+  if (!label || !href) {
+    return undefined;
+  }
+
+  return {
+    label,
+    href,
+  };
+}
+
+function parseConfiguredExternalToolLinks(
+  value: string | undefined,
+): AdminExternalToolLinks | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  try {
+    const parsed = JSON.parse(value);
+
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed.flatMap(link => {
+      const normalizedLink = normalizeExternalToolLink(link);
+      return normalizedLink ? [normalizedLink] : [];
+    });
+  } catch {
+    return [];
+  }
 }
 
 function isFirebasePrivateKeyPlaceholder(value: string): boolean {
@@ -93,10 +144,9 @@ export function getAutumnBaseUrl(): string | undefined {
  * Returns optional external admin tool destinations for the sidebar.
  */
 export function getAdminExternalToolLinks(): AdminExternalToolLinks {
-  return {
-    autumn: readEnv("AUTUMN_ADMIN_URL"),
-    firebase: readEnv("FIREBASE_CONSOLE_URL"),
-  };
+  return (
+    parseConfiguredExternalToolLinks(readEnv("ADMIN_EXTERNAL_TOOLS")) ?? []
+  );
 }
 
 /**

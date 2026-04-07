@@ -50,10 +50,6 @@ test('@core shows seeded overview metrics and opens each workspace from the land
       title: 'Open organization directory',
     },
     {
-      destinationHeading: 'Billing diagnostics',
-      title: 'Open billing diagnostics',
-    },
-    {
       destinationHeading: 'Audit timeline',
       title: 'Open audit timeline',
     },

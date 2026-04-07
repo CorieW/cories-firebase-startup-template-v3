@@ -6,7 +6,6 @@ import { expect, test } from './admin.fixtures';
 
 async function generateAuditRows(input: {
   adminPage: Page;
-  billingSearchTerm: string;
   organizationId: string;
   userId: string;
 }) {
@@ -21,12 +20,6 @@ async function generateAuditRows(input: {
       name: /Northwind Labs|Empty Space/,
     })
   ).toBeVisible();
-
-  await input.adminPage.goto('/billing');
-  await input.adminPage
-    .getByPlaceholder('Search by customer id, name, or email')
-    .fill(input.billingSearchTerm);
-  await input.adminPage.getByRole('button', { name: 'Search' }).click();
 }
 
 test('@core shows generated audit rows and filters them by action and resource type', async ({
@@ -35,8 +28,6 @@ test('@core shows generated audit rows and filters them by action and resource t
 }) => {
   await generateAuditRows({
     adminPage,
-    billingSearchTerm:
-      seededAdminData.autumn?.billingSearchPrefix ?? 'no-billing-config',
     organizationId: seededAdminData.organization.id,
     userId: seededAdminData.subjectUser.id,
   });
@@ -81,34 +72,4 @@ test('@core shows generated audit rows and filters them by action and resource t
   await expect(
     adminPage.getByText('No audit entries matched these filters')
   ).toBeVisible();
-});
-
-test('@core redacts billing search metadata in the audit timeline', async ({
-  adminPage,
-  seededAdminData,
-}) => {
-  const autumn = seededAdminData.autumn;
-  if (!autumn) {
-    test.skip(true, 'This coverage needs Autumn billing.');
-    return;
-  }
-
-  await generateAuditRows({
-    adminPage,
-    billingSearchTerm: autumn.billingSearchPrefix,
-    organizationId: seededAdminData.organization.id,
-    userId: seededAdminData.subjectUser.id,
-  });
-
-  await adminPage.goto('/audit');
-  await adminPage.getByPlaceholder('Action').fill('admin.billing.view');
-  await adminPage
-    .getByPlaceholder('Actor uid')
-    .fill(seededAdminData.adminUser.id);
-  await adminPage.getByRole('button', { name: 'Apply filters' }).click();
-
-  await expect(adminPage.getByText('admin.billing.view')).toBeVisible();
-  await adminPage.getByText('View metadata').first().click();
-  await expect(adminPage.getByText('"hasSearch": true')).toBeVisible();
-  await expect(adminPage.getByText(autumn.billingSearchPrefix)).toHaveCount(0);
 });

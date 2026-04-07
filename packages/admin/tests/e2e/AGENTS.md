@@ -10,8 +10,7 @@ Playwright suites and shared fixtures for seeded admin end-to-end coverage.
 
 - `admin-test-helpers.ts`: Shared formatting helpers for admin E2E assertions.
 - `admin.fixtures.ts`: Worker-scoped seeded admin auth, Firestore, and optional Autumn billing fixtures.
-- `audit.spec.ts`: Audit timeline coverage for generated rows, filtering, and metadata redaction.
-- `billing.spec.ts`: Billing diagnostics coverage for unavailable and real Autumn-backed display states.
+- `audit.spec.ts`: Audit timeline coverage for generated rows and action/resource filtering.
 - `organizations.spec.ts`: Organization directory and detail coverage for populated, empty, and billing-ready states.
 - `overview.spec.ts`: Admin overview coverage for summary cards and workspace entry links.
 - `shell.spec.ts`: Smoke coverage for authenticated admin shell navigation.

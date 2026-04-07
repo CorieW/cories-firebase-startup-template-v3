@@ -11,7 +11,6 @@ File-based route modules for the admin app, including auth entry points and prot
 - `__root.tsx`: Admin root route that wires shared shell behavior and request-scoped session loading.
 - `api.auth.$.ts`: Better Auth catch-all API route for the admin app.
 - `audit.tsx`: Protected audit timeline route with lightweight filter controls and pagination.
-- `billing.tsx`: Protected billing diagnostics route for read-only Autumn customer lookups with pagination.
 - `index.tsx`: Protected admin overview route with summary metrics and recent audit activity.
 - `organizations.$organizationId.tsx`: Protected organization detail route for a single tenant.
 - `organizations.tsx`: Protected organization directory route with search and pagination.

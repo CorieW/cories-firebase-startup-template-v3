@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as OrganizationsRouteImport } from './routes/organizations'
-import { Route as BillingRouteImport } from './routes/billing'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
@@ -27,11 +26,6 @@ const UsersRoute = UsersRouteImport.update({
 const OrganizationsRoute = OrganizationsRouteImport.update({
   id: '/organizations',
   path: '/organizations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BillingRoute = BillingRouteImport.update({
-  id: '/billing',
-  path: '/billing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuditRoute = AuditRouteImport.update({
@@ -69,7 +63,6 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
-  '/billing': typeof BillingRoute
   '/organizations': typeof OrganizationsRouteWithChildren
   '/users': typeof UsersRouteWithChildren
   '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
@@ -80,7 +73,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
-  '/billing': typeof BillingRoute
   '/organizations': typeof OrganizationsRouteWithChildren
   '/users': typeof UsersRouteWithChildren
   '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
@@ -92,7 +84,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
-  '/billing': typeof BillingRoute
   '/organizations': typeof OrganizationsRouteWithChildren
   '/users': typeof UsersRouteWithChildren
   '/organizations/$organizationId': typeof OrganizationsOrganizationIdRoute
@@ -105,7 +96,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/audit'
-    | '/billing'
     | '/organizations'
     | '/users'
     | '/organizations/$organizationId'
@@ -116,7 +106,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/audit'
-    | '/billing'
     | '/organizations'
     | '/users'
     | '/organizations/$organizationId'
@@ -127,7 +116,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/audit'
-    | '/billing'
     | '/organizations'
     | '/users'
     | '/organizations/$organizationId'
@@ -139,7 +127,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuditRoute: typeof AuditRoute
-  BillingRoute: typeof BillingRoute
   OrganizationsRoute: typeof OrganizationsRouteWithChildren
   UsersRoute: typeof UsersRouteWithChildren
   SignInSplatRoute: typeof SignInSplatRoute
@@ -160,13 +147,6 @@ declare module '@tanstack/react-router' {
       path: '/organizations'
       fullPath: '/organizations'
       preLoaderRoute: typeof OrganizationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/billing': {
-      id: '/billing'
-      path: '/billing'
-      fullPath: '/billing'
-      preLoaderRoute: typeof BillingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/audit': {
@@ -239,7 +219,6 @@ const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuditRoute: AuditRoute,
-  BillingRoute: BillingRoute,
   OrganizationsRoute: OrganizationsRouteWithChildren,
   UsersRoute: UsersRouteWithChildren,
   SignInSplatRoute: SignInSplatRoute,

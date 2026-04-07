@@ -8,7 +8,6 @@ import { requireActiveAdmin } from '../lib/admin-auth';
 import { formatAdminNumber } from '../lib/formatting';
 import {
   ADMIN_AUDIT_ROUTE_PATH,
-  ADMIN_BILLING_ROUTE_PATH,
   ADMIN_ORGANIZATIONS_ROUTE_PATH,
   ADMIN_USERS_ROUTE_PATH,
 } from '../lib/route-paths';
@@ -73,16 +72,6 @@ function AdminHomePage() {
     },
     {
       description:
-        'Verify whether billing diagnostics are ready before investigating customer issues.',
-      href: ADMIN_BILLING_ROUTE_PATH,
-      kicker: 'Revenue',
-      metric: overview.billingConfigured
-        ? 'Billing configured'
-        : 'Billing unavailable',
-      title: 'Open billing diagnostics',
-    },
-    {
-      description:
         'Inspect stored admin actions and trace recent operational changes.',
       href: ADMIN_AUDIT_ROUTE_PATH,
       kicker: 'Traceability',
@@ -94,7 +83,7 @@ function AdminHomePage() {
   return (
     <div className='space-y-6 py-5'>
       <AdminPageHeader
-        description='Quick stats for the main admin surfaces wired to auth, organizations, billing, and audit logging.'
+        description='Quick stats for the main admin surfaces wired to auth, organizations, and audit logging.'
         title='Operations overview'
       />
 

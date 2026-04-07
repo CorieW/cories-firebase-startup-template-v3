@@ -125,27 +125,6 @@ export const loadOrganizationDetailServer = createServerFn({ method: "GET" })
   });
 
 /**
- * Returns read-only billing search results for the current admin.
- */
-export const loadBillingDataServer = createServerFn({ method: "GET" })
-  .inputValidator(
-    (input: { page?: unknown; search?: unknown } | undefined) => ({
-      page: normalizePaginationPage(input?.page),
-      search: normalizeSearchValue(input?.search),
-    }),
-  )
-  .handler(async ({ data }) => {
-    const actor = await requireAdminAuditActor();
-    const { loadBillingData } = await import("./server/billing-data");
-
-    return loadBillingData({
-      actor,
-      page: data.page,
-      searchTerm: data.search,
-    });
-  });
-
-/**
  * Returns recent audit entries after applying UI filters.
  */
 export const loadAuditDataServer = createServerFn({ method: "GET" })
