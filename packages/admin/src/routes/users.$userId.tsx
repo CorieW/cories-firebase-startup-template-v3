@@ -67,11 +67,15 @@ function UserDetailPage() {
       : {};
   const organizations = getOrganizationsFromMemberships(detail.memberships);
   const walletBalance = detail.billing.walletBalance;
-  const shouldRedactBilling = detail.billing.status !== 'ready';
+  const shouldRedactBilling =
+    detail.billing.status === 'error' ||
+    detail.billing.status === 'not-configured' ||
+    detail.billing.status === 'rate-limited';
   const shouldRedactAutumnSubscriptions =
     detail.billing.status === 'error' ||
     detail.billing.status === 'missing-customer' ||
-    detail.billing.status === 'not-configured';
+    detail.billing.status === 'not-configured' ||
+    detail.billing.status === 'rate-limited';
 
   return (
     <div className='space-y-6 py-5'>
@@ -183,56 +187,65 @@ function UserDetailPage() {
       >
         {shouldRedactBilling ? (
           <AdminEmptyState
-            description={DATA_UNAVAILABLE_DESCRIPTION}
-            title='Data unavailable'
+            description={getWalletUnavailableDescription(detail.billing)}
+            title={getWalletUnavailableTitle(detail.billing)}
             tone='danger'
           />
         ) : (
-          <AdminKeyValueList
-            items={[
-              {
-                label: 'Autumn customer ID',
-                value: detail.billing.customerId,
-              },
-              {
-                label: 'Billing status',
-                value: getBillingStatusLabel(detail.billing),
-              },
-              {
-                label: 'Wallet balance',
-                value: walletBalance
-                  ? formatAdminBalanceAmount(
-                      walletBalance.remaining,
-                      walletBalance.featureId
-                    )
-                  : 'Unavailable',
-              },
-              {
-                label: 'Granted',
-                value: walletBalance
-                  ? formatAdminBalanceAmount(
-                      walletBalance.granted,
-                      walletBalance.featureId
-                    )
-                  : 'Unavailable',
-              },
-              {
-                label: 'Used',
-                value: walletBalance
-                  ? formatAdminBalanceAmount(
-                      walletBalance.usage,
-                      walletBalance.featureId
-                    )
-                  : 'Unavailable',
-              },
-              {
-                label: 'Next reset',
-                value: walletBalance
-                  ? formatAdminDateTime(walletBalance.nextResetAt)
-                  : 'Unavailable',
-              },
-            ]}
-          />
+          <div className='space-y-4'>
+            <AdminKeyValueList
+              items={[
+                {
+                  label: 'Autumn customer ID',
+                  value: detail.billing.customerId,
+                },
+                {
+                  label: 'Billing status',
+                  value: getBillingStatusLabel(detail.billing),
+                },
+                {
+                  label: 'Wallet balance',
+                  value: walletBalance
+                    ? formatAdminBalanceAmount(
+                        walletBalance.remaining,
+                        walletBalance.featureId
+                      )
+                    : 'Unavailable',
+                },
+                {
+                  label: 'Granted',
+                  value: walletBalance
+                    ? formatAdminBalanceAmount(
+                        walletBalance.granted,
+                        walletBalance.featureId
+                      )
+                    : 'Unavailable',
+                },
+                {
+                  label: 'Used',
+                  value: walletBalance
+                    ? formatAdminBalanceAmount(
+                        walletBalance.usage,
+                        walletBalance.featureId
+                      )
+                    : 'Unavailable',
+                },
+                {
+                  label: 'Next reset',
+                  value: walletBalance
+                    ? formatAdminDateTime(walletBalance.nextResetAt)
+                    : 'Unavailable',
+                },
+              ]}
+            />
+            {detail.billing.status !== 'ready' ? (
+              <AdminEmptyState
+                description={getWalletUnavailableDescription(detail.billing)}
+                title={getWalletUnavailableTitle(detail.billing)}
+                tone='danger'
+              />
+            ) : null}
+          </div>
         )}
       </AdminPanel>
 
@@ -386,6 +399,8 @@ function getAutumnSubscriptionsUnavailableTitle(
       return 'Autumn customer not found';
     case 'not-configured':
       return 'Billing integration unavailable';
+    case 'rate-limited':
+      return 'Autumn rate limit reached';
     case 'error':
       return 'Autumn lookup failed';
     default:
@@ -401,8 +416,46 @@ function getAutumnSubscriptionsUnavailableDescription(
       return `No Autumn customer matched ${billing.customerId}, so there are no subscriptions to show for this user.`;
     case 'not-configured':
       return 'Set AUTUMN_SECRET_KEY in packages/admin/.env to load Autumn subscriptions in the admin app.';
+    case 'rate-limited':
+      return 'The admin app reached Autumn request limits while loading subscriptions for this user. Wait a moment, then try again.';
     case 'error':
       return 'The admin app hit an error while loading Autumn subscriptions. Check the billing credentials and server logs, then try again.';
+    default:
+      return DATA_UNAVAILABLE_DESCRIPTION;
+  }
+}
+
+function getWalletUnavailableTitle(billing: AdminUserBillingSummary): string {
+  switch (billing.status) {
+    case 'missing-customer':
+      return 'Autumn customer not found';
+    case 'missing-wallet':
+      return 'Wallet balance missing';
+    case 'not-configured':
+      return 'Billing integration unavailable';
+    case 'rate-limited':
+      return 'Autumn rate limit reached';
+    case 'error':
+      return 'Wallet lookup failed';
+    default:
+      return 'Data unavailable';
+  }
+}
+
+function getWalletUnavailableDescription(
+  billing: AdminUserBillingSummary
+): string {
+  switch (billing.status) {
+    case 'missing-customer':
+      return `No Autumn customer matched ${billing.customerId}, so this user does not currently have a wallet to display.`;
+    case 'missing-wallet':
+      return `Autumn found ${billing.customerId}, but there is no usd_credits wallet balance attached to this user right now.`;
+    case 'not-configured':
+      return 'Set AUTUMN_SECRET_KEY in packages/admin/.env to load Autumn wallet data in the admin app.';
+    case 'rate-limited':
+      return 'The admin app reached Autumn request limits while loading this wallet. Wait a moment, then try again.';
+    case 'error':
+      return 'The admin app hit an error while loading this wallet. Check the billing credentials and server logs, then try again.';
     default:
       return DATA_UNAVAILABLE_DESCRIPTION;
   }
@@ -418,6 +471,8 @@ function getBillingStatusLabel(billing: AdminUserBillingSummary): string {
       return 'No Autumn customer found';
     case 'not-configured':
       return 'Billing integration unavailable';
+    case 'rate-limited':
+      return 'Autumn rate limit reached';
     case 'error':
       return 'Wallet lookup failed';
     default:

@@ -14,6 +14,7 @@ import type {
   ListCustomersList,
   ListCustomersSubscription,
 } from "autumn-js";
+import { AutumnError } from "autumn-js";
 import {
   ADMIN_DIRECTORY_PAGE_SIZE,
   getPaginationOffset,
@@ -22,7 +23,10 @@ import {
 } from "../pagination";
 import { firestore } from "./auth-server.firebase";
 import { writeAdminAuditLog, type AdminAuditActor } from "./audit-log";
-import { getAutumnAdminClient } from "./billing-data";
+import {
+  findAutumnCustomerById,
+  getAutumnAdminClient,
+} from "./billing-data";
 import {
   serializeFirestoreRecord,
   toIsoString,
@@ -78,6 +82,7 @@ export type AdminUserBillingStatus =
   | "missing-customer"
   | "missing-wallet"
   | "not-configured"
+  | "rate-limited"
   | "ready";
 
 export interface AdminUserWalletBalance {
@@ -224,11 +229,8 @@ export function summarizeAdminUserBilling(input: {
   };
 }
 
-function getAutumnCustomerById(input: {
-  customerId: string;
-  customers: ListCustomersList[];
-}): ListCustomersList | null {
-  return input.customers.find((entry) => entry.id === input.customerId) ?? null;
+function isAutumnRateLimitError(error: unknown): boolean {
+  return error instanceof AutumnError && error.statusCode === 429;
 }
 
 /**
@@ -253,17 +255,13 @@ async function loadAdminUserAutumnDetail(userId: string): Promise<{
   }
 
   try {
-    const response = await client.customers.list({
-      limit: 10,
-      search: customerId,
-    });
-    const customer = getAutumnCustomerById({
+    const customer = await findAutumnCustomerById({
+      client,
       customerId,
-      customers: response.list,
     });
     const billing = summarizeAdminUserBilling({
       customerId,
-      customers: response.list,
+      customers: customer ? [customer] : [],
     });
 
     if (!customer) {
@@ -277,11 +275,11 @@ async function loadAdminUserAutumnDetail(userId: string): Promise<{
       billing,
       subscriptions: customer.subscriptions.map(serializeAutumnSubscription),
     };
-  } catch {
+  } catch (error) {
     return {
       billing: {
         customerId,
-        status: "error",
+        status: isAutumnRateLimitError(error) ? "rate-limited" : "error",
         walletBalance: null,
       },
       subscriptions: [],
