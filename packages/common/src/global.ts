@@ -11,7 +11,28 @@
  * which provide consistency and prevent typos in collection path references
  */
 const USERS_COLLECTION = 'users';
+const APP_ADMINS_COLLECTION = 'app_admins';
+const ADMIN_AUDIT_LOGS_COLLECTION = 'admin_audit_logs';
+const AUTH_USERS_COLLECTION = 'auth_users';
+const AUTH_SESSIONS_COLLECTION = 'auth_sessions';
+const AUTH_ACCOUNTS_COLLECTION = 'auth_accounts';
+const AUTH_VERIFICATION_TOKENS_COLLECTION = 'auth_verification_tokens';
 const AUTH_ORGANIZATIONS_COLLECTION = 'auth_organizations';
+const AUTH_MEMBERS_COLLECTION = 'auth_members';
+const AUTH_INVITATIONS_COLLECTION = 'auth_invitations';
+
+export const BETTER_AUTH_COLLECTIONS = {
+  users: AUTH_USERS_COLLECTION,
+  sessions: AUTH_SESSIONS_COLLECTION,
+  accounts: AUTH_ACCOUNTS_COLLECTION,
+  verificationTokens: AUTH_VERIFICATION_TOKENS_COLLECTION,
+} as const;
+
+export const BETTER_AUTH_ORGANIZATION_COLLECTIONS = {
+  organization: AUTH_ORGANIZATIONS_COLLECTION,
+  member: AUTH_MEMBERS_COLLECTION,
+  invitation: AUTH_INVITATIONS_COLLECTION,
+} as const;
 
 // =============================================================================
 // FIRESTORE PATH HELPER FUNCTIONS
@@ -35,11 +56,44 @@ export function getUserPath(userUid: string) {
 }
 
 /**
+ * Get the Firestore collection path for Better Auth users.
+ * @returns The Better Auth users collection path string.
+ */
+export function getAuthUsersPath() {
+  return AUTH_USERS_COLLECTION;
+}
+
+/**
+ * Get the Firestore document path for a specific Better Auth user.
+ * @param userUid - The unique identifier for the auth user.
+ * @returns The complete auth user document path.
+ */
+export function getAuthUserPath(userUid: string) {
+  return AUTH_USERS_COLLECTION + '/' + userUid;
+}
+
+/**
  * Get the Firestore collection path for Better Auth organizations.
  * @returns The organization collection path string.
  */
 export function getOrganizationsPath() {
   return AUTH_ORGANIZATIONS_COLLECTION;
+}
+
+/**
+ * Get the Firestore collection path for Better Auth organization memberships.
+ * @returns The organization member collection path string.
+ */
+export function getAuthMembersPath() {
+  return AUTH_MEMBERS_COLLECTION;
+}
+
+/**
+ * Get the Firestore collection path for Better Auth invitations.
+ * @returns The invitation collection path string.
+ */
+export function getAuthInvitationsPath() {
+  return AUTH_INVITATIONS_COLLECTION;
 }
 
 /**
@@ -49,6 +103,40 @@ export function getOrganizationsPath() {
  */
 export function getOrganizationPath(organizationId: string) {
   return AUTH_ORGANIZATIONS_COLLECTION + '/' + organizationId;
+}
+
+/**
+ * Get the Firestore collection path for internal admin records.
+ * @returns The admin collection path string.
+ */
+export function getAppAdminsPath() {
+  return APP_ADMINS_COLLECTION;
+}
+
+/**
+ * Get the Firestore document path for a specific internal admin record.
+ * @param userUid - The unique identifier for the admin user.
+ * @returns The complete admin document path.
+ */
+export function getAppAdminPath(userUid: string) {
+  return APP_ADMINS_COLLECTION + '/' + userUid;
+}
+
+/**
+ * Get the Firestore collection path for admin audit logs.
+ * @returns The admin audit log collection path string.
+ */
+export function getAdminAuditLogsPath() {
+  return ADMIN_AUDIT_LOGS_COLLECTION;
+}
+
+/**
+ * Get the Firestore document path for a specific admin audit log.
+ * @param logId - Audit log identifier.
+ * @returns The complete audit log document path.
+ */
+export function getAdminAuditLogPath(logId: string) {
+  return ADMIN_AUDIT_LOGS_COLLECTION + '/' + logId;
 }
 
 // ===========================================================================

@@ -1,0 +1,56 @@
+/* Global admin design tokens and base styles. */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+@layer theme, base, utilities;
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
+}
+
+:root {
+  --admin-bg: #f3efe7;
+  --admin-surface: #fbf8f2;
+  --admin-surface-strong: #efe7d9;
+  --admin-ink: #1f1b17;
+  --admin-ink-soft: #6e6558;
+  --admin-line: #e0d5c4;
+  --admin-line-strong: #cdbca4;
+  --admin-primary: #116466;
+  --admin-primary-soft: rgba(17, 100, 102, 0.1);
+  --admin-accent: #d39c48;
+  --admin-danger: #b42318;
+  color-scheme: light;
+}
+
+@layer base {
+  html,
+  body,
+  #app {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle at top left, rgba(17, 100, 102, 0.12), transparent 28%),
+      linear-gradient(180deg, #f5f1ea 0%, var(--admin-bg) 100%);
+    color: var(--admin-ink);
+    font-family: var(--font-sans);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  input,
+  select,
+  button,
+  textarea {
+    font: inherit;
+  }
+}

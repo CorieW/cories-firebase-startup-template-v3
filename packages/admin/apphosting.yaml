@@ -1,0 +1,35 @@
+# Firebase App Hosting config for the admin server deployment.
+
+runConfig:
+  minInstances: 0
+  maxInstances: 5
+  concurrency: 80
+
+scripts:
+  buildCommand: pnpm build
+  runCommand: pnpm start
+
+outputFiles:
+  serverApp:
+    include:
+      - .output
+
+# Configure environment variables and secrets here when wiring App Hosting:
+# env:
+#   - variable: APP_URL
+#     value: https://admin.your-app.web.app
+#     availability:
+#       - BUILD
+#       - RUNTIME
+#   - variable: BETTER_AUTH_SECRET
+#     secret: betterAuthSecret
+#   - variable: AUTUMN_SECRET_KEY
+#     secret: autumnSecretKey
+#   - variable: GOOGLE_CLIENT_ID
+#     secret: googleClientId
+#   - variable: GOOGLE_CLIENT_SECRET
+#     secret: googleClientSecret
+#   - variable: RESEND_API_KEY
+#     secret: resendApiKey
+#   - variable: RESEND_FROM_EMAIL
+#     value: Acme <auth@example.com>

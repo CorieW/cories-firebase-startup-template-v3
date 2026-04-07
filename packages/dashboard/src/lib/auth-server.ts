@@ -1,7 +1,13 @@
 /**
  * Better Auth server instance, adapter wiring, and provider hooks.
  */
-import { createScopedLogger } from '@cories-firebase-startup-template-v3/common';
+import {
+  BETTER_AUTH_COLLECTIONS,
+  BETTER_AUTH_ORGANIZATION_COLLECTIONS,
+  buildAuthOrganizationSearchFields,
+  buildAuthUserSearchFields,
+  createScopedLogger,
+} from '@cories-firebase-startup-template-v3/common';
 import { autumn } from 'autumn-js/better-auth';
 import { betterAuth } from 'better-auth';
 import { organization } from 'better-auth/plugins';
@@ -29,20 +35,56 @@ import { normalizeAuthUserForStorage } from './auth-user-normalization';
 const authServerLogger = createScopedLogger('DASH_AUTH_SERVER');
 export { getAutumnServerClient } from './auth-server.autumn';
 
-const AUTH_COLLECTIONS = {
-  users: 'auth_users',
-  sessions: 'auth_sessions',
-  accounts: 'auth_accounts',
-  verificationTokens: 'auth_verification_tokens',
-} as const;
-
-const ORGANIZATION_COLLECTIONS = {
-  organization: 'auth_organizations',
-  member: 'auth_members',
-  invitation: 'auth_invitations',
-} as const;
-
 const googleOAuthConfig = getGoogleOAuthConfig();
+
+async function syncAuthUserSearchFields(user: {
+  id: string;
+  email?: string | null;
+  name?: string | null;
+}) {
+  const searchFields = buildAuthUserSearchFields({
+    email: user.email,
+    name: user.name,
+  });
+
+  await firestore
+    .collection(BETTER_AUTH_COLLECTIONS.users)
+    .doc(user.id)
+    .set(searchFields, { merge: true });
+
+  authServerLogger.action(
+    'syncAuthUserSearchFields',
+    {
+      userId: user.id,
+      hasEmailSearch: Boolean(searchFields.emailSearch),
+      hasNameSearch: Boolean(searchFields.nameSearch),
+    },
+    'debug'
+  );
+}
+
+async function syncOrganizationSearchFields(organization: {
+  id: string;
+  name?: string | null;
+}) {
+  const searchFields = buildAuthOrganizationSearchFields({
+    name: organization.name,
+  });
+
+  await firestore
+    .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
+    .doc(organization.id)
+    .set(searchFields, { merge: true });
+
+  authServerLogger.action(
+    'syncOrganizationSearchFields',
+    {
+      organizationId: organization.id,
+      hasNameSearch: Boolean(searchFields.nameSearch),
+    },
+    'debug'
+  );
+}
 
 authServerLogger.log(
   'CONFIG',
@@ -61,19 +103,19 @@ export const auth = betterAuth({
   trustedOrigins: [getAppUrl()],
   database: firestoreAdapter({
     firestore,
-    collections: AUTH_COLLECTIONS,
+    collections: BETTER_AUTH_COLLECTIONS,
   }),
   user: {
-    modelName: AUTH_COLLECTIONS.users,
+    modelName: BETTER_AUTH_COLLECTIONS.users,
   },
   session: {
-    modelName: AUTH_COLLECTIONS.sessions,
+    modelName: BETTER_AUTH_COLLECTIONS.sessions,
   },
   account: {
-    modelName: AUTH_COLLECTIONS.accounts,
+    modelName: BETTER_AUTH_COLLECTIONS.accounts,
   },
   verification: {
-    modelName: AUTH_COLLECTIONS.verificationTokens,
+    modelName: BETTER_AUTH_COLLECTIONS.verificationTokens,
   },
   emailAndPassword: {
     enabled: true,
@@ -134,6 +176,7 @@ export const auth = betterAuth({
             },
             'info'
           );
+          await syncAuthUserSearchFields(user);
           await syncAutumnCustomer(getAutumnCustomerId('user', user.id), {
             email: user.email,
             name: user.name,
@@ -154,6 +197,7 @@ export const auth = betterAuth({
             },
             'info'
           );
+          await syncAuthUserSearchFields(user);
           await syncAutumnCustomer(getAutumnCustomerId('user', user.id), {
             email: user.email,
             name: user.name,
@@ -168,13 +212,13 @@ export const auth = betterAuth({
       requireEmailVerificationOnInvitation: true,
       schema: {
         organization: {
-          modelName: ORGANIZATION_COLLECTIONS.organization,
+          modelName: BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization,
         },
         member: {
-          modelName: ORGANIZATION_COLLECTIONS.member,
+          modelName: BETTER_AUTH_ORGANIZATION_COLLECTIONS.member,
         },
         invitation: {
-          modelName: ORGANIZATION_COLLECTIONS.invitation,
+          modelName: BETTER_AUTH_ORGANIZATION_COLLECTIONS.invitation,
         },
       },
       sendInvitationEmail: async ({ email, id, organization }) => {
@@ -203,6 +247,7 @@ export const auth = betterAuth({
             },
             'info'
           );
+          await syncOrganizationSearchFields(organization);
           await syncAutumnCustomer(
             getAutumnCustomerId('org', organization.id),
             {
@@ -288,6 +333,7 @@ export const auth = betterAuth({
             return;
           }
 
+          await syncOrganizationSearchFields(organization);
           authServerLogger.action(
             'afterUpdateOrganization',
             {

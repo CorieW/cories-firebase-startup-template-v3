@@ -14,8 +14,10 @@ describe('normalizeAuthUserForStorage', () => {
       })
     ).toEqual({
       email: 'alex@example.com',
+      emailSearch: 'alex@example.com',
       image: null,
       name: 'Alex',
+      nameSearch: 'alex',
     })
   })
 
@@ -28,8 +30,10 @@ describe('normalizeAuthUserForStorage', () => {
       })
     ).toEqual({
       email: 'alex@example.com',
+      emailSearch: 'alex@example.com',
       image: 'https://example.com/avatar.png',
       name: 'Alex',
+      nameSearch: 'alex',
     })
   })
 })

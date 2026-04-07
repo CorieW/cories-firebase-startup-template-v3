@@ -1,8 +1,12 @@
 /**
  * Auth user payload normalization helpers for Firestore-safe writes.
  */
+import { buildAuthUserSearchFields } from '@cories-firebase-startup-template-v3/common'
+
 type AuthUserWithOptionalImage = {
   image?: string | null
+  email?: string | null
+  name?: string | null
 }
 
 /**
@@ -15,5 +19,6 @@ export function normalizeAuthUserForStorage<T extends AuthUserWithOptionalImage>
   return {
     ...user,
     image: user.image ?? null,
+    ...buildAuthUserSearchFields(user),
   }
 }

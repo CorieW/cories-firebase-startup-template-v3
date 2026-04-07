@@ -11,6 +11,7 @@ Shared utility modules used across the monorepo.
 - `index.ts`: Utility export barrel.
 - `logger.ts`: Logger implementation helpers.
 - `logging.ts`: Shared logging utilities.
+- `search.ts`: Shared search-field normalization and Firestore prefix helpers.
 - `utils.ts`: General-purpose shared helpers.
 
 ## Writing Rules
