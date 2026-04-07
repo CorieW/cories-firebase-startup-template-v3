@@ -46,7 +46,7 @@ export default function BillingPlansSection({
 }) {
   return (
     <div className='grid gap-4'>
-      <div className='grid gap-2 rounded-[16px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_80%,var(--primary)_4%)] p-4'>
+      <div className='grid gap-2 rounded-[16px] border border-[var(--line)] bg-[var(--surface-soft)] p-4'>
         <p className='m-0 text-sm font-semibold text-[var(--ink)]'>
           Active subscriptions
         </p>
@@ -97,8 +97,8 @@ export default function BillingPlansSection({
                 key={plan.id}
                 className={`grid gap-3 rounded-[18px] border p-4 ${
                   isCurrentPlan
-                    ? 'border-[color-mix(in_srgb,var(--primary)_30%,var(--line-strong))] bg-[color-mix(in_srgb,var(--primary)_7%,var(--surface))]'
-                    : 'border-[color-mix(in_srgb,var(--line)_62%,transparent)] bg-[var(--surface)]'
+                    ? 'border-[var(--line-strong)] bg-[var(--surface-soft)]'
+                    : 'border-[var(--line)] bg-[var(--surface)]'
                 }`}
               >
                 <div>

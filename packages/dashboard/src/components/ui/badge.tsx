@@ -11,9 +11,9 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: 'bg-[var(--surface-soft)] text-[var(--ink)]',
-        success: 'bg-[color-mix(in_srgb,#16a34a_18%,white)] text-[#166534]',
-        warning: 'bg-[color-mix(in_srgb,#f59e0b_18%,white)] text-[#92400e]',
-        danger: 'bg-[color-mix(in_srgb,#ef4444_18%,white)] text-[#991b1b]',
+        success: 'bg-[var(--success-surface)] text-[var(--success)]',
+        warning: 'bg-[var(--warning-surface)] text-[var(--warning)]',
+        danger: 'bg-[var(--danger-surface)] text-[var(--danger)]',
       },
     },
     defaultVariants: {

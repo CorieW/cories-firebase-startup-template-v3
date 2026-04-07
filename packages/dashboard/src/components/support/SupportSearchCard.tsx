@@ -99,13 +99,13 @@ export default function SupportSearchCard() {
               setSearchQuery(event.target.value);
             }}
             placeholder='Search docs, FAQ, and troubleshooting guides'
-            className='h-11 w-full rounded-[12px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_76%,var(--surface)_24%)] pl-9 pr-3 text-sm text-[var(--ink)] outline-none transition-[border-color,background-color,box-shadow] focus:border-[color-mix(in_srgb,var(--primary)_24%,var(--line-strong))] focus:ring-[3px] focus:ring-[var(--ring)]'
+            className='h-11 w-full rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] pl-9 pr-3 text-sm text-[var(--ink)] outline-none transition-[border-color,background-color,color] focus:border-[var(--line-strong)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)]'
             aria-label='Search support resources'
           />
         </div>
         <button
           type='submit'
-          className='inline-flex h-11 items-center justify-center rounded-[12px] border border-transparent bg-[var(--primary)] px-4 text-sm font-bold text-[var(--primary-ink)] transition hover:bg-[color-mix(in_srgb,var(--primary)_90%,black_10%)]'
+          className='inline-flex h-11 items-center justify-center rounded-[12px] border border-transparent bg-[var(--primary)] px-4 text-sm font-bold text-[var(--primary-ink)] transition hover:bg-[var(--primary-strong)]'
         >
           Search
         </button>

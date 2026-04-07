@@ -158,14 +158,14 @@ export default function SupportChatPanel({
           });
           onBack();
         }}
-        className={`${panelMutedClass} inline-flex h-10 w-fit items-center gap-2 px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-emphasis)]`}
+        className={`${panelMutedClass} inline-flex h-10 w-fit items-center gap-2 px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface)]`}
       >
         <ArrowLeft aria-hidden='true' className='h-4 w-4' />
         Back to support
       </button>
 
       <article className={`${panelClass} overflow-hidden`}>
-        <header className='border-b border-[color-mix(in_srgb,var(--line)_62%,transparent)] p-4'>
+        <header className='border-b border-[var(--line)] p-4'>
           <div className='flex items-center gap-3'>
             <MessageCircle
               aria-hidden='true'
@@ -196,14 +196,14 @@ export default function SupportChatPanel({
                   className={`max-w-[86%] rounded-[12px] px-3 py-2 text-sm leading-6 min-[560px]:max-w-[72%] ${
                     message.sender === 'user'
                       ? 'bg-[var(--primary)] text-[var(--primary-ink)]'
-                      : 'bg-[color-mix(in_srgb,var(--surface-soft)_78%,var(--surface)_22%)] text-[var(--ink)]'
+                      : 'bg-[var(--surface-soft)] text-[var(--ink)]'
                   }`}
                 >
                   <p className='m-0'>{message.text}</p>
                   <p
                     className={`mb-0 mt-1 text-xs ${
                       message.sender === 'user'
-                        ? 'text-[color-mix(in_srgb,var(--primary-ink)_82%,transparent_18%)]'
+                        ? 'text-[var(--primary-ink)]'
                         : 'text-[var(--ink-soft)]'
                     }`}
                   >
@@ -219,7 +219,7 @@ export default function SupportChatPanel({
           </div>
         </div>
 
-        <div className='border-t border-[color-mix(in_srgb,var(--line)_62%,transparent)] p-4'>
+        <div className='border-t border-[var(--line)] p-4'>
           <div className='flex gap-2'>
             <input
               type='text'
@@ -235,14 +235,14 @@ export default function SupportChatPanel({
               }}
               placeholder='Write a message to support'
               maxLength={MAX_CHAT_MESSAGE_LENGTH}
-              className='h-10 flex-1 rounded-[12px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_76%,var(--surface)_24%)] px-3 text-sm text-[var(--ink)] outline-none transition-[border-color,background-color,box-shadow] focus:border-[color-mix(in_srgb,var(--primary)_24%,var(--line-strong))] focus:ring-[3px] focus:ring-[var(--ring)]'
+              className='h-10 flex-1 rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] px-3 text-sm text-[var(--ink)] outline-none transition-[border-color,background-color,color] focus:border-[var(--line-strong)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)]'
               aria-label='Chat message'
             />
             <button
               type='button'
               onClick={sendMessage}
               disabled={!draftMessage.trim()}
-              className='inline-flex h-10 w-10 items-center justify-center rounded-[12px] border border-transparent bg-[var(--primary)] text-[var(--primary-ink)] transition hover:bg-[color-mix(in_srgb,var(--primary)_90%,black_10%)] disabled:cursor-not-allowed disabled:opacity-55'
+              className='inline-flex h-10 w-10 items-center justify-center rounded-[12px] border border-transparent bg-[var(--primary)] text-[var(--primary-ink)] transition hover:bg-[var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-55'
               aria-label='Send message'
             >
               <Send aria-hidden='true' className='h-4 w-4' />

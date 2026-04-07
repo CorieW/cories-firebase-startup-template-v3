@@ -99,7 +99,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className='m-0 overflow-x-hidden bg-[var(--bg)] bg-[radial-gradient(900px_520px_at_-14%_-10%,var(--hero-a),transparent_64%),radial-gradient(760px_420px_at_112%_-8%,var(--hero-b),transparent_60%)] font-sans text-[var(--ink)] antialiased [overflow-wrap:anywhere] selection:bg-[rgba(199,160,59,0.22)]'>
+      <body className='m-0 overflow-x-hidden bg-[var(--bg)] font-sans text-[var(--ink)] antialiased [overflow-wrap:anywhere]'>
         <QueryClientProvider client={queryClient}>
           <AuthQueryProvider>
             <ToastProvider>

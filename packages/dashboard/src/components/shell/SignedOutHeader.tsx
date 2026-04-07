@@ -7,7 +7,7 @@ import AppBrand from '../AppBrand';
 import ThemeToggle from '../ThemeToggle';
 
 const actionButtonBaseClass =
-  'inline-flex items-center justify-center rounded-[9999px] border px-4 py-[0.58rem] text-sm font-semibold transition-[background-color,border-color,color,box-shadow] duration-150';
+  'inline-flex items-center justify-center rounded-[9999px] border px-4 py-[0.58rem] text-sm font-semibold transition-[background-color,border-color,color] duration-150';
 
 interface SignedOutHeaderProps {
   isAuthRoute: boolean;
@@ -40,14 +40,14 @@ export default function SignedOutHeader({ isAuthRoute }: SignedOutHeaderProps) {
         <Link
           to='/sign-in/$'
           params={{ _splat: '' }}
-          className={`${actionButtonBaseClass} border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[var(--surface)] text-[var(--ink)] no-underline hover:border-[color-mix(in_srgb,var(--primary)_22%,var(--line-strong))] hover:bg-[color-mix(in_srgb,var(--primary)_5%,var(--surface-soft))]`}
+          className={`${actionButtonBaseClass} border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] no-underline hover:border-[var(--line-strong)] hover:bg-[var(--surface-soft)]`}
         >
           Sign in
         </Link>
         <Link
           to='/sign-up/$'
           params={{ _splat: '' }}
-          className={`${actionButtonBaseClass} border-transparent bg-[var(--primary)] text-[var(--primary-ink)] no-underline hover:bg-[color-mix(in_srgb,var(--primary)_90%,black_10%)]`}
+          className={`${actionButtonBaseClass} border-transparent bg-[var(--primary)] text-[var(--primary-ink)] no-underline hover:bg-[var(--primary-strong)]`}
         >
           Sign up
         </Link>

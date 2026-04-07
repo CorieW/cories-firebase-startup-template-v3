@@ -24,7 +24,7 @@ export default function SupportArticlesCard() {
             href={article.href}
             target='_blank'
             rel='noreferrer'
-            className='flex items-start gap-3 rounded-[12px] border border-transparent px-3 py-2 no-underline transition-[background-color,border-color] hover:border-[color-mix(in_srgb,var(--line)_68%,transparent)] hover:bg-[color-mix(in_srgb,var(--primary)_4%,var(--surface-soft))]'
+            className='flex items-start gap-3 rounded-[12px] border border-transparent px-3 py-2 no-underline transition-[background-color,border-color] hover:border-[var(--line)] hover:bg-[var(--surface)]'
           >
             <BookOpen
               aria-hidden='true'

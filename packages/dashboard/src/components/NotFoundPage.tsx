@@ -45,7 +45,7 @@ export default function NotFoundPage() {
     <main className={`${pageContainerClass} ${contentWrapClass}`}>
       <section className={`${panelClass} grid gap-6 p-6 sm:p-8`}>
         <div className='grid gap-3'>
-          <p className='m-0 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[color-mix(in_srgb,var(--primary)_72%,var(--ink-soft))]'>
+          <p className='m-0 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]'>
             Error 404
           </p>
           <h1 className='m-0 text-[clamp(1.9rem,4vw,2.9rem)] leading-[1.04] font-extrabold tracking-[-0.03em]'>

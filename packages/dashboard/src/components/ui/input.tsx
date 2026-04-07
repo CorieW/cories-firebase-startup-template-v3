@@ -13,7 +13,7 @@ export function Input({
     <input
       type={type}
       className={cn(
-        'flex h-11 w-full rounded-[12px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_76%,var(--surface)_24%)] px-3.5 py-2 text-sm text-[var(--ink)] placeholder:text-[var(--ink-soft)] transition-[border-color,background-color,box-shadow] focus-visible:border-[color-mix(in_srgb,var(--primary)_24%,var(--line-strong))] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--ring)] disabled:cursor-not-allowed disabled:opacity-50',
+        'flex h-11 w-full rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] px-3.5 py-2 text-sm text-[var(--ink)] placeholder:text-[var(--ink-soft)] transition-[border-color,background-color,color] focus-visible:border-[var(--line-strong)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)] disabled:cursor-not-allowed disabled:opacity-50',
         className
       )}
       {...props}

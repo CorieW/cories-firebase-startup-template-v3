@@ -51,7 +51,7 @@ function WalletTopUpCard({
     submissionState.planId === walletTopUpPlan.id;
 
   return (
-    <article className='grid gap-4 rounded-[18px] border border-[color-mix(in_srgb,var(--primary)_28%,var(--line))] bg-[color-mix(in_srgb,var(--primary)_9%,var(--surface))] p-4'>
+    <article className='grid gap-4 rounded-[18px] border border-[var(--line)] bg-[var(--surface-soft)] p-4'>
       <div className='flex flex-wrap items-start justify-between gap-3'>
         <div className='grid gap-1'>
           <p className='m-0 text-sm font-semibold text-[var(--ink)]'>
@@ -157,7 +157,7 @@ export default function BillingWalletSection({
   return walletBalance ? (
     <div className='grid gap-4'>
       <div className='grid gap-3 lg:grid-cols-[1.3fr_1fr_1fr]'>
-        <article className='grid gap-3 rounded-[18px] border border-[color-mix(in_srgb,var(--primary)_28%,var(--line))] bg-[color-mix(in_srgb,var(--primary)_9%,var(--surface))] p-4'>
+        <article className='grid gap-3 rounded-[18px] border border-[var(--line)] bg-[var(--surface-soft)] p-4'>
           <div>
             <p className='m-0 text-sm font-semibold text-[var(--ink)]'>
               Remaining balance
@@ -291,8 +291,8 @@ export default function BillingWalletSection({
                       <p
                         className={`m-0 rounded-full px-3 py-1 text-sm font-semibold ${
                           transaction.tone === 'credit'
-                            ? 'bg-[color-mix(in_srgb,#16a34a_12%,var(--surface-soft))] text-[#166534]'
-                            : 'bg-[color-mix(in_srgb,#b45309_12%,var(--surface-soft))] text-[#92400e]'
+                            ? 'bg-[var(--surface)] text-[var(--success)]'
+                            : 'bg-[var(--surface)] text-[var(--warning)]'
                         }`}
                       >
                         {amountLabel}
@@ -324,7 +324,7 @@ export default function BillingWalletSection({
   ) : (
     <div className='grid gap-4'>
       <div className='grid gap-3 lg:grid-cols-[1.3fr_1fr_1fr]'>
-        <article className='grid gap-3 rounded-[18px] border border-[color-mix(in_srgb,var(--primary)_28%,var(--line))] bg-[color-mix(in_srgb,var(--primary)_9%,var(--surface))] p-4'>
+        <article className='grid gap-3 rounded-[18px] border border-[var(--line)] bg-[var(--surface-soft)] p-4'>
           <div>
             <p className='m-0 text-sm font-semibold text-[var(--ink)]'>
               Remaining balance

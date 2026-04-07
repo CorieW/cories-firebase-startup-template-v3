@@ -23,7 +23,7 @@ const dashboardTitleMap: Record<BillingDashboardProps['view'], string> = {
 function BillingSubscriptionsSkeleton() {
   return (
     <div className='grid gap-4' aria-hidden='true'>
-      <div className='grid gap-2 rounded-[16px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_80%,var(--primary)_4%)] p-4'>
+      <div className='grid gap-2 rounded-[16px] border border-[var(--line)] bg-[var(--surface-soft)] p-4'>
         <Skeleton className='h-4 w-40 rounded-full' />
         <Skeleton className='h-4 w-full max-w-xl rounded-full' />
         <Skeleton className='h-3 w-56 rounded-full' />
@@ -64,7 +64,7 @@ function BillingWalletSkeleton() {
         ))}
       </div>
 
-      <article className='grid gap-4 rounded-[18px] border border-[color-mix(in_srgb,var(--primary)_28%,var(--line))] bg-[color-mix(in_srgb,var(--primary)_9%,var(--surface))] p-4'>
+      <article className='grid gap-4 rounded-[18px] border border-[var(--line)] bg-[var(--surface-soft)] p-4'>
         <div className='grid gap-2'>
           <Skeleton className='h-4 w-24 rounded-full' />
           <Skeleton className='h-4 w-56 rounded-full' />
@@ -88,7 +88,7 @@ function BillingWalletSkeleton() {
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={index}
-              className='flex flex-wrap items-start justify-between gap-3 rounded-[16px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_82%,transparent)] p-4'
+              className='flex flex-wrap items-start justify-between gap-3 rounded-[16px] border border-[var(--line)] bg-[var(--surface-soft)] p-4'
             >
               <div className='grid flex-1 gap-2'>
                 <Skeleton className='h-4 w-24 rounded-full' />
@@ -172,7 +172,7 @@ export default function BillingDashboard({
   return (
     <section
       aria-busy={data.isPending}
-      className='grid gap-4 rounded-[18px] border border-[color-mix(in_srgb,var(--line)_62%,transparent)] bg-[var(--surface)] p-5 shadow-[0_12px_28px_rgba(15,23,42,0.04)]'
+      className='grid gap-4 rounded-[18px] border border-[var(--line)] bg-[var(--surface)] p-5'
     >
       <div className='flex flex-wrap items-center justify-between gap-3'>
         <div>
@@ -188,7 +188,7 @@ export default function BillingDashboard({
         ) : (
           <button
             type='button'
-            className='inline-flex h-10 items-center justify-center rounded-[12px] border border-[color-mix(in_srgb,var(--line)_66%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_72%,var(--surface)_28%)] px-4 text-sm font-semibold text-[var(--ink)] transition hover:border-[color-mix(in_srgb,var(--primary)_24%,var(--line))] hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--surface-soft)_90%)] disabled:cursor-not-allowed disabled:opacity-60'
+            className='inline-flex h-10 items-center justify-center rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] px-4 text-sm font-semibold text-[var(--ink)] transition hover:border-[var(--line-strong)] hover:bg-[var(--surface)] disabled:cursor-not-allowed disabled:opacity-60'
             onClick={() => {
               void actions.handleOpenPortal();
             }}
@@ -201,7 +201,7 @@ export default function BillingDashboard({
       {inlineErrorMessage ? (
         <div
           role='alert'
-          className='rounded-md border border-[color-mix(in_srgb,#ef4444_30%,var(--line))] bg-[color-mix(in_srgb,#ef4444_14%,var(--surface-soft))] px-3 py-2 text-sm text-[#991b1b]'
+          className='rounded-md border border-[var(--danger)] bg-[var(--danger-surface)] px-3 py-2 text-sm text-[var(--danger)]'
         >
           {inlineErrorMessage}
         </div>

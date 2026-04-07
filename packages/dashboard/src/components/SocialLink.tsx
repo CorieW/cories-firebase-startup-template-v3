@@ -28,7 +28,7 @@ export default function SocialLink({ href, label, icon }: SocialLinkProps) {
       rel='noreferrer'
       aria-label={label}
       title={label}
-      className='inline-flex items-center gap-[0.35rem] rounded-[999px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_64%,var(--surface)_36%)] px-[0.6rem] py-[0.35rem] text-[0.8rem] font-bold text-[var(--ink-soft)] no-underline transition-[background-color,border-color,color] hover:border-[color-mix(in_srgb,var(--primary)_20%,var(--line-strong))] hover:bg-[color-mix(in_srgb,var(--primary)_5%,var(--surface-soft))] hover:text-[var(--ink)]'
+      className='inline-flex items-center gap-[0.35rem] rounded-[999px] border border-[var(--line)] bg-[var(--surface-soft)] px-[0.6rem] py-[0.35rem] text-[0.8rem] font-bold text-[var(--ink-soft)] no-underline transition-[background-color,border-color,color] hover:border-[var(--line-strong)] hover:bg-[var(--surface)] hover:text-[var(--ink)]'
     >
       <span
         className='inline-flex h-[0.95rem] w-[0.95rem] items-center justify-center [&_svg]:h-full [&_svg]:w-full'

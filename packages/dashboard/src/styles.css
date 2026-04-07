@@ -20,18 +20,32 @@
   --line: #ece4d9;
   --line-strong: #dcccb5;
   --primary: #c7a03b;
+  --primary-strong: #b58e2e;
   --primary-ink: #18120a;
   --accent: #8b7b60;
-  --ring: rgba(199, 160, 59, 0.24);
+  --ring: #dcccb5;
   --sidebar: #f8f3ea;
   --sidebar-line: #ddd2c3;
   --hero-a: rgba(199, 160, 59, 0.1);
   --hero-b: rgba(23, 20, 18, 0.06);
+  --auth-provider-surface: #1d1915;
+  --auth-provider-surface-hover: #24201b;
+  --auth-provider-line: #342c23;
+  --auth-provider-line-strong: #514533;
+  --auth-provider-ink: #f6efe4;
+  --success: #166534;
+  --success-surface: #dcfce7;
+  --info: #1d4ed8;
+  --info-surface: #dbeafe;
+  --warning: #b45309;
+  --warning-surface: #fef3c7;
+  --danger: #b42318;
+  --danger-surface: #fee2e2;
   --background: var(--surface);
   --foreground: var(--ink);
   --card: var(--surface);
   --card-foreground: var(--ink);
-  --popover: color-mix(in srgb, var(--surface) 96%, white 4%);
+  --popover: var(--surface);
   --popover-foreground: var(--ink);
   --primary-foreground: var(--primary-ink);
   --secondary: var(--surface-soft);
@@ -60,30 +74,40 @@
   --line: #342c23;
   --line-strong: #514533;
   --primary: #d2b05a;
+  --primary-strong: #e0bf69;
   --primary-ink: #171109;
   --accent: #948467;
-  --ring: rgba(210, 176, 90, 0.26);
+  --ring: #514533;
   --sidebar: #17130f;
   --sidebar-line: #302920;
   --hero-a: rgba(210, 176, 90, 0.08);
   --hero-b: rgba(255, 255, 255, 0.04);
+  --auth-provider-surface: #fcfaf6;
+  --auth-provider-surface-hover: #f4efe5;
+  --auth-provider-line: #ece4d9;
+  --auth-provider-line-strong: #dcccb5;
+  --auth-provider-ink: #171412;
+  --success: #86efac;
+  --success-surface: #1d3526;
+  --info: #93c5fd;
+  --info-surface: #1f3654;
+  --warning: #fbbf24;
+  --warning-surface: #3d2b16;
+  --danger: #fca5a5;
+  --danger-surface: #4a1f1f;
   color-scheme: dark;
 }
 
 @layer base {
   [data-slot='dialog-overlay'] {
-    background: color-mix(in srgb, #120e0a 42%, transparent);
-    backdrop-filter: blur(8px);
+    background: var(--bg);
   }
 
   [data-slot='dialog-content'] {
-    border-color: color-mix(in srgb, var(--line) 72%, transparent);
-    background: color-mix(in srgb, var(--surface) 97%, white 3%);
+    border-color: var(--line);
+    background: var(--surface);
     color: var(--ink);
     border-radius: 22px;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.16),
-      0 20px 48px rgba(17, 12, 6, 0.18);
   }
 
   [data-slot='dialog-title'] {
@@ -102,15 +126,15 @@
   }
 
   [data-slot='input'] {
-    border-color: color-mix(in srgb, var(--line) 72%, transparent);
-    background: color-mix(in srgb, var(--surface-soft) 76%, var(--surface) 24%);
+    border-color: var(--line);
+    background: var(--surface-soft);
     color: var(--ink);
     border-radius: 14px;
     box-shadow: none;
     transition:
       border-color 150ms ease,
       background-color 150ms ease,
-      box-shadow 150ms ease;
+      color 150ms ease;
   }
 
   [data-slot='input']::placeholder {
@@ -118,8 +142,10 @@
   }
 
   [data-slot='input']:focus-visible {
-    border-color: color-mix(in srgb, var(--primary) 34%, var(--line-strong));
-    box-shadow: 0 0 0 4px var(--ring);
+    border-color: var(--line-strong);
+    box-shadow: none;
+    outline: 2px solid var(--line-strong);
+    outline-offset: 1px;
   }
 
   .sidebar-account-dropdown
@@ -147,7 +173,7 @@
     a:hover
     [data-slot='dropdown-menu-item']
     .sidebar-account-dropdown__entity {
-    background: color-mix(in srgb, var(--primary) 10%, var(--surface-soft) 90%);
+    background: var(--surface);
   }
 
   input:-webkit-autofill,
@@ -160,11 +186,15 @@
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
     -webkit-box-shadow:
-      0 0 0 1000px
-        color-mix(in srgb, var(--surface-soft) 76%, var(--surface) 24%) inset,
+      0 0 0 1000px var(--surface-soft) inset,
       0 0 0 1px var(--line) inset;
     -webkit-text-fill-color: var(--ink);
     caret-color: var(--ink);
     transition: background-color 9999s ease-out 0s;
+  }
+
+  ::selection {
+    background: var(--surface-emphasis);
+    color: var(--ink);
   }
 }

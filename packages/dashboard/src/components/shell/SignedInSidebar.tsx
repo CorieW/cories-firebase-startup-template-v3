@@ -58,7 +58,7 @@ export default function SignedInSidebar({
       {!isMenuOpen ? (
         <button
           type='button'
-          className='fixed left-3 top-3 z-[70] inline-flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-[12px] border border-[color-mix(in_srgb,var(--line)_66%,transparent)] bg-[color-mix(in_srgb,var(--surface)_96%,white_4%)] text-[var(--ink)] shadow-[0_10px_24px_rgba(17,12,6,0.08)] min-[980px]:hidden'
+          className='fixed left-3 top-3 z-[70] inline-flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] min-[980px]:hidden'
           onClick={() => setIsMenuOpen(true)}
           aria-label='Open navigation menu'
         >
@@ -73,14 +73,14 @@ export default function SignedInSidebar({
       {isMenuOpen ? (
         <button
           type='button'
-          className='fixed inset-0 z-50 bg-[rgba(2,8,23,0.45)] min-[980px]:hidden'
+          className='fixed inset-0 z-50 bg-[var(--surface-soft)] min-[980px]:hidden'
           aria-label='Close navigation menu'
           onClick={closeMenu}
         />
       ) : null}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-[60] w-[min(270px,88vw)] border-r border-[var(--sidebar-line)] bg-[color-mix(in_srgb,var(--sidebar)_94%,transparent_6%)] backdrop-blur-[14px] transition-transform duration-200 ease-out max-[500px]:w-screen max-[500px]:max-w-screen min-[980px]:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-[60] w-[min(270px,88vw)] border-r border-[var(--sidebar-line)] bg-[var(--sidebar)] transition-transform duration-200 ease-out max-[500px]:w-screen max-[500px]:max-w-screen min-[980px]:translate-x-0 ${
           isMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -91,7 +91,7 @@ export default function SignedInSidebar({
               type='button'
               onClick={closeMenu}
               aria-label='Close navigation menu'
-              className='mt-2 inline-flex h-8 w-8 items-center justify-center rounded-[10px] border border-[color-mix(in_srgb,var(--line)_66%,transparent)] text-[var(--ink-soft)] transition-[background-color,border-color,color,box-shadow] hover:border-[color-mix(in_srgb,var(--primary)_24%,var(--line))] hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--surface-soft)_90%)] hover:text-[var(--ink)] hover:shadow-[0_8px_18px_rgba(17,12,6,0.06)] min-[980px]:hidden'
+              className='mt-2 inline-flex h-8 w-8 items-center justify-center rounded-[10px] border border-[var(--line)] text-[var(--ink-soft)] transition-[background-color,border-color,color] hover:border-[var(--line-strong)] hover:bg-[var(--surface)] hover:text-[var(--ink)] min-[980px]:hidden'
             >
               <X aria-hidden='true' className='h-4 w-4' />
             </button>

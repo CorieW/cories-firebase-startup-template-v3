@@ -169,8 +169,8 @@ export function SharedThemeToggle({
   ];
 
   const rootClass = fullWidth
-    ? 'grid w-full grid-cols-3 gap-[0.2rem] rounded-[999px] border border-[color-mix(in_srgb,var(--line)_66%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_82%,var(--surface)_18%)] p-[0.2rem]'
-    : 'inline-flex items-center gap-[0.2rem] rounded-[999px] border border-[color-mix(in_srgb,var(--line)_66%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_82%,var(--surface)_18%)] p-[0.2rem]';
+    ? 'grid w-full grid-cols-3 gap-[0.2rem] rounded-[999px] border border-[var(--line)] bg-[var(--surface-soft)] p-[0.2rem]'
+    : 'inline-flex items-center gap-[0.2rem] rounded-[999px] border border-[var(--line)] bg-[var(--surface-soft)] p-[0.2rem]';
 
   return (
     <div className={rootClass} role='group' aria-label='Theme preference'>
@@ -183,11 +183,11 @@ export function SharedThemeToggle({
           title={label}
           aria-pressed={mode === optionMode}
           className={joinClassNames(
-            'inline-flex items-center justify-center gap-1.5 rounded-[999px] border px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] [&_svg]:h-[0.95rem] [&_svg]:w-[0.95rem]',
+            'inline-flex items-center justify-center gap-1.5 rounded-[999px] border px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition duration-150 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)] [&_svg]:h-[0.95rem] [&_svg]:w-[0.95rem]',
             buttonClassName,
             fullWidth ? 'w-full' : undefined,
             mode === optionMode
-              ? 'border-[var(--line-strong)] bg-[var(--surface)] text-[var(--ink)] shadow-[0_1px_0_rgba(255,255,255,0.56),0_8px_20px_rgba(17,12,6,0.08)]'
+              ? 'border-[var(--line-strong)] bg-[var(--surface)] text-[var(--ink)]'
               : 'border-transparent bg-transparent text-[var(--ink-soft)] hover:bg-[var(--surface)] hover:text-[var(--ink)]'
           )}
         >

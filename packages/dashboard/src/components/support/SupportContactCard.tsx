@@ -25,7 +25,7 @@ export default function SupportContactCard({
       <button
         type='button'
         onClick={onContactSupportClick}
-        className='mt-4 inline-flex h-10 items-center justify-center rounded-[12px] border border-transparent bg-[var(--primary)] px-4 text-sm font-bold text-[var(--primary-ink)] transition hover:bg-[color-mix(in_srgb,var(--primary)_90%,black_10%)]'
+        className='mt-4 inline-flex h-10 items-center justify-center rounded-[12px] border border-transparent bg-[var(--primary)] px-4 text-sm font-bold text-[var(--primary-ink)] transition hover:bg-[var(--primary-strong)]'
       >
         Contact support
       </button>

@@ -13,7 +13,7 @@ export default function AssistantChatTranscript({
 }) {
   return (
     <article className={`${panelClass} overflow-hidden`}>
-      <div className='border-b border-[color-mix(in_srgb,var(--line)_62%,transparent)] p-4'>
+      <div className='border-b border-[var(--line)] p-4'>
         <h2 className='m-0 text-lg font-bold text-[var(--ink)]'>Assistant</h2>
         <p className='mb-0 mt-2 text-sm leading-6 text-[var(--ink-soft)]'>
           Start a conversation below. Replies are currently lightweight local
@@ -32,14 +32,14 @@ export default function AssistantChatTranscript({
                 className={`max-w-[90%] rounded-[14px] px-3 py-2 text-sm leading-6 min-[560px]:max-w-[72%] ${
                   message.sender === 'user'
                     ? 'bg-[var(--primary)] text-[var(--primary-ink)]'
-                    : 'bg-[color-mix(in_srgb,var(--surface-soft)_78%,var(--surface)_22%)] text-[var(--ink)]'
+                    : 'bg-[var(--surface-soft)] text-[var(--ink)]'
                 }`}
               >
                 <p className='m-0'>{message.text}</p>
                 <p
                   className={`mb-0 mt-1 text-xs ${
                     message.sender === 'user'
-                      ? 'text-[color-mix(in_srgb,var(--primary-ink)_82%,transparent_18%)]'
+                      ? 'text-[var(--primary-ink)]'
                       : 'text-[var(--ink-soft)]'
                   }`}
                 >

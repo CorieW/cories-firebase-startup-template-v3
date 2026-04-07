@@ -8,7 +8,7 @@ const brandRootClass =
   'flex items-center gap-[0.7rem] rounded-xl p-[0.6rem] text-[var(--ink)] no-underline';
 
 const brandMarkClass =
-  'inline-flex h-[34px] w-[34px] items-center justify-center rounded-[11px] border border-[color-mix(in_srgb,var(--primary)_38%,var(--line))] bg-[linear-gradient(145deg,color-mix(in_srgb,var(--primary)_82%,white_18%),color-mix(in_srgb,var(--primary)_36%,var(--accent)_64%))] text-[1.02rem] font-extrabold text-[var(--primary-ink)] shadow-[0_10px_22px_rgba(17,12,6,0.08)]';
+  'inline-flex h-[34px] w-[34px] items-center justify-center rounded-[11px] border border-[var(--primary)] bg-[var(--primary)] text-[1.02rem] font-extrabold text-[var(--primary-ink)]';
 
 interface AppBrandProps {
   className?: string;

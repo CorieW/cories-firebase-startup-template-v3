@@ -37,7 +37,7 @@ function resolveAuthView(
 }
 
 const authViewClassNames = {
-  base: 'w-full max-w-[500px] rounded-[26px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_98%,white_2%)_0%,color-mix(in_srgb,var(--surface)_96%,var(--primary)_4%)_100%)] text-[var(--ink)] shadow-[0_1px_0_rgba(255,255,255,0.12),0_24px_56px_rgba(17,12,6,0.16)]',
+  base: 'w-full max-w-[500px] rounded-[26px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)]',
   content: 'px-6 pb-6 sm:px-7 sm:pb-7',
   header: 'px-6 pt-6 sm:px-7',
   title: 'text-[1.85rem] font-semibold tracking-[-0.035em] text-[var(--ink)]',
@@ -47,28 +47,28 @@ const authViewClassNames = {
   separator: 'bg-[var(--line)]',
   footer: 'text-[0.95rem] text-[var(--ink-soft)]',
   footerLink:
-    'font-semibold text-[var(--ink)] underline decoration-[color-mix(in_srgb,var(--primary)_42%,transparent)] underline-offset-4 transition-colors hover:text-[var(--primary)]',
+    'font-semibold text-[var(--ink)] underline decoration-[var(--line-strong)] underline-offset-4 transition-colors hover:text-[var(--primary)]',
   form: {
     label: 'text-[0.95rem] font-medium text-[var(--ink)]',
     input:
-      'h-12 rounded-[14px] border-[color-mix(in_srgb,var(--line)_66%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_80%,var(--surface)_20%)] px-3.5 text-[var(--ink)] shadow-none transition-[border-color,background-color,box-shadow] placeholder:text-[var(--ink-soft)] focus-visible:border-[color-mix(in_srgb,var(--primary)_34%,var(--line-strong))] focus-visible:ring-[3px] focus-visible:ring-[var(--ring)]',
+      'h-12 rounded-[14px] border-[var(--line)] bg-[var(--surface-soft)] px-3.5 text-[var(--ink)] shadow-none transition-[border-color,background-color,color] placeholder:text-[var(--ink-soft)] focus-visible:border-[var(--line-strong)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)]',
     error:
-      'rounded-[10px] border border-[color-mix(in_srgb,#dc2626_38%,var(--line))] bg-[color-mix(in_srgb,#dc2626_10%,var(--surface-soft))] px-3 py-2 text-sm text-[#fca5a5]',
+      'rounded-[10px] border border-[var(--danger)] bg-[var(--danger-surface)] px-3 py-2 text-sm text-[var(--danger)]',
     forgotPasswordLink:
       'text-sm font-medium text-[var(--ink-soft)] transition-colors hover:text-[var(--primary)]',
     primaryButton:
-      'h-12 rounded-[12px] border border-transparent bg-[var(--primary)] text-[var(--primary-ink)] shadow-none transition hover:bg-[color-mix(in_srgb,var(--primary)_90%,black_10%)]',
+      'h-12 rounded-[12px] border border-transparent bg-[var(--primary)] text-[var(--primary-ink)] shadow-none transition hover:bg-[var(--primary-strong)]',
     secondaryButton:
-      'h-12 rounded-[12px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[var(--surface)] text-[var(--ink)] shadow-none transition hover:border-[color-mix(in_srgb,var(--primary)_22%,var(--line-strong))] hover:bg-[color-mix(in_srgb,var(--primary)_5%,var(--surface-soft))]',
+      'h-12 rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] shadow-none transition hover:border-[var(--line-strong)] hover:bg-[var(--surface-soft)]',
     outlineButton:
-      'h-12 rounded-[12px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[var(--surface)] text-[var(--ink)] shadow-none transition hover:border-[color-mix(in_srgb,var(--primary)_22%,var(--line-strong))] hover:bg-[color-mix(in_srgb,var(--primary)_5%,var(--surface-soft))]',
+      'h-12 rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] shadow-none transition hover:border-[var(--line-strong)] hover:bg-[var(--surface-soft)]',
     providerButton:
-      'h-12 rounded-[12px] border border-[color-mix(in_srgb,var(--line)_68%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_84%,var(--surface)_16%)] text-[var(--ink)] shadow-none transition hover:border-[color-mix(in_srgb,var(--primary)_22%,var(--line-strong))] hover:bg-[color-mix(in_srgb,var(--primary)_5%,var(--surface-emphasis))]',
+      'h-12 rounded-[12px] border border-[var(--auth-provider-line)] bg-[var(--auth-provider-surface)] text-[var(--auth-provider-ink)] shadow-none transition hover:border-[var(--auth-provider-line-strong)] hover:bg-[var(--auth-provider-surface-hover)]',
     checkbox:
       'border-[var(--line)] bg-[var(--surface-soft)] text-[var(--primary)] data-[state=checked]:border-[var(--primary)] data-[state=checked]:bg-[var(--primary)]',
     icon: 'text-[var(--ink-soft)]',
     otpInput:
-      'h-12 rounded-[14px] border-[color-mix(in_srgb,var(--line)_66%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_80%,var(--surface)_20%)] text-[var(--ink)] shadow-none focus-visible:border-[color-mix(in_srgb,var(--primary)_34%,var(--line-strong))] focus-visible:ring-[3px] focus-visible:ring-[var(--ring)]',
+      'h-12 rounded-[14px] border-[var(--line)] bg-[var(--surface-soft)] text-[var(--ink)] shadow-none focus-visible:border-[var(--line-strong)] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)]',
   },
 };
 

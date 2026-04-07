@@ -63,29 +63,29 @@ const TOAST_VARIANT_META = {
     Icon: CheckCircle2,
     label: 'Success',
     toneClass:
-      'border-[color-mix(in_srgb,#16a34a_42%,var(--line))] bg-[color-mix(in_srgb,#16a34a_11%,var(--surface))] text-[var(--ink)]',
-    iconClass: 'text-[#15803d]',
+      'border-[var(--success)] bg-[var(--success-surface)] text-[var(--ink)]',
+    iconClass: 'text-[var(--success)]',
   },
   error: {
     Icon: XCircle,
     label: 'Error',
     toneClass:
-      'border-[color-mix(in_srgb,#dc2626_42%,var(--line))] bg-[color-mix(in_srgb,#dc2626_10%,var(--surface))] text-[var(--ink)]',
-    iconClass: 'text-[#b91c1c]',
+      'border-[var(--danger)] bg-[var(--danger-surface)] text-[var(--ink)]',
+    iconClass: 'text-[var(--danger)]',
   },
   warning: {
     Icon: AlertTriangle,
     label: 'Warning',
     toneClass:
-      'border-[color-mix(in_srgb,#d97706_44%,var(--line))] bg-[color-mix(in_srgb,#f59e0b_13%,var(--surface))] text-[var(--ink)]',
-    iconClass: 'text-[#b45309]',
+      'border-[var(--warning)] bg-[var(--warning-surface)] text-[var(--ink)]',
+    iconClass: 'text-[var(--warning)]',
   },
   info: {
     Icon: Info,
     label: 'Info',
     toneClass:
-      'border-[color-mix(in_srgb,#2563eb_43%,var(--line))] bg-[color-mix(in_srgb,#3b82f6_10%,var(--surface))] text-[var(--ink)]',
-    iconClass: 'text-[#1d4ed8]',
+      'border-[var(--info)] bg-[var(--info-surface)] text-[var(--ink)]',
+    iconClass: 'text-[var(--info)]',
   },
 } as const;
 
@@ -302,7 +302,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             <article
               key={toast.id}
               role={role}
-              className={`pointer-events-auto rounded-[14px] border p-3 shadow-[0_12px_30px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-all duration-200 ease-out ${toast.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'} ${variantMeta.toneClass}`}
+              className={`pointer-events-auto rounded-[14px] border p-3 transition-all duration-200 ease-out ${toast.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'} ${variantMeta.toneClass}`}
             >
               <div className='flex gap-2.5'>
                 <variantMeta.Icon
@@ -323,7 +323,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                     dismiss(toast.id);
                   }}
                   aria-label={`Dismiss ${variantMeta.label} notification`}
-                  className='inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] border border-transparent text-[var(--ink-soft)] transition-[background-color,border-color,color] hover:border-[color-mix(in_srgb,var(--line)_68%,transparent)] hover:bg-[color-mix(in_srgb,var(--surface-soft)_74%,var(--surface)_26%)] hover:text-[var(--ink)]'
+                  className='inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] border border-transparent text-[var(--ink-soft)] transition-[background-color,border-color,color] hover:border-[var(--line)] hover:bg-[var(--surface)] hover:text-[var(--ink)]'
                 >
                   <X aria-hidden='true' className='h-4 w-4' />
                 </button>
