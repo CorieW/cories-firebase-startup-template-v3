@@ -40,3 +40,7 @@ packages/common/lib/
 # OS files
 .DS_Store
 **/.DS_Store
+
+# Playwright
+playwright-report/
+test-results/
