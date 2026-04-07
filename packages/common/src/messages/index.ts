@@ -1,7 +1,7 @@
 /**
  * Message export helpers.
  */
-import commonMessagesJson from './messages.json';
+import { commonMessages } from './messages.js';
 
 export type CommonMessageValues = Record<
   string,
@@ -9,20 +9,20 @@ export type CommonMessageValues = Record<
 >;
 export type CommonMessages = Record<string, string>;
 
-const commonMessages: CommonMessages = commonMessagesJson as CommonMessages;
+const messageCatalog: CommonMessages = commonMessages;
 
 /**
  * Returns whether the English message catalog includes the provided key.
  */
 export function hasCommonMessage(key: string): boolean {
-  return Object.prototype.hasOwnProperty.call(commonMessages, key);
+  return Object.prototype.hasOwnProperty.call(messageCatalog, key);
 }
 
 /**
  * Resolves a message key from the English message catalog.
  */
 export function resolveCommonMessage(key: string): string | undefined {
-  return commonMessages[key];
+  return messageCatalog[key];
 }
 
 /**
@@ -41,7 +41,7 @@ export function translateCommonMessage(
  * Returns the full English message map used at runtime.
  */
 export function getCommonMessages(): Readonly<CommonMessages> {
-  return commonMessages;
+  return messageCatalog;
 }
 
 function formatMessageTemplate(

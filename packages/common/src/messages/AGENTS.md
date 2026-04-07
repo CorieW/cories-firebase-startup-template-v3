@@ -9,7 +9,7 @@ Shared user-facing message catalog and access helpers.
 ## Files
 
 - `index.ts`: Message export helpers.
-- `messages.json`: Shared message strings.
+- `messages.ts`: Shared message strings.
   Rules:
   - Keep keys stable because multiple packages reference them.
 
