@@ -189,6 +189,10 @@ export function createBillingActionReporter({
       if (successNotice) {
         reportToast('success', successNotice.title, successNotice.message);
       }
+
+      if (submissionState) {
+        setSubmissionState(null);
+      }
     } catch (caughtError) {
       billingActionLogger.log(
         'ACTION_RESULT',

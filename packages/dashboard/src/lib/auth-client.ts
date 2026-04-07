@@ -18,6 +18,23 @@ export const useAuthSession = authHooks.useSession
 export const useActiveOrganization = authHooks.useActiveOrganization
 export const useListOrganizations = authHooks.useListOrganizations
 
+/**
+ * Returns the active organization member using a query key that tracks the
+ * current org id so profile switches refetch immediately.
+ */
 export function useActiveMember() {
-  return authClient.useActiveMember()
+  const { session } = useAuthSession()
+  const { data: activeOrganization } = useActiveOrganization()
+  const activeOrganizationId =
+    typeof activeOrganization === 'undefined'
+      ? (session?.activeOrganizationId ?? null)
+      : (activeOrganization?.id ?? null)
+
+  return authHooks.useAuthQuery({
+    queryKey: ['active-member', activeOrganizationId],
+    queryFn: authClient.organization.getActiveMember,
+    options: {
+      enabled: Boolean(activeOrganizationId),
+    },
+  })
 }
