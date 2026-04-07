@@ -1,10 +1,7 @@
 /**
  * Admin server environment accessors for auth, billing, email, and Firebase credentials.
  */
-import { existsSync, readFileSync } from 'node:fs';
-import path from 'node:path';
-
-const DEFAULT_ADMIN_APP_URL = 'http://localhost:3001';
+const DEFAULT_ADMIN_APP_URL = 'http://localhost:3002';
 const DEFAULT_BETTER_AUTH_SECRET =
   'better-auth-dev-secret-12345678901234567890';
 const DEFAULT_FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
@@ -35,37 +32,6 @@ function readEnv(...keys: string[]): string | undefined {
 
 function isFirebasePrivateKeyPlaceholder(value: string): boolean {
   return /replace_with_your_private_key/i.test(value);
-}
-
-function readDefaultFirebaseProjectIdFromFirebaserc(): string | undefined {
-  const candidatePaths = [
-    path.resolve(process.cwd(), '.firebaserc'),
-    path.resolve(process.cwd(), '..', '.firebaserc'),
-    path.resolve(process.cwd(), '..', '..', '.firebaserc'),
-  ];
-
-  for (const candidatePath of candidatePaths) {
-    if (!existsSync(candidatePath)) {
-      continue;
-    }
-
-    try {
-      const parsed = JSON.parse(readFileSync(candidatePath, 'utf8')) as {
-        projects?: {
-          default?: string;
-        };
-      };
-
-      const projectId = trimString(parsed.projects?.default);
-      if (projectId) {
-        return projectId;
-      }
-    } catch {
-      // Ignore malformed local config and fall back to the template project id.
-    }
-  }
-
-  return undefined;
 }
 
 /**
@@ -146,7 +112,6 @@ export function getResendConfig():
 export function getFirebaseProjectId(): string {
   return (
     readEnv('FIREBASE_PROJECT_ID', 'PROJECT_ID') ??
-    readDefaultFirebaseProjectIdFromFirebaserc() ??
     'demo-startup-template'
   );
 }
@@ -180,4 +145,3 @@ export function getFirestoreEmulatorHost(): string | undefined {
     (isProductionEnvironment() ? undefined : DEFAULT_FIRESTORE_EMULATOR_HOST)
   );
 }
-

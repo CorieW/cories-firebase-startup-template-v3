@@ -101,6 +101,8 @@ export const auth = betterAuth({
         },
         'debug'
       );
+
+      return {};
     },
     onError: async context => {
       authServerLogger.log(
@@ -116,4 +118,3 @@ export const auth = betterAuth({
     },
   },
 });
-

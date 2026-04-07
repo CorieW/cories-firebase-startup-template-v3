@@ -1,12 +1,10 @@
 # packages/admin/tests
 
-Package-level admin tests grouped by source area and end-to-end staff flows.
+Package-level admin tests grouped by source area and end-to-end admin flows.
 
 ## Directories
 
-- `e2e/`: Playwright smoke coverage for the admin console.
 - `lib/`: Unit tests for shared admin helpers and server-side data modules.
-- `routes/`: Route-level tests for auth guards, loaders, and server behavior.
 
 ## Files
 

@@ -1,29 +1,29 @@
 /**
- * Shared admin roles, permissions, and document contracts.
+ * Shared admin role, status, and Firestore document contracts.
  */
-export const ADMIN_ROLES = [
-  'superadmin',
-  'ops',
-  'billing',
-  'support',
-] as const;
+export const ADMIN_ROLES = ['admin'] as const;
 
 export type AdminRole = (typeof ADMIN_ROLES)[number];
 
-export const ADMIN_PERMISSIONS = [
-  'overview.read',
-  'users.read',
-  'organizations.read',
-  'billing.read',
-  'audit.read',
-  'admins.manage',
-] as const;
-
-export type AdminPermission = (typeof ADMIN_PERMISSIONS)[number];
+/**
+ * Checks whether a Firestore value matches the supported admin role contract.
+ */
+export function isAdminRole(value: unknown): value is AdminRole {
+  return typeof value === 'string' && ADMIN_ROLES.includes(value as AdminRole);
+}
 
 export const ADMIN_STATUSES = ['active', 'disabled'] as const;
 
 export type AdminStatus = (typeof ADMIN_STATUSES)[number];
+
+/**
+ * Checks whether a Firestore value matches the supported admin status contract.
+ */
+export function isAdminStatus(value: unknown): value is AdminStatus {
+  return (
+    typeof value === 'string' && ADMIN_STATUSES.includes(value as AdminStatus)
+  );
+}
 
 export interface AppAdminRecord {
   role: AdminRole;

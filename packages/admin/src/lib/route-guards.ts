@@ -2,23 +2,23 @@
  * Admin route guard helpers.
  */
 import {
-  ADMIN_FORBIDDEN_ROUTE_PATH,
+  ADMIN_AUTH_API_ROUTE_PREFIX,
   ADMIN_SIGN_IN_ROUTE_PREFIX,
-} from './route-paths';
+} from "./route-paths";
 
 /**
  * Normalizes route pathnames so comparisons are stable.
  */
 export function normalizeAdminPathname(pathname: string): string {
   if (!pathname) {
-    return '/';
+    return "/";
   }
 
-  if (pathname === '/') {
+  if (pathname === "/") {
     return pathname;
   }
 
-  return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+  return pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
 }
 
 /**
@@ -41,6 +41,7 @@ export function isAdminPublicRoute(pathname: string): boolean {
 
   return (
     isAdminAuthRoute(normalizedPath) ||
-    normalizedPath === ADMIN_FORBIDDEN_ROUTE_PATH
+    normalizedPath === ADMIN_AUTH_API_ROUTE_PREFIX ||
+    normalizedPath.startsWith(`${ADMIN_AUTH_API_ROUTE_PREFIX}/`)
   );
 }

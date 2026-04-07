@@ -1,6 +1,6 @@
 # packages/admin
 
-Internal TanStack Start admin workspace for staff-only operations, audit views, and read-only app management.
+Internal TanStack Start admin workspace for admin-only operations, audit views, and read-only app management.
 
 ## Directories
 

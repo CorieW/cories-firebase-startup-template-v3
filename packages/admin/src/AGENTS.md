@@ -1,6 +1,6 @@
 # packages/admin/src
 
-Admin application source for routing, shared UI, and server-backed staff tooling.
+Admin application source for routing, shared UI, and server-backed admin tooling.
 
 ## Directories
 

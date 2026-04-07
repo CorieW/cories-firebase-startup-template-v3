@@ -6,10 +6,20 @@ import {
   getOrganizationPath,
   getSearchPrefixBounds,
   normalizeSearchValue,
-} from '@cories-firebase-startup-template-v3/common';
-import { firestore } from './auth-server.firebase';
-import { writeAdminAuditLog, type AdminAuditActor } from './audit-log';
-import { serializeFirestoreRecord, toIsoString } from './firestore-serialization';
+} from "@cories-firebase-startup-template-v3/common";
+import {
+  ADMIN_DIRECTORY_PAGE_SIZE,
+  getPaginationOffset,
+  getPaginationSliceBounds,
+  paginateItems,
+  type AdminPaginatedResult,
+} from "../pagination";
+import { firestore } from "./auth-server.firebase";
+import { writeAdminAuditLog, type AdminAuditActor } from "./audit-log";
+import {
+  serializeFirestoreRecord,
+  toIsoString,
+} from "./firestore-serialization";
 
 export interface AdminOrganizationDirectoryItem {
   createdAt: string | null;
@@ -43,9 +53,13 @@ function toDirectoryItem(input: {
   return {
     id: input.organizationId,
     name:
-      typeof input.organization.name === 'string' ? input.organization.name : null,
+      typeof input.organization.name === "string"
+        ? input.organization.name
+        : null,
     slug:
-      typeof input.organization.slug === 'string' ? input.organization.slug : null,
+      typeof input.organization.slug === "string"
+        ? input.organization.slug
+        : null,
     createdAt: toIsoString(input.organization.createdAt),
     memberCount: input.memberCount ?? 0,
   };
@@ -54,32 +68,47 @@ function toDirectoryItem(input: {
 /**
  * Lists organizations for the admin directory with exact-id and prefix search support.
  */
-export async function loadOrganizationDirectory(searchTerm: string) {
-  const normalizedSearch = normalizeSearchValue(searchTerm);
+export async function loadOrganizationDirectory(input: {
+  page: number;
+  searchTerm: string;
+}): Promise<AdminPaginatedResult<AdminOrganizationDirectoryItem>> {
+  const normalizedSearch = normalizeSearchValue(input.searchTerm);
 
   if (!normalizedSearch) {
     const snapshot = await firestore
       .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
-      .orderBy('createdAt', 'desc')
-      .limit(25)
+      .orderBy("createdAt", "desc")
+      .offset(getPaginationOffset(input.page, ADMIN_DIRECTORY_PAGE_SIZE))
+      .limit(ADMIN_DIRECTORY_PAGE_SIZE + 1)
       .get();
 
-    return snapshot.docs.map(doc =>
-      toDirectoryItem({
-        organization: doc.data(),
-        organizationId: doc.id,
-      })
-    );
+    return {
+      hasNextPage: snapshot.docs.length > ADMIN_DIRECTORY_PAGE_SIZE,
+      items: snapshot.docs.slice(0, ADMIN_DIRECTORY_PAGE_SIZE).map((doc) =>
+        toDirectoryItem({
+          organization: doc.data(),
+          organizationId: doc.id,
+        }),
+      ),
+      page: input.page,
+      pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
+    };
   }
+
+  const { endIndex } = getPaginationSliceBounds(
+    input.page,
+    ADMIN_DIRECTORY_PAGE_SIZE,
+  );
+  const queryLimit = endIndex + 1;
 
   const [exactSnapshot, nameSnapshot] = await Promise.all([
     firestore.doc(getOrganizationPath(normalizedSearch)).get(),
     firestore
       .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
-      .orderBy('nameSearch')
+      .orderBy("nameSearch")
       .startAt(normalizedSearch)
       .endAt(getSearchPrefixBounds(normalizedSearch)[1])
-      .limit(20)
+      .limit(queryLimit)
       .get(),
   ]);
 
@@ -90,12 +119,12 @@ export async function loadOrganizationDirectory(searchTerm: string) {
       toDirectoryItem({
         organization: exactSnapshot.data() as Record<string, unknown>,
         organizationId: exactSnapshot.id,
-      })
+      }),
     );
   }
 
   for (const doc of nameSnapshot.docs) {
-    if (items.some(item => item.id === doc.id)) {
+    if (items.some((item) => item.id === doc.id)) {
       continue;
     }
 
@@ -103,11 +132,11 @@ export async function loadOrganizationDirectory(searchTerm: string) {
       toDirectoryItem({
         organization: doc.data(),
         organizationId: doc.id,
-      })
+      }),
     );
   }
 
-  return items;
+  return paginateItems(items, input.page, ADMIN_DIRECTORY_PAGE_SIZE);
 }
 
 /**
@@ -128,32 +157,35 @@ export async function loadOrganizationDetail(input: {
 
   const memberSnapshot = await firestore
     .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.member)
-    .where('organizationId', '==', input.organizationId)
-    .orderBy('createdAt', 'desc')
+    .where("organizationId", "==", input.organizationId)
+    .orderBy("createdAt", "desc")
     .limit(100)
     .get();
 
   const memberUserIds = memberSnapshot.docs
-    .map(doc => doc.data().userId)
-    .filter((value): value is string => typeof value === 'string');
+    .map((doc) => doc.data().userId)
+    .filter((value): value is string => typeof value === "string");
 
   const authUserSnapshots = await Promise.all(
-    memberUserIds.map(userId =>
-      firestore.collection('auth_users').doc(userId).get()
-    )
+    memberUserIds.map((userId) =>
+      firestore.collection("auth_users").doc(userId).get(),
+    ),
   );
 
   const authUsers = new Map(
     authUserSnapshots
-      .filter(snapshot => snapshot.exists)
-      .map(snapshot => [snapshot.id, snapshot.data() as Record<string, unknown>])
+      .filter((snapshot) => snapshot.exists)
+      .map((snapshot) => [
+        snapshot.id,
+        snapshot.data() as Record<string, unknown>,
+      ]),
   );
 
   const memberRoleCounts: Record<string, number> = {};
-  const members: AdminOrganizationMember[] = memberSnapshot.docs.map(doc => {
+  const members: AdminOrganizationMember[] = memberSnapshot.docs.map((doc) => {
     const data = doc.data();
-    const role = typeof data.role === 'string' ? data.role : 'unknown';
-    const userId = typeof data.userId === 'string' ? data.userId : null;
+    const role = typeof data.role === "string" ? data.role : "unknown";
+    const userId = typeof data.userId === "string" ? data.userId : null;
     const authUser = userId ? authUsers.get(userId) : null;
 
     memberRoleCounts[role] = (memberRoleCounts[role] ?? 0) + 1;
@@ -163,17 +195,17 @@ export async function loadOrganizationDetail(input: {
       userId,
       role,
       createdAt: toIsoString(data.createdAt),
-      name: typeof authUser?.name === 'string' ? authUser.name : null,
-      email: typeof authUser?.email === 'string' ? authUser.email : null,
+      name: typeof authUser?.name === "string" ? authUser.name : null,
+      email: typeof authUser?.email === "string" ? authUser.email : null,
     };
   });
 
   await writeAdminAuditLog({
-    action: 'admin.organization.view',
+    action: "admin.organization.view",
     actor: input.actor,
-    resourceType: 'organization',
+    resourceType: "organization",
     resourceId: input.organizationId,
-    result: 'success',
+    result: "success",
   });
 
   return {
@@ -183,4 +215,3 @@ export async function loadOrganizationDetail(input: {
     memberRoleCounts,
   };
 }
-

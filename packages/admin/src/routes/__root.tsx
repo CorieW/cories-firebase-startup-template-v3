@@ -6,12 +6,31 @@ import {
   Outlet,
   Scripts,
   createRootRoute,
+  useRouterState,
 } from '@tanstack/react-router';
-import { pageContainerClass, shellFrameClass } from '../lib/ui';
+import { AdminShell } from '../components/AdminShell';
+import {
+  enforceSignedOutAdmin,
+  getAdminSession,
+  requireActiveAdmin,
+} from '../lib/admin-auth';
+import { isAdminPublicRoute } from '../lib/route-guards';
+import { shellFrameClass } from '../lib/ui';
 import { THEME_INIT_SCRIPT } from '../lib/theme';
 import appCss from '../styles.css?url';
 
 export const Route = createRootRoute({
+  beforeLoad: async ({ location }) => {
+    await enforceSignedOutAdmin(location.pathname);
+    await requireActiveAdmin(location.pathname);
+  },
+  loader: async () => {
+    const adminSession = await getAdminSession();
+
+    return {
+      adminSession,
+    };
+  },
   head: () => ({
     meta: [
       {
@@ -58,9 +77,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
  * Provides a simple shell wrapper for nested admin routes.
  */
 function RootLayout() {
+  const pathname = useRouterState({
+    select: state => state.location.pathname,
+  });
+  const { adminSession } = Route.useLoaderData();
+  const isPublicRoute = isAdminPublicRoute(pathname);
+
+  if (isPublicRoute || !adminSession.isActiveAdmin) {
+    return <Outlet />;
+  }
+
   return (
-    <div className={pageContainerClass}>
+    <AdminShell adminSession={adminSession}>
       <Outlet />
-    </div>
+    </AdminShell>
   );
 }

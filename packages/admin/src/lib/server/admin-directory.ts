@@ -3,15 +3,18 @@
  */
 import {
   getAppAdminPath,
-  type AdminPermission,
   type AdminRole,
   type AdminStatus,
   type AppAdminRecord,
-} from '@cories-firebase-startup-template-v3/common';
-import type { User } from 'better-auth';
-import { resolveAdminPermissions } from '../admin-permissions';
-import { firestore } from './auth-server.firebase';
-import { serializeFirestoreRecord, toIsoString } from './firestore-serialization';
+  isAdminRole,
+  isAdminStatus,
+} from "@cories-firebase-startup-template-v3/common";
+import type { User } from "better-auth";
+import { firestore } from "./auth-server.firebase";
+import {
+  serializeFirestoreRecord,
+  toIsoString,
+} from "./firestore-serialization";
 
 export interface ResolvedAdminRecord {
   uid: string;
@@ -32,7 +35,6 @@ export interface AdminSessionState {
   name: string | null;
   role: AdminRole | null;
   status: AdminStatus | null;
-  permissions: AdminPermission[];
   adminRecord: ResolvedAdminRecord | null;
 }
 
@@ -40,7 +42,7 @@ export interface AdminSessionState {
  * Reads a single allowlisted admin record by uid.
  */
 export async function getAdminRecord(
-  uid: string
+  uid: string,
 ): Promise<ResolvedAdminRecord | null> {
   const snapshot = await firestore.doc(getAppAdminPath(uid)).get();
   if (!snapshot.exists) {
@@ -48,16 +50,19 @@ export async function getAdminRecord(
   }
 
   const data = snapshot.data() as AppAdminRecord;
+  if (!isAdminRole(data.role) || !isAdminStatus(data.status)) {
+    return null;
+  }
 
   return {
     uid,
     role: data.role,
     status: data.status,
-    notes: typeof data.notes === 'string' ? data.notes : null,
+    notes: typeof data.notes === "string" ? data.notes : null,
     createdAt: toIsoString(data.createdAt),
     updatedAt: toIsoString(data.updatedAt),
-    createdBy: typeof data.createdBy === 'string' ? data.createdBy : null,
-    updatedBy: typeof data.updatedBy === 'string' ? data.updatedBy : null,
+    createdBy: typeof data.createdBy === "string" ? data.createdBy : null,
+    updatedBy: typeof data.updatedBy === "string" ? data.updatedBy : null,
   };
 }
 
@@ -66,14 +71,13 @@ export async function getAdminRecord(
  */
 export function buildAdminSessionState(input: {
   adminRecord: ResolvedAdminRecord | null;
-  user: Pick<User, 'email' | 'id' | 'name'> | null;
+  user: Pick<User, "email" | "id" | "name"> | null;
 }): AdminSessionState {
   const { adminRecord, user } = input;
   const isAuthenticated = Boolean(user);
   const role = adminRecord?.role ?? null;
   const status = adminRecord?.status ?? null;
-  const permissions = role ? resolveAdminPermissions(role) : [];
-  const isActiveAdmin = Boolean(adminRecord && status === 'active');
+  const isActiveAdmin = Boolean(adminRecord && status === "active");
 
   return {
     isAuthenticated,
@@ -83,7 +87,6 @@ export function buildAdminSessionState(input: {
     name: user?.name ?? null,
     role,
     status,
-    permissions,
     adminRecord,
   };
 }
@@ -92,8 +95,7 @@ export function buildAdminSessionState(input: {
  * Creates a plain JSON snapshot of a raw admin record for debug views and tests.
  */
 export function serializeAdminRecord(
-  value: Record<string, unknown> | null | undefined
+  value: Record<string, unknown> | null | undefined,
 ) {
   return serializeFirestoreRecord(value);
 }
-

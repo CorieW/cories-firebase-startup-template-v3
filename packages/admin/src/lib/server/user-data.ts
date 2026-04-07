@@ -8,10 +8,20 @@ import {
   getSearchPrefixBounds,
   getUserPath,
   normalizeSearchValue,
-} from '@cories-firebase-startup-template-v3/common';
-import { firestore } from './auth-server.firebase';
-import { writeAdminAuditLog, type AdminAuditActor } from './audit-log';
-import { serializeFirestoreRecord, toIsoString } from './firestore-serialization';
+} from "@cories-firebase-startup-template-v3/common";
+import {
+  ADMIN_DIRECTORY_PAGE_SIZE,
+  getPaginationOffset,
+  getPaginationSliceBounds,
+  paginateItems,
+  type AdminPaginatedResult,
+} from "../pagination";
+import { firestore } from "./auth-server.firebase";
+import { writeAdminAuditLog, type AdminAuditActor } from "./audit-log";
+import {
+  serializeFirestoreRecord,
+  toIsoString,
+} from "./firestore-serialization";
 
 export interface AdminUserDirectoryItem {
   createdAt: string | null;
@@ -40,7 +50,7 @@ export interface AdminUserDetail {
 function dedupeDirectoryItems(items: AdminUserDirectoryItem[]) {
   const seen = new Set<string>();
 
-  return items.filter(item => {
+  return items.filter((item) => {
     if (seen.has(item.id)) {
       return false;
     }
@@ -58,10 +68,10 @@ function toDirectoryItem(input: {
   return {
     id: input.userId,
     email:
-      typeof input.authUser.email === 'string' ? input.authUser.email : null,
-    name: typeof input.authUser.name === 'string' ? input.authUser.name : null,
+      typeof input.authUser.email === "string" ? input.authUser.email : null,
+    name: typeof input.authUser.name === "string" ? input.authUser.name : null,
     image:
-      typeof input.authUser.image === 'string' ? input.authUser.image : null,
+      typeof input.authUser.image === "string" ? input.authUser.image : null,
     createdAt: toIsoString(input.authUser.createdAt),
     memberCount: input.memberCount ?? 0,
   };
@@ -70,39 +80,54 @@ function toDirectoryItem(input: {
 /**
  * Lists users for the admin directory with exact-id and prefix search support.
  */
-export async function loadUserDirectory(searchTerm: string) {
-  const normalizedSearch = normalizeSearchValue(searchTerm);
+export async function loadUserDirectory(input: {
+  page: number;
+  searchTerm: string;
+}): Promise<AdminPaginatedResult<AdminUserDirectoryItem>> {
+  const normalizedSearch = normalizeSearchValue(input.searchTerm);
 
   if (!normalizedSearch) {
     const snapshot = await firestore
       .collection(BETTER_AUTH_COLLECTIONS.users)
-      .orderBy('createdAt', 'desc')
-      .limit(25)
+      .orderBy("createdAt", "desc")
+      .offset(getPaginationOffset(input.page, ADMIN_DIRECTORY_PAGE_SIZE))
+      .limit(ADMIN_DIRECTORY_PAGE_SIZE + 1)
       .get();
 
-    return snapshot.docs.map(doc =>
-      toDirectoryItem({
-        authUser: doc.data(),
-        userId: doc.id,
-      })
-    );
+    return {
+      hasNextPage: snapshot.docs.length > ADMIN_DIRECTORY_PAGE_SIZE,
+      items: snapshot.docs.slice(0, ADMIN_DIRECTORY_PAGE_SIZE).map((doc) =>
+        toDirectoryItem({
+          authUser: doc.data(),
+          userId: doc.id,
+        }),
+      ),
+      page: input.page,
+      pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
+    };
   }
+
+  const { endIndex } = getPaginationSliceBounds(
+    input.page,
+    ADMIN_DIRECTORY_PAGE_SIZE,
+  );
+  const queryLimit = endIndex + 1;
 
   const [exactSnapshot, emailSnapshot, nameSnapshot] = await Promise.all([
     firestore.doc(getAuthUserPath(normalizedSearch)).get(),
     firestore
       .collection(BETTER_AUTH_COLLECTIONS.users)
-      .orderBy('emailSearch')
+      .orderBy("emailSearch")
       .startAt(normalizedSearch)
       .endAt(getSearchPrefixBounds(normalizedSearch)[1])
-      .limit(10)
+      .limit(queryLimit)
       .get(),
     firestore
       .collection(BETTER_AUTH_COLLECTIONS.users)
-      .orderBy('nameSearch')
+      .orderBy("nameSearch")
       .startAt(normalizedSearch)
       .endAt(getSearchPrefixBounds(normalizedSearch)[1])
-      .limit(10)
+      .limit(queryLimit)
       .get(),
   ]);
 
@@ -113,7 +138,7 @@ export async function loadUserDirectory(searchTerm: string) {
       toDirectoryItem({
         authUser: exactSnapshot.data() as Record<string, unknown>,
         userId: exactSnapshot.id,
-      })
+      }),
     );
   }
 
@@ -122,11 +147,15 @@ export async function loadUserDirectory(searchTerm: string) {
       toDirectoryItem({
         authUser: doc.data(),
         userId: doc.id,
-      })
+      }),
     );
   }
 
-  return dedupeDirectoryItems(items);
+  return paginateItems(
+    dedupeDirectoryItems(items),
+    input.page,
+    ADMIN_DIRECTORY_PAGE_SIZE,
+  );
 }
 
 /**
@@ -142,8 +171,8 @@ export async function loadUserDetail(input: {
       firestore.doc(getUserPath(input.userId)).get(),
       firestore
         .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.member)
-        .where('userId', '==', input.userId)
-        .orderBy('createdAt', 'desc')
+        .where("userId", "==", input.userId)
+        .orderBy("createdAt", "desc")
         .limit(50)
         .get(),
     ]);
@@ -153,56 +182,56 @@ export async function loadUserDetail(input: {
   }
 
   const organizationIds = membershipSnapshot.docs
-    .map(doc => doc.data().organizationId)
-    .filter((value): value is string => typeof value === 'string');
+    .map((doc) => doc.data().organizationId)
+    .filter((value): value is string => typeof value === "string");
 
   const organizationSnapshots = await Promise.all(
-    organizationIds.map(organizationId =>
+    organizationIds.map((organizationId) =>
       firestore
         .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
         .doc(organizationId)
-        .get()
-    )
+        .get(),
+    ),
   );
 
   const organizationNames = new Map(
     organizationSnapshots
-      .filter(snapshot => snapshot.exists)
-      .map(snapshot => [
+      .filter((snapshot) => snapshot.exists)
+      .map((snapshot) => [
         snapshot.id,
-        typeof snapshot.data()?.name === 'string'
+        typeof snapshot.data()?.name === "string"
           ? (snapshot.data()?.name as string)
           : snapshot.id,
-      ])
+      ]),
   );
 
   await writeAdminAuditLog({
-    action: 'admin.user.view',
+    action: "admin.user.view",
     actor: input.actor,
-    resourceType: 'user',
+    resourceType: "user",
     resourceId: input.userId,
-    result: 'success',
+    result: "success",
   });
 
   return {
     id: input.userId,
     authUser: serializeFirestoreRecord(authUserSnapshot.data()),
     appUser: serializeFirestoreRecord(appUserSnapshot.data()),
-    memberships: membershipSnapshot.docs.map(doc => {
+    memberships: membershipSnapshot.docs.map((doc) => {
       const data = doc.data();
 
       return {
         id: doc.id,
         organizationId:
-          typeof data.organizationId === 'string' ? data.organizationId : null,
+          typeof data.organizationId === "string" ? data.organizationId : null,
         organizationName:
-          typeof data.organizationId === 'string'
-            ? (organizationNames.get(data.organizationId) ?? data.organizationId)
+          typeof data.organizationId === "string"
+            ? (organizationNames.get(data.organizationId) ??
+              data.organizationId)
             : null,
-        role: typeof data.role === 'string' ? data.role : null,
+        role: typeof data.role === "string" ? data.role : null,
         createdAt: toIsoString(data.createdAt),
       };
     }),
   };
 }
-

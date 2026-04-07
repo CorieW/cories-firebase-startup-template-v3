@@ -37,30 +37,22 @@ export { getAutumnServerClient } from './auth-server.autumn';
 
 const googleOAuthConfig = getGoogleOAuthConfig();
 
-async function syncAuthUserSearchFields(user: {
-  id: string;
-  email?: string | null;
-  name?: string | null;
+function normalizeAuthUserUpdateForStorage(user: {
+  email?: string;
+  image?: string | null;
+  name?: string;
 }) {
   const searchFields = buildAuthUserSearchFields({
     email: user.email,
     name: user.name,
   });
 
-  await firestore
-    .collection(BETTER_AUTH_COLLECTIONS.users)
-    .doc(user.id)
-    .set(searchFields, { merge: true });
-
-  authServerLogger.action(
-    'syncAuthUserSearchFields',
-    {
-      userId: user.id,
-      hasEmailSearch: Boolean(searchFields.emailSearch),
-      hasNameSearch: Boolean(searchFields.nameSearch),
-    },
-    'debug'
-  );
+  return {
+    ...user,
+    ...('image' in user ? { image: user.image ?? null } : {}),
+    ...('email' in user ? { emailSearch: searchFields.emailSearch } : {}),
+    ...('name' in user ? { nameSearch: searchFields.nameSearch } : {}),
+  };
 }
 
 async function syncOrganizationSearchFields(organization: {
@@ -151,57 +143,40 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (user) => {
+          const normalizedUser = normalizeAuthUserForStorage(user);
           authServerLogger.action(
             'beforeCreateUser',
             {
-              hasEmail: Boolean(user.email),
-              hasName: Boolean(user.name),
+              hasEmail: Boolean(normalizedUser.email),
+              hasEmailSearch: Boolean(normalizedUser.emailSearch),
+              hasName: Boolean(normalizedUser.name),
+              hasNameSearch: Boolean(normalizedUser.nameSearch),
             },
             'debug'
           );
           return {
-            data: normalizeAuthUserForStorage(user),
-          };
-        },
-        after: async (user) => {
-          if (!user) {
-            return;
+            // Keep user normalization inside Better Auth's main write so sign-up
+            // does not perform extra Firestore work from within its transaction.
+            data: normalizedUser,
           }
-
-          authServerLogger.action(
-            'afterCreateUser',
-            {
-              userId: user.id,
-              hasEmail: Boolean(user.email),
-            },
-            'info'
-          );
-          await syncAuthUserSearchFields(user);
-          await syncAutumnCustomer(getAutumnCustomerId('user', user.id), {
-            email: user.email,
-            name: user.name,
-          });
         },
       },
       update: {
-        after: async (user) => {
-          if (!user) {
-            return;
-          }
-
+        before: async (user, _context) => {
+          const normalizedUser = normalizeAuthUserUpdateForStorage(user);
           authServerLogger.action(
-            'afterUpdateUser',
+            'beforeUpdateUser',
             {
-              userId: user.id,
-              hasEmail: Boolean(user.email),
+              hasEmail: Boolean(normalizedUser.email),
+              hasEmailSearch: Boolean(normalizedUser.emailSearch),
+              hasName: Boolean(normalizedUser.name),
+              hasNameSearch: Boolean(normalizedUser.nameSearch),
             },
-            'info'
+            'debug'
           );
-          await syncAuthUserSearchFields(user);
-          await syncAutumnCustomer(getAutumnCustomerId('user', user.id), {
-            email: user.email,
-            name: user.name,
-          });
+          return {
+            data: normalizedUser,
+          };
         },
       },
     },

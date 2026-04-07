@@ -1,10 +1,11 @@
 /**
  * Autumn-backed read-only billing data loaders for the admin app.
  */
-import { Autumn } from 'autumn-js';
-import type { ListCustomersList } from 'autumn-js';
-import { writeAdminAuditLog, type AdminAuditActor } from './audit-log';
-import { getAutumnBaseUrl, getAutumnSecretKey } from './env';
+import { Autumn } from "autumn-js";
+import type { ListCustomersList } from "autumn-js";
+import { ADMIN_DIRECTORY_PAGE_SIZE, getPaginationOffset } from "../pagination";
+import { writeAdminAuditLog, type AdminAuditActor } from "./audit-log";
+import { getAutumnBaseUrl, getAutumnSecretKey } from "./env";
 
 export interface AdminBillingCustomer {
   balances: Record<string, unknown>;
@@ -18,7 +19,10 @@ export interface AdminBillingCustomer {
 
 export interface BillingData {
   customers: AdminBillingCustomer[];
+  hasNextPage: boolean;
   isAvailable: boolean;
+  page: number;
+  pageSize: number;
   total: number;
   totalCount: number;
 }
@@ -38,15 +42,19 @@ export function getAutumnAdminClient() {
   });
 }
 
-function serializeBillingCustomer(customer: ListCustomersList): AdminBillingCustomer {
+function serializeBillingCustomer(
+  customer: ListCustomersList,
+): AdminBillingCustomer {
   return {
-    id: customer.id,
+    id: customer.id ?? "unknown",
     name: customer.name ?? null,
     email: customer.email ?? null,
-    createdAt: customer.createdAt ? new Date(customer.createdAt).toISOString() : null,
+    createdAt: customer.createdAt
+      ? new Date(customer.createdAt).toISOString()
+      : null,
     subscriptions: customer.subscriptions.length,
     purchases: customer.purchases.length,
-    balances: customer.balances,
+    balances: customer.balances as Record<string, unknown>,
   };
 }
 
@@ -55,49 +63,56 @@ function serializeBillingCustomer(customer: ListCustomersList): AdminBillingCust
  */
 export async function loadBillingData(input: {
   actor: AdminAuditActor;
+  page: number;
   searchTerm: string;
 }): Promise<BillingData> {
   const client = getAutumnAdminClient();
 
   if (!client) {
     await writeAdminAuditLog({
-      action: 'admin.billing.view',
+      action: "admin.billing.view",
       actor: input.actor,
-      resourceType: 'billing',
+      resourceType: "billing",
       resourceId: null,
-      result: 'unavailable',
+      result: "unavailable",
     });
 
     return {
-      isAvailable: false,
       customers: [],
+      hasNextPage: false,
+      isAvailable: false,
+      page: input.page,
+      pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
       total: 0,
       totalCount: 0,
     };
   }
 
   const response = await client.customers.list({
-    limit: 25,
-    offset: 0,
+    limit: ADMIN_DIRECTORY_PAGE_SIZE,
+    offset: getPaginationOffset(input.page, ADMIN_DIRECTORY_PAGE_SIZE),
     search: input.searchTerm || undefined,
   });
 
   await writeAdminAuditLog({
-    action: 'admin.billing.view',
+    action: "admin.billing.view",
     actor: input.actor,
     metadata: {
       hasSearch: Boolean(input.searchTerm),
     },
-    resourceType: 'billing',
+    resourceType: "billing",
     resourceId: null,
-    result: 'success',
+    result: "success",
   });
 
   return {
-    isAvailable: true,
     customers: response.list.map(serializeBillingCustomer),
+    hasNextPage:
+      input.page * ADMIN_DIRECTORY_PAGE_SIZE < response.totalFilteredCount,
+    isAvailable: true,
+    page: input.page,
+    pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
     total: response.total,
     totalCount: response.totalFilteredCount,
   };
 }
-
