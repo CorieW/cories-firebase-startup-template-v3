@@ -6,6 +6,9 @@ import { Link } from '@tanstack/react-router';
 import {
   badgeClass,
   cardClass,
+  dangerCardClass,
+  dangerMutedTextClass,
+  dangerTextClass,
   primaryButtonClass,
   secondaryButtonClass,
   subtleCardClass,
@@ -94,6 +97,7 @@ interface AdminEmptyStateProps {
   actionLabel?: string;
   description: string;
   title: string;
+  tone?: 'default' | 'danger';
 }
 
 /**
@@ -104,14 +108,27 @@ export function AdminEmptyState({
   actionLabel,
   description,
   title,
+  tone = 'default',
 }: AdminEmptyStateProps) {
+  const isDanger = tone === 'danger';
+
   return (
-    <div className={`${subtleCardClass} flex flex-col gap-4 p-6 text-sm`}>
+    <div
+      className={`${isDanger ? dangerCardClass : subtleCardClass} flex flex-col gap-4 p-6 text-sm`}
+    >
       <div className='space-y-2'>
-        <h2 className='m-0 text-lg font-semibold tracking-[-0.02em]'>
+        <h2
+          className={`m-0 text-lg font-semibold tracking-[-0.02em] ${
+            isDanger ? dangerTextClass : ''
+          }`}
+        >
           {title}
         </h2>
-        <p className='m-0 max-w-2xl leading-6 text-[var(--admin-ink-soft)]'>
+        <p
+          className={`m-0 max-w-2xl leading-6 ${
+            isDanger ? dangerMutedTextClass : 'text-[var(--admin-ink-soft)]'
+          }`}
+        >
           {description}
         </p>
       </div>
@@ -196,6 +213,7 @@ export function AdminPagination({
 interface AdminKeyValueListProps {
   items: Array<{
     label: string;
+    tone?: 'default' | 'danger';
     value: ReactNode;
   }>;
 }
@@ -206,19 +224,31 @@ interface AdminKeyValueListProps {
 export function AdminKeyValueList({ items }: AdminKeyValueListProps) {
   return (
     <dl className='grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
-      {items.map(item => (
-        <div
-          key={item.label}
-          className={`${subtleCardClass} space-y-1 p-4 text-sm`}
-        >
-          <dt className='text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-            {item.label}
-          </dt>
-          <dd className='m-0 break-words text-[var(--admin-ink)]'>
-            {item.value}
-          </dd>
-        </div>
-      ))}
+      {items.map(item => {
+        const isDanger = item.tone === 'danger';
+
+        return (
+          <div
+            key={item.label}
+            className={`${isDanger ? dangerCardClass : subtleCardClass} space-y-1 p-4 text-sm`}
+          >
+            <dt
+              className={`text-[0.72rem] font-semibold uppercase tracking-[0.08em] ${
+                isDanger ? dangerMutedTextClass : 'text-[var(--admin-ink-soft)]'
+              }`}
+            >
+              {item.label}
+            </dt>
+            <dd
+              className={`m-0 break-words ${
+                isDanger ? dangerTextClass : 'text-[var(--admin-ink)]'
+              }`}
+            >
+              {item.value}
+            </dd>
+          </div>
+        );
+      })}
     </dl>
   );
 }
@@ -227,6 +257,12 @@ interface AdminJsonPreviewProps {
   description?: string;
   title: string;
   value: unknown;
+}
+
+interface AdminRedactedBlockProps {
+  children: ReactNode;
+  description: string;
+  title: string;
 }
 
 /**
@@ -243,5 +279,32 @@ export function AdminJsonPreview({
         {formatAdminJson(value)}
       </pre>
     </AdminPanel>
+  );
+}
+
+/**
+ * Visibly masks sensitive content when the admin app cannot safely show it.
+ */
+export function AdminRedactedBlock({
+  children,
+  description,
+  title,
+}: AdminRedactedBlockProps) {
+  return (
+    <div className='relative overflow-hidden rounded-[20px]'>
+      <div className='pointer-events-none select-none opacity-45 blur-[2px]'>
+        {children}
+      </div>
+      <div className='absolute inset-0 flex items-center justify-center p-4'>
+        <div className='w-full rounded-[20px] border border-[color-mix(in_srgb,var(--admin-danger)_26%,transparent)] bg-[color-mix(in_srgb,var(--admin-danger)_16%,white)] bg-[repeating-linear-gradient(135deg,color-mix(in_srgb,var(--admin-danger)_10%,transparent)_0,color-mix(in_srgb,var(--admin-danger)_10%,transparent)_14px,transparent_14px,transparent_28px)] p-5 text-center shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--admin-danger)_8%,transparent)] backdrop-blur-[2px]'>
+          <p className='m-0 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--admin-danger)]'>
+            {title}
+          </p>
+          <p className='mt-2 mb-0 text-sm leading-6 text-[color-mix(in_srgb,var(--admin-danger)_82%,black_18%)]'>
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

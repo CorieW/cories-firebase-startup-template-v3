@@ -10,6 +10,7 @@ Unit tests for shared admin helper modules that do not need full route or server
 
 - `pagination.test.ts`: Verifies admin pagination normalization and list slicing helpers.
 - `route-guards.test.ts`: Verifies public-route classification and pathname normalization for admin guards.
+- `user-data.test.ts`: Verifies admin user billing summary normalization for Autumn wallet visibility.
 
 ## Writing Rules
 

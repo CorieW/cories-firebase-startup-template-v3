@@ -9,6 +9,7 @@ import {
   getUserPath,
   normalizeSearchValue,
 } from "@cories-firebase-startup-template-v3/common";
+import type { Balance, ListCustomersList } from "autumn-js";
 import {
   ADMIN_DIRECTORY_PAGE_SIZE,
   getPaginationOffset,
@@ -18,10 +19,14 @@ import {
 } from "../pagination";
 import { firestore } from "./auth-server.firebase";
 import { writeAdminAuditLog, type AdminAuditActor } from "./audit-log";
+import { getAutumnAdminClient } from "./billing-data";
 import {
   serializeFirestoreRecord,
   toIsoString,
 } from "./firestore-serialization";
+
+const AUTUMN_USER_CUSTOMER_SCOPE = "user";
+const AUTUMN_WALLET_FEATURE_ID = "usd_credits";
 
 export interface AdminUserDirectoryItem {
   createdAt: string | null;
@@ -43,8 +48,31 @@ export interface AdminUserMembership {
 export interface AdminUserDetail {
   appUser: Record<string, unknown> | null;
   authUser: Record<string, unknown> | null;
+  billing: AdminUserBillingSummary;
   id: string;
   memberships: AdminUserMembership[];
+}
+
+export type AdminUserBillingStatus =
+  | "error"
+  | "missing-customer"
+  | "missing-wallet"
+  | "not-configured"
+  | "ready";
+
+export interface AdminUserWalletBalance {
+  featureId: string;
+  featureName: string | null;
+  granted: number;
+  nextResetAt: string | null;
+  remaining: number;
+  usage: number;
+}
+
+export interface AdminUserBillingSummary {
+  customerId: string;
+  status: AdminUserBillingStatus;
+  walletBalance: AdminUserWalletBalance | null;
 }
 
 function dedupeDirectoryItems(items: AdminUserDirectoryItem[]) {
@@ -75,6 +103,121 @@ function toDirectoryItem(input: {
     createdAt: toIsoString(input.authUser.createdAt),
     memberCount: input.memberCount ?? 0,
   };
+}
+
+/**
+ * Builds the Autumn customer id used for a personal user wallet.
+ */
+export function getAutumnUserCustomerId(userId: string): string {
+  return `${AUTUMN_USER_CUSTOMER_SCOPE}-${userId}`;
+}
+
+function toAutumnIsoString(value: number | null | undefined): string | null {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return null;
+  }
+
+  return new Date(value).toISOString();
+}
+
+function getWalletBalance(
+  customer: Pick<ListCustomersList, "balances">,
+): Balance | null {
+  const directBalance = customer.balances?.[AUTUMN_WALLET_FEATURE_ID];
+  if (directBalance) {
+    return directBalance;
+  }
+
+  return (
+    Object.values(customer.balances ?? {}).find((balance) => {
+      return (
+        balance.featureId === AUTUMN_WALLET_FEATURE_ID ||
+        balance.feature?.id === AUTUMN_WALLET_FEATURE_ID
+      );
+    }) ?? null
+  );
+}
+
+function serializeUserWalletBalance(balance: Balance): AdminUserWalletBalance {
+  return {
+    featureId: balance.featureId,
+    featureName: balance.feature?.name ?? null,
+    granted: balance.granted,
+    nextResetAt: toAutumnIsoString(balance.nextResetAt),
+    remaining: balance.remaining,
+    usage: balance.usage,
+  };
+}
+
+/**
+ * Normalizes a searched Autumn customer list into the wallet state shown on
+ * the admin user detail page.
+ */
+export function summarizeAdminUserBilling(input: {
+  customerId: string;
+  customers: ListCustomersList[];
+}): AdminUserBillingSummary {
+  const customer =
+    input.customers.find((entry) => entry.id === input.customerId) ?? null;
+
+  if (!customer) {
+    return {
+      customerId: input.customerId,
+      status: "missing-customer",
+      walletBalance: null,
+    };
+  }
+
+  const walletBalance = getWalletBalance(customer);
+  if (!walletBalance) {
+    return {
+      customerId: input.customerId,
+      status: "missing-wallet",
+      walletBalance: null,
+    };
+  }
+
+  return {
+    customerId: input.customerId,
+    status: "ready",
+    walletBalance: serializeUserWalletBalance(walletBalance),
+  };
+}
+
+/**
+ * Reads the personal Autumn wallet state for an admin user detail page.
+ */
+async function loadAdminUserBillingSummary(
+  userId: string,
+): Promise<AdminUserBillingSummary> {
+  const customerId = getAutumnUserCustomerId(userId);
+  const client = getAutumnAdminClient();
+
+  if (!client) {
+    return {
+      customerId,
+      status: "not-configured",
+      walletBalance: null,
+    };
+  }
+
+  try {
+    const response = await client.customers.list({
+      limit: 10,
+      search: customerId,
+    });
+
+    return summarizeAdminUserBilling({
+      customerId,
+      customers: response.list,
+    });
+  } catch {
+    return {
+      customerId,
+      status: "error",
+      walletBalance: null,
+    };
+  }
 }
 
 /**
@@ -185,14 +328,31 @@ export async function loadUserDetail(input: {
     .map((doc) => doc.data().organizationId)
     .filter((value): value is string => typeof value === "string");
 
-  const organizationSnapshots = await Promise.all(
-    organizationIds.map((organizationId) =>
-      firestore
-        .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
-        .doc(organizationId)
-        .get(),
+  const [organizationSnapshots, billing] = await Promise.all([
+    Promise.all(
+      organizationIds.map((organizationId) =>
+        firestore
+          .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
+          .doc(organizationId)
+          .get(),
+      ),
     ),
-  );
+    loadAdminUserBillingSummary(input.userId),
+  ]);
+
+  const hasWalletBalance = Boolean(billing.walletBalance);
+
+  await writeAdminAuditLog({
+    action: "admin.user.view",
+    actor: input.actor,
+    metadata: {
+      billingStatus: billing.status,
+      hasWalletBalance,
+    },
+    resourceType: "user",
+    resourceId: input.userId,
+    result: "success",
+  });
 
   const organizationNames = new Map(
     organizationSnapshots
@@ -205,18 +365,11 @@ export async function loadUserDetail(input: {
       ]),
   );
 
-  await writeAdminAuditLog({
-    action: "admin.user.view",
-    actor: input.actor,
-    resourceType: "user",
-    resourceId: input.userId,
-    result: "success",
-  });
-
   return {
     id: input.userId,
     authUser: serializeFirestoreRecord(authUserSnapshot.data()),
     appUser: serializeFirestoreRecord(appUserSnapshot.data()),
+    billing,
     memberships: membershipSnapshot.docs.map((doc) => {
       const data = doc.data();
 

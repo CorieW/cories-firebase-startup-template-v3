@@ -17,7 +17,13 @@ import {
 } from '../lib/formatting';
 import { normalizePaginationPage } from '../lib/pagination';
 import type { BillingData } from '../lib/server/billing-data';
-import { secondaryButtonClass, textInputClass } from '../lib/ui';
+import {
+  dangerCardClass,
+  dangerMutedTextClass,
+  dangerTextClass,
+  secondaryButtonClass,
+  textInputClass,
+} from '../lib/ui';
 
 interface BillingSearchParams {
   page?: unknown;
@@ -112,12 +118,14 @@ function BillingPage() {
       </AdminPanel>
 
       {!billing.isAvailable ? (
-        <div className='flex flex-col gap-4 rounded-[20px] border border-[color-mix(in_srgb,var(--admin-danger)_26%,transparent)] bg-[color-mix(in_srgb,var(--admin-danger)_10%,white)] p-6 text-sm'>
+        <div className={`${dangerCardClass} flex flex-col gap-4 p-6 text-sm`}>
           <div className='space-y-2'>
-            <h2 className='m-0 text-lg font-semibold tracking-[-0.02em] text-[var(--admin-danger)]'>
+            <h2
+              className={`m-0 text-lg font-semibold tracking-[-0.02em] ${dangerTextClass}`}
+            >
               Billing integration is not configured
             </h2>
-            <p className='m-0 max-w-2xl leading-6 text-[color-mix(in_srgb,var(--admin-danger)_82%,black_18%)]'>
+            <p className={`m-0 max-w-2xl leading-6 ${dangerMutedTextClass}`}>
               Set `AUTUMN_SECRET_KEY` in packages/admin/.env to unlock this page
               locally.
             </p>

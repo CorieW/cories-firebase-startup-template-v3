@@ -13,6 +13,14 @@ export const cardClass =
 export const subtleCardClass =
   "rounded-[20px] border border-[color-mix(in_srgb,var(--admin-line)_82%,transparent)] bg-[color-mix(in_srgb,var(--admin-surface-muted)_84%,var(--admin-surface)_16%)]";
 
+export const dangerCardClass =
+  "rounded-[20px] border border-[color-mix(in_srgb,var(--admin-danger)_26%,transparent)] bg-[color-mix(in_srgb,var(--admin-danger)_10%,white)]";
+
+export const dangerTextClass = "text-[var(--admin-danger)]";
+
+export const dangerMutedTextClass =
+  "text-[color-mix(in_srgb,var(--admin-danger)_82%,black_18%)]";
+
 export const textInputClass =
   "w-full rounded-[16px] border border-[var(--admin-line)] bg-[var(--admin-surface)] px-4 py-3 text-sm text-[var(--admin-ink)] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] outline-none transition focus:border-[var(--admin-primary)] focus:ring-4 focus:ring-[var(--admin-primary-soft)]";
 

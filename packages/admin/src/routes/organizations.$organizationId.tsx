@@ -1,7 +1,7 @@
 /**
  * Organization detail route for read-only admin inspection.
  */
-import { Link, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import {
   AdminEmptyState,
   AdminJsonPreview,
@@ -13,7 +13,6 @@ import { loadOrganizationDetailServer } from '../lib/admin-data';
 import { requireActiveAdmin } from '../lib/admin-auth';
 import { formatAdminDateTime, formatAdminText } from '../lib/formatting';
 import type { AdminOrganizationDetail } from '../lib/server/organization-data';
-import { ADMIN_ORGANIZATIONS_ROUTE_PATH } from '../lib/route-paths';
 import { badgeClass } from '../lib/ui';
 
 export const Route = createFileRoute('/organizations/$organizationId')({
@@ -46,19 +45,8 @@ function OrganizationDetailPage() {
         <AdminEmptyState
           description='Check the organization id and try the directory search again.'
           title='No organization record was found'
+          tone='danger'
         />
-        <div>
-          <Link
-            className='font-semibold text-[var(--admin-primary)]'
-            search={{
-              page: 1,
-              search: '',
-            }}
-            to={ADMIN_ORGANIZATIONS_ROUTE_PATH}
-          >
-            Return to organization directory
-          </Link>
-        </div>
       </div>
     );
   }
@@ -186,19 +174,6 @@ function OrganizationDetailPage() {
         title='Organization record'
         value={detail.organization}
       />
-
-      <div>
-        <Link
-          className='font-semibold text-[var(--admin-primary)]'
-          search={{
-            page: 1,
-            search: '',
-          }}
-          to={ADMIN_ORGANIZATIONS_ROUTE_PATH}
-        >
-          Return to organization directory
-        </Link>
-      </div>
     </div>
   );
 }

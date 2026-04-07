@@ -155,6 +155,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - Better Auth runs inside the dashboard Nitro server at `/api/auth/*`
 - The admin app runs its own Better Auth server at `/api/auth/*` and expects admin users to already exist in Better Auth plus be allowlisted in Firestore `app_admins/{uid}` with `role: "admin"`
 - Admin listing routes keep pagination state in URL search params so filters and page position can be shared directly
+- The admin user detail page can also show a read-only personal Autumn wallet balance when `AUTUMN_SECRET_KEY` is configured for the admin app
 - Better Auth UI owns sign-in, sign-up, account, organization, member, and invitation flows
 - Autumn owns subscription checkout, billing portal, invoices, and seat-linked billing state
 - App-owned profile documents live in Firestore `users/{id}`, while Better Auth writes auth and organization data to `auth_*` collections
