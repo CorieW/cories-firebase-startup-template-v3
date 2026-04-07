@@ -68,10 +68,11 @@ Admin env (`packages/admin/.env`):
 - Required now: `APP_URL`, `BETTER_AUTH_SECRET`, `FIREBASE_PROJECT_ID`
 - `APP_URL` should normally stay `http://localhost:3002` for local development.
 - `BETTER_AUTH_SECRET` should match the dashboard value so admin auth tokens are compatible across both apps.
-- Optional now or later: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTUMN_SECRET_KEY`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
+- Optional now or later: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTUMN_SECRET_KEY`, `AUTUMN_ADMIN_URL`, `FIREBASE_CONSOLE_URL`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
 - Leave `FIRESTORE_EMULATOR_HOST="127.0.0.1:8080"` in place for local emulator usage unless you intentionally changed the Firestore emulator port.
 - `FIREBASE_CLIENT_EMAIL` and `FIREBASE_PRIVATE_KEY` can stay unset locally when you are using the emulator or application default credentials.
 - If you are not setting up Google OAuth, Autumn, or Resend yet, delete those placeholder values or leave them unset. The admin app treats non-empty values as configured.
+- `AUTUMN_ADMIN_URL` and `FIREBASE_CONSOLE_URL` power optional sidebar links to those external admin tools. Leave them unset if you do not want those shortcuts yet.
 
 Backend env (`packages/back/.env`):
 
@@ -132,7 +133,9 @@ firebase apphosting:backends:create --project <your-project-id>
 
 1. Customize the template for your product.
 
+- Refresh the marketing page layout, storytelling, and visual tokens in `packages/marketing/src/components/marketing` and `packages/marketing/src/styles.css`
 - Update branding, colors, copy, and static assets in `packages/dashboard`
+- Adjust the shared dashboard visual tokens in `packages/dashboard/src/styles.css` and reusable dashboard surface/action classes in `packages/dashboard/src/lib/ui.ts`
 - Update SEO-related files in `packages/dashboard/index.html` and `packages/dashboard/public`
 - Update shared user-facing messages in `packages/common/src/messages/messages.json`
 - Implement or extend backend callables and triggers in `packages/back/src`
@@ -154,6 +157,7 @@ firebase apphosting:backends:create --project <your-project-id>
 
 - Better Auth runs inside the dashboard Nitro server at `/api/auth/*`
 - The admin app runs its own Better Auth server at `/api/auth/*` and expects admin users to already exist in Better Auth plus be allowlisted in Firestore `app_admins/{uid}` with `role: "admin"`
+- The admin shell uses a fixed dark theme to keep the internal tooling visual treatment consistent
 - Admin listing routes keep pagination state in URL search params so filters and page position can be shared directly
 - The admin user detail page can also show a read-only personal Autumn wallet balance when `AUTUMN_SECRET_KEY` is configured for the admin app
 - Better Auth UI owns sign-in, sign-up, account, organization, member, and invitation flows
@@ -177,6 +181,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - Integration tests: `pnpm test:integration`
 - CI-equivalent test run: `pnpm test:ci`
 - E2E tests: `pnpm test:e2e`
+- Admin E2E tests: `pnpm --dir packages/admin test:e2e`
 - Coverage: `pnpm test:coverage`
 
 ## Deployment
