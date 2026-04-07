@@ -68,11 +68,11 @@ Admin env (`packages/admin/.env`):
 - Required now: `APP_URL`, `BETTER_AUTH_SECRET`, `FIREBASE_PROJECT_ID`
 - `APP_URL` should normally stay `http://localhost:3002` for local development.
 - `BETTER_AUTH_SECRET` should match the dashboard value so admin auth tokens are compatible across both apps.
-- Optional now or later: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTUMN_SECRET_KEY`, `AUTUMN_ADMIN_URL`, `FIREBASE_CONSOLE_URL`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
+- Optional now or later: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTUMN_SECRET_KEY`, `ADMIN_EXTERNAL_TOOLS`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
 - Leave `FIRESTORE_EMULATOR_HOST="127.0.0.1:8080"` in place for local emulator usage unless you intentionally changed the Firestore emulator port.
 - `FIREBASE_CLIENT_EMAIL` and `FIREBASE_PRIVATE_KEY` can stay unset locally when you are using the emulator or application default credentials.
 - If you are not setting up Google OAuth, Autumn, or Resend yet, delete those placeholder values or leave them unset. The admin app treats non-empty values as configured.
-- `AUTUMN_ADMIN_URL` and `FIREBASE_CONSOLE_URL` power optional sidebar links to those external admin tools. Leave them unset if you do not want those shortcuts yet.
+- `ADMIN_EXTERNAL_TOOLS` powers the optional admin sidebar shortcuts and accepts a JSON array like `[{"label":"Firebase","href":"https://console.firebase.google.com/project/your-project-id/overview"},{"label":"Autumn","href":"https://app.useautumn.com"}]`.
 
 Backend env (`packages/back/.env`):
 
@@ -136,6 +136,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - Refresh the marketing page layout, storytelling, and visual tokens in `packages/marketing/src/components/marketing` and `packages/marketing/src/styles.css`
 - Update branding, colors, copy, and static assets in `packages/dashboard`
 - Adjust the shared dashboard visual tokens in `packages/dashboard/src/styles.css` and reusable dashboard surface/action classes in `packages/dashboard/src/lib/ui.ts`
+- Reuse shared frontend brand and theme helpers from `packages/common/src/client` before duplicating UI lockups or browser theme logic in app packages
 - Update SEO-related files in `packages/dashboard/index.html` and `packages/dashboard/public`
 - Update shared user-facing messages in `packages/common/src/messages/messages.json`
 - Implement or extend backend callables and triggers in `packages/back/src`
@@ -160,7 +161,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - The admin shell uses a fixed dark theme to keep the internal tooling visual treatment consistent
 - Admin listing routes keep pagination state in URL search params so filters and page position can be shared directly
 - The admin user detail page can also show a read-only personal Autumn wallet balance when `AUTUMN_SECRET_KEY` is configured for the admin app
-- Admin Playwright coverage seeds Firestore auth and admin records locally, then switches between billing-unavailable and real Autumn-backed billing assertions based on whether the admin test environment exposes `AUTUMN_SECRET_KEY`
+- Admin Playwright coverage seeds Firestore auth and admin records locally, then enables Autumn-backed billing assertions for user and organization detail views when the admin test environment exposes `AUTUMN_SECRET_KEY`
 - Better Auth UI owns sign-in, sign-up, account, organization, member, and invitation flows
 - Autumn owns subscription checkout, billing portal, invoices, and seat-linked billing state
 - App-owned profile documents live in Firestore `users/{id}`, while Better Auth writes auth and organization data to `auth_*` collections
