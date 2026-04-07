@@ -2,9 +2,11 @@
   "compilerOptions": {
     "module": "CommonJS",
     "moduleResolution": "node",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "./lib",

@@ -1,0 +1,101 @@
+/* Marketing design tokens and base styles. */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+@layer theme, base, utilities;
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --bg: #f4f0e8;
+  --surface: #fcfaf6;
+  --surface-soft: #f4efe5;
+  --surface-emphasis: #ebe3d6;
+  --ink: #171412;
+  --ink-soft: #6d6458;
+  --line: #ece4d9;
+  --line-strong: #dcccb5;
+  --primary: #c7a03b;
+  --primary-ink: #18120a;
+  --accent: #8b7b60;
+  --ring: rgba(199, 160, 59, 0.24);
+  --hero-a: rgba(199, 160, 59, 0.16);
+  --hero-b: rgba(23, 20, 18, 0.08);
+  --hero-c: rgba(255, 255, 255, 0.52);
+  --success: #166534;
+  --info: #1d4ed8;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #15120f;
+  --surface: #1d1915;
+  --surface-soft: #24201b;
+  --surface-emphasis: #2c2721;
+  --ink: #f6efe4;
+  --ink-soft: #b7ac9b;
+  --line: #342c23;
+  --line-strong: #514533;
+  --primary: #d2b05a;
+  --primary-ink: #171109;
+  --accent: #948467;
+  --ring: rgba(210, 176, 90, 0.26);
+  --hero-a: rgba(210, 176, 90, 0.14);
+  --hero-b: rgba(255, 255, 255, 0.06);
+  --hero-c: rgba(36, 32, 27, 0.64);
+  --success: #86efac;
+  --info: #93c5fd;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  ::selection {
+    background: rgba(199, 160, 59, 0.22);
+  }
+}
+
+@layer utilities {
+  .marketing-main {
+    padding-block: clamp(2rem, 4vw, 3.25rem) clamp(5rem, 8vw, 7rem);
+  }
+
+  .marketing-section {
+    padding-block: clamp(4.5rem, 8vw, 6.5rem);
+  }
+
+  .marketing-section-tight {
+    padding-block: clamp(3rem, 6vw, 4.25rem);
+  }
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- Static HTML entrypoint for the marketing app. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Starter Marketing</title>
+    <meta
+      name="description"
+      content="A polished marketing site for the Firebase Starter template."
+    />
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var parse = function (value) {
+          return value === 'light' || value === 'dark' || value === 'system'
+            ? value
+            : null;
+        };
+        var preference =
+          parse(window.localStorage.getItem('theme')) || 'system';
+        var prefersDark =
+          window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var resolved =
+          preference === 'system'
+            ? prefersDark
+              ? 'dark'
+              : 'light'
+            : preference;
+
+        root.classList.remove('light', 'dark');
+        root.classList.add(resolved);
+        root.setAttribute('data-theme', resolved);
+        root.setAttribute('data-theme-preference', preference);
+        root.style.colorScheme = resolved;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

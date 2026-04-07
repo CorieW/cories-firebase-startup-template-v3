@@ -1,20 +1,21 @@
 /**
- * Theme switcher component.
+ * Theme switcher component for the marketing site.
  */
 import { SharedThemeToggle } from "../../../common/src/client";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { useToast } from "./toast/ToastProvider";
+import { logMarketingEvent } from "../lib/marketing-logging";
 
 interface ThemeToggleProps {
   fullWidth?: boolean;
 }
 
-export default function ThemeToggle({ fullWidth = true }: ThemeToggleProps) {
-  const { toast } = useToast();
-
+/**
+ * Lets visitors switch between light, dark, and system modes.
+ */
+export default function ThemeToggle({ fullWidth = false }: ThemeToggleProps) {
   return (
     <SharedThemeToggle
-      buttonClassName="min-h-8"
+      buttonClassName="min-h-9"
       fullWidth={fullWidth}
       icons={{
         light: Sun,
@@ -22,9 +23,8 @@ export default function ThemeToggle({ fullWidth = true }: ThemeToggleProps) {
         system: Monitor,
       }}
       onModeChange={(nextMode) => {
-        toast.info({
-          title: "Theme updated",
-          description: `Switched to ${nextMode} mode.`,
+        logMarketingEvent("themeChange", {
+          preference: nextMode,
         });
       }}
     />

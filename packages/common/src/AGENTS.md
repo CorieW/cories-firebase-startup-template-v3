@@ -4,6 +4,7 @@ Published shared source used by both frontend and backend packages.
 
 ## Directories
 
+- `client/`: Shared browser-only UI components and helpers for frontend packages.
 - `client-api/`: Client-facing API surface exported by the common package.
 - `messages/`: Shared user-facing message catalog and helpers.
 - `schemas/`: Shared validation schema exports.

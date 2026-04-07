@@ -16,6 +16,12 @@
       "import": "./lib/index.js",
       "require": "./lib/index.js",
       "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/client/index.d.ts",
+      "import": "./lib/client/index.js",
+      "require": "./lib/client/index.js",
+      "default": "./lib/client/index.js"
     }
   },
   "files": [
@@ -23,5 +29,11 @@
     "README.md",
     "package.json"
   ],
+  "dependencies": {
+    "react": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0"
+  },
   "private": true
 }

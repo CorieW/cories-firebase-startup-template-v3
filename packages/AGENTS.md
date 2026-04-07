@@ -7,6 +7,7 @@ Monorepo workspace container for backend, common, and dashboard packages.
 - `back/`: Firebase Functions backend workspace.
 - `common/`: Shared types, utilities, and repo-contract tests.
 - `dashboard/`: TanStack Start dashboard workspace.
+- `marketing/`: Static React marketing site workspace.
 
 ## Files
 
