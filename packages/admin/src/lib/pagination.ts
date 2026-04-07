@@ -73,6 +73,7 @@ export function paginateItems<T>(
     items: items.slice(startIndex, endIndex),
     page: normalizedPage,
     pageSize,
+    totalCount: items.length,
   };
 }
 

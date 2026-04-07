@@ -146,6 +146,7 @@ function OrganizationsPage() {
                   });
                 }}
                 pageSize={organizations.pageSize}
+                totalCount={organizations.totalCount}
               />
             ) : null}
           </div>
@@ -191,6 +192,10 @@ function OrganizationsPage() {
                         <Link
                           className='font-semibold text-[var(--admin-primary)]'
                           params={{ organizationId: organization.id }}
+                          search={{
+                            page: search.page,
+                            search: search.search,
+                          }}
                           to='/organizations/$organizationId'
                         >
                           Open organization
@@ -214,6 +219,7 @@ function OrganizationsPage() {
                 });
               }}
               pageSize={organizations.pageSize}
+              totalCount={organizations.totalCount}
             />
           </div>
         )}

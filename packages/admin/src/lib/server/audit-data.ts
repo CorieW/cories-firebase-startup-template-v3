@@ -5,7 +5,6 @@ import type { QueryDocumentSnapshot } from "firebase-admin/firestore";
 import type { AdminAuditLogRecord } from "@cories-firebase-startup-template-v3/common";
 import {
   ADMIN_AUDIT_PAGE_SIZE,
-  getPaginationSliceBounds,
   paginateItems,
   type AdminPaginatedResult,
 } from "../pagination";
@@ -104,19 +103,11 @@ export async function loadAuditData(input: {
   filters: AuditFilters;
   page: number;
 }): Promise<AdminPaginatedResult<SerializedAdminAuditLog>> {
-  const { endIndex } = getPaginationSliceBounds(
-    input.page,
-    ADMIN_AUDIT_PAGE_SIZE,
-  );
-  const requiredMatchCount = endIndex + 1;
   const filteredEntries: SerializedAdminAuditLog[] = [];
   let lastDoc: QueryDocumentSnapshot | null = null;
   let scannedRows = 0;
 
-  while (
-    filteredEntries.length < requiredMatchCount &&
-    scannedRows < MAX_AUDIT_SCAN_ROWS
-  ) {
+  while (scannedRows < MAX_AUDIT_SCAN_ROWS) {
     const batchSize = Math.min(
       AUDIT_QUERY_BATCH_SIZE,
       MAX_AUDIT_SCAN_ROWS - scannedRows,

@@ -146,6 +146,7 @@ function UsersPage() {
                   });
                 }}
                 pageSize={users.pageSize}
+                totalCount={users.totalCount}
               />
             ) : null}
           </div>
@@ -190,6 +191,7 @@ function UsersPage() {
                         <Link
                           className='font-semibold text-[var(--admin-primary)]'
                           params={{ userId: user.id }}
+                          search={{ page: search.page, search: search.search }}
                           to='/users/$userId'
                         >
                           Open profile
@@ -213,6 +215,7 @@ function UsersPage() {
                 });
               }}
               pageSize={users.pageSize}
+              totalCount={users.totalCount}
             />
           </div>
         )}

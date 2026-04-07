@@ -201,6 +201,7 @@ function AuditPage() {
                   });
                 }}
                 pageSize={entries.pageSize}
+                totalCount={entries.totalCount}
               />
             ) : null}
           </div>
@@ -246,7 +247,7 @@ function AuditPage() {
                   <summary className='cursor-pointer text-sm font-semibold text-[var(--admin-primary)]'>
                     View metadata
                   </summary>
-                  <pre className='mt-3 overflow-x-auto rounded-[16px] bg-[#171311] p-4 text-xs leading-6 text-[#f8f2e8]'>
+                  <pre className='mt-3 overflow-x-auto rounded-[16px] border border-[var(--admin-line)] bg-[var(--admin-surface-muted)] p-4 text-xs leading-6 text-[var(--admin-ink)]'>
                     {formatAdminJson(entry.metadata)}
                   </pre>
                 </details>
@@ -269,6 +270,7 @@ function AuditPage() {
                 });
               }}
               pageSize={entries.pageSize}
+              totalCount={entries.totalCount}
             />
           </div>
         )}
