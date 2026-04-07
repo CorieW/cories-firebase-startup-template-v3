@@ -1,14 +1,13 @@
 /**
  * User detail route for read-only admin inspection.
  */
-import { createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import {
   AdminEmptyState,
   AdminJsonPreview,
   AdminKeyValueList,
   AdminPageHeader,
   AdminPanel,
-  AdminRedactedBlock,
 } from '../components/AdminElements';
 import { loadUserDetailServer } from '../lib/admin-data';
 import { requireActiveAdmin } from '../lib/admin-auth';
@@ -20,7 +19,12 @@ import {
 import type {
   AdminUserBillingSummary,
   AdminUserDetail,
+  AdminUserMembership,
 } from '../lib/server/user-data';
+import { secondaryButtonClass, subtleCardClass } from '../lib/ui';
+
+const DATA_UNAVAILABLE_DESCRIPTION =
+  'This data is unavailable right now. Check the admin billing configuration and customer state, then try again.';
 
 export const Route = createFileRoute('/users/$userId')({
   beforeLoad: async ({ location }) => {
@@ -62,15 +66,18 @@ function UserDetailPage() {
     detail.authUser && typeof detail.authUser === 'object'
       ? detail.authUser
       : {};
+  const organizations = getOrganizationsFromMemberships(detail.memberships);
   const walletBalance = detail.billing.walletBalance;
-  const shouldRedactSensitiveSections = detail.billing.status !== 'ready';
-  const redactionTitle = getSensitiveRedactionTitle(detail.billing);
-  const redactionDescription = getSensitiveRedactionDescription(detail.billing);
+  const shouldRedactBilling = detail.billing.status !== 'ready';
+  const shouldRedactAutumnSubscriptions =
+    detail.billing.status === 'error' ||
+    detail.billing.status === 'missing-customer' ||
+    detail.billing.status === 'not-configured';
 
   return (
     <div className='space-y-6 py-5'>
       <AdminPageHeader
-        description='Review Better Auth profile data, app-owned profile data, and organization memberships for a single user.'
+        description='Review Better Auth profile data, app-owned profile data, organization memberships, and Autumn subscriptions for a single user.'
         title={formatAdminText(
           typeof authUser.name === 'string' ? authUser.name : userId
         )}
@@ -106,55 +113,63 @@ function UserDetailPage() {
       </AdminPanel>
 
       <AdminPanel
+        description='Organizations linked to this user through Better Auth membership records.'
+        title={`Organizations (${organizations.length})`}
+      >
+        {organizations.length === 0 ? (
+          <AdminEmptyState
+            description='This user is not currently attached to any organizations.'
+            title='No organizations found'
+          />
+        ) : (
+          <div className='grid gap-4 lg:grid-cols-2'>
+            {organizations.map(organization => (
+              <article
+                key={organization.key}
+                className={`${subtleCardClass} flex flex-col gap-4 p-4`}
+              >
+                <div className='space-y-2'>
+                  <div>
+                    <h3 className='m-0 text-base font-semibold'>
+                      {formatAdminText(organization.organizationName)}
+                    </h3>
+                    <p className='mt-1 mb-0 break-all font-mono text-xs text-[var(--admin-ink-soft)]'>
+                      {formatAdminText(organization.organizationId)}
+                    </p>
+                  </div>
+                  <p className='m-0 text-sm text-[var(--admin-ink-soft)]'>
+                    Joined {formatAdminDateTime(organization.createdAt)}
+                  </p>
+                </div>
+
+                {organization.organizationId ? (
+                  <div>
+                    <Link
+                      className={secondaryButtonClass}
+                      params={{ organizationId: organization.organizationId }}
+                      search={{ page: 1, search: '' }}
+                      to='/organizations/$organizationId'
+                    >
+                      Open organization
+                    </Link>
+                  </div>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        )}
+      </AdminPanel>
+
+      <AdminPanel
         description='Personal Autumn wallet state for this user. This remains read-only and only loads when billing credentials are configured.'
         title='Wallet balance'
       >
-        {shouldRedactSensitiveSections ? (
-          <AdminRedactedBlock
-            description={redactionDescription}
-            title={redactionTitle}
-          >
-            <div className='space-y-4'>
-              <AdminKeyValueList
-                items={[
-                  {
-                    label: 'Autumn customer ID',
-                    value: detail.billing.customerId,
-                  },
-                  {
-                    label: 'Billing status',
-                    tone: 'danger',
-                    value: getBillingStatusLabel(detail.billing),
-                  },
-                  {
-                    label: 'Wallet balance',
-                    tone: 'danger',
-                    value: 'Unavailable',
-                  },
-                  {
-                    label: 'Granted',
-                    tone: 'danger',
-                    value: 'Unavailable',
-                  },
-                  {
-                    label: 'Used',
-                    tone: 'danger',
-                    value: 'Unavailable',
-                  },
-                  {
-                    label: 'Next reset',
-                    tone: 'danger',
-                    value: 'Unavailable',
-                  },
-                ]}
-              />
-              <AdminEmptyState
-                description={getBillingStatusDescription(detail.billing)}
-                title={getBillingStatusTitle(detail.billing)}
-                tone='danger'
-              />
-            </div>
-          </AdminRedactedBlock>
+        {shouldRedactBilling ? (
+          <AdminEmptyState
+            description={DATA_UNAVAILABLE_DESCRIPTION}
+            title='Data unavailable'
+            tone='danger'
+          />
         ) : (
           <AdminKeyValueList
             items={[
@@ -205,58 +220,21 @@ function UserDetailPage() {
       </AdminPanel>
 
       <AdminPanel
-        description='Memberships recorded by the Better Auth organization plugin.'
-        title={`Memberships (${detail.memberships.length})`}
+        description='Recurring Autumn plans currently attached to this user.'
+        title={`Autumn subscriptions (${detail.autumnSubscriptions.length})`}
       >
-        {shouldRedactSensitiveSections ? (
-          <AdminRedactedBlock
-            description={redactionDescription}
-            title={redactionTitle}
-          >
-            {detail.memberships.length === 0 ? (
-              <AdminEmptyState
-                description='This user is not currently attached to any organization memberships.'
-                title='No memberships found'
-              />
-            ) : (
-              <div className='overflow-x-auto'>
-                <table className='min-w-full border-separate border-spacing-0 text-sm'>
-                  <thead>
-                    <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-                      <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                        Organization
-                      </th>
-                      <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                        Role
-                      </th>
-                      <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                        Joined
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {detail.memberships.map(membership => (
-                      <tr key={membership.id}>
-                        <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
-                          {formatAdminText(membership.organizationName)}
-                        </td>
-                        <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top capitalize'>
-                          {formatAdminText(membership.role)}
-                        </td>
-                        <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
-                          {formatAdminDateTime(membership.createdAt)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </AdminRedactedBlock>
-        ) : detail.memberships.length === 0 ? (
+        {shouldRedactAutumnSubscriptions ? (
           <AdminEmptyState
-            description='This user is not currently attached to any organization memberships.'
-            title='No memberships found'
+            description={getAutumnSubscriptionsUnavailableDescription(
+              detail.billing
+            )}
+            title={getAutumnSubscriptionsUnavailableTitle(detail.billing)}
+            tone='danger'
+          />
+        ) : detail.autumnSubscriptions.length === 0 ? (
+          <AdminEmptyState
+            description='This user does not currently have any Autumn subscriptions.'
+            title='No Autumn subscriptions found'
           />
         ) : (
           <div className='overflow-x-auto'>
@@ -264,27 +242,71 @@ function UserDetailPage() {
               <thead>
                 <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
                   <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                    Organization
+                    Plan
                   </th>
                   <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                    Role
+                    Status
                   </th>
                   <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
-                    Joined
+                    Quantity
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Started
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Current period end
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {detail.memberships.map(membership => (
-                  <tr key={membership.id}>
+                {detail.autumnSubscriptions.map(subscription => (
+                  <tr key={subscription.id}>
                     <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
-                      {formatAdminText(membership.organizationName)}
-                    </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top capitalize'>
-                      {formatAdminText(membership.role)}
+                      <div className='font-medium'>
+                        {formatAdminText(
+                          subscription.planName ?? subscription.planId
+                        )}
+                      </div>
+                      <div className='mt-1 break-all font-mono text-xs text-[var(--admin-ink-soft)]'>
+                        {subscription.planId}
+                      </div>
                     </td>
                     <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
-                      {formatAdminDateTime(membership.createdAt)}
+                      <div className='capitalize'>
+                        {formatAdminText(subscription.status)}
+                      </div>
+                      {subscription.addOn ? (
+                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                          Add-on plan
+                        </div>
+                      ) : null}
+                      {subscription.pastDue ? (
+                        <div className='mt-1 text-xs text-[var(--admin-danger)]'>
+                          Past due
+                        </div>
+                      ) : null}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {subscription.quantity}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {formatAdminDateTime(subscription.startedAt)}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <div>
+                        {formatAdminDateTime(subscription.currentPeriodEnd)}
+                      </div>
+                      {subscription.trialEndsAt ? (
+                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                          Trial ends{' '}
+                          {formatAdminDateTime(subscription.trialEndsAt)}
+                        </div>
+                      ) : null}
+                      {subscription.expiresAt ? (
+                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                          Expires {formatAdminDateTime(subscription.expiresAt)}
+                        </div>
+                      ) : null}
                     </td>
                   </tr>
                 ))}
@@ -294,20 +316,79 @@ function UserDetailPage() {
         )}
       </AdminPanel>
 
-      <div className='grid gap-6 xl:grid-cols-2'>
-        <AdminJsonPreview
-          description='Serialized Better Auth user document.'
-          title='Auth user record'
-          value={detail.authUser}
-        />
-        <AdminJsonPreview
-          description='Serialized app-owned profile document from users/{id}.'
-          title='App user record'
-          value={detail.appUser}
-        />
-      </div>
+      <AdminJsonPreview
+        description='Serialized Better Auth user document.'
+        title='Auth user record'
+        value={detail.authUser}
+      />
     </div>
   );
+}
+
+interface AdminUserOrganizationSummary {
+  createdAt: string | null;
+  key: string;
+  organizationId: string | null;
+  organizationName: string | null;
+}
+
+/**
+ * Derives a user-facing organization list from the membership snapshot.
+ */
+function getOrganizationsFromMemberships(
+  memberships: AdminUserMembership[]
+): AdminUserOrganizationSummary[] {
+  const seenOrganizationIds = new Set<string>();
+  const organizations: AdminUserOrganizationSummary[] = [];
+
+  for (const membership of memberships) {
+    if (membership.organizationId) {
+      if (seenOrganizationIds.has(membership.organizationId)) {
+        continue;
+      }
+
+      seenOrganizationIds.add(membership.organizationId);
+    }
+
+    organizations.push({
+      key: membership.organizationId ?? membership.id,
+      organizationId: membership.organizationId,
+      organizationName: membership.organizationName,
+      createdAt: membership.createdAt,
+    });
+  }
+
+  return organizations;
+}
+
+function getAutumnSubscriptionsUnavailableTitle(
+  billing: AdminUserBillingSummary
+): string {
+  switch (billing.status) {
+    case 'missing-customer':
+      return 'Autumn customer not found';
+    case 'not-configured':
+      return 'Billing integration unavailable';
+    case 'error':
+      return 'Autumn lookup failed';
+    default:
+      return 'Data unavailable';
+  }
+}
+
+function getAutumnSubscriptionsUnavailableDescription(
+  billing: AdminUserBillingSummary
+): string {
+  switch (billing.status) {
+    case 'missing-customer':
+      return `No Autumn customer matched ${billing.customerId}, so there are no subscriptions to show for this user.`;
+    case 'not-configured':
+      return 'Set AUTUMN_SECRET_KEY in packages/admin/.env to load Autumn subscriptions in the admin app.';
+    case 'error':
+      return 'The admin app hit an error while loading Autumn subscriptions. Check the billing credentials and server logs, then try again.';
+    default:
+      return DATA_UNAVAILABLE_DESCRIPTION;
+  }
 }
 
 function getBillingStatusLabel(billing: AdminUserBillingSummary): string {
@@ -324,67 +405,5 @@ function getBillingStatusLabel(billing: AdminUserBillingSummary): string {
       return 'Wallet lookup failed';
     default:
       return 'Unavailable';
-  }
-}
-
-function getSensitiveRedactionTitle(billing: AdminUserBillingSummary): string {
-  switch (billing.status) {
-    case 'not-configured':
-      return 'Data unavailable';
-    case 'error':
-      return 'Data unavailable';
-    case 'missing-customer':
-      return 'Data unavailable';
-    case 'missing-wallet':
-      return 'Data unavailable';
-    default:
-      return 'Data unavailable';
-  }
-}
-
-function getSensitiveRedactionDescription(
-  billing: AdminUserBillingSummary
-): string {
-  switch (billing.status) {
-    case 'not-configured':
-      return 'Set AUTUMN_SECRET_KEY in packages/admin/.env before showing wallet balance and membership details on this page.';
-    case 'error':
-      return 'The admin app hit an error while loading sensitive user details. Check the server logs and billing credentials, then refresh.';
-    case 'missing-customer':
-      return `No Autumn customer matched ${billing.customerId}, so sensitive sections stay redacted until billing state is verified.`;
-    case 'missing-wallet':
-      return `Autumn returned ${billing.customerId} without a usd_credits wallet balance, so sensitive sections stay redacted until billing state is verified.`;
-    default:
-      return 'Sensitive data is available.';
-  }
-}
-
-function getBillingStatusTitle(billing: AdminUserBillingSummary): string {
-  switch (billing.status) {
-    case 'missing-wallet':
-      return 'Wallet balance not found';
-    case 'missing-customer':
-      return 'Billing customer not found';
-    case 'not-configured':
-      return 'Billing integration is not configured';
-    case 'error':
-      return 'Wallet lookup failed';
-    default:
-      return 'Wallet balance found';
-  }
-}
-
-function getBillingStatusDescription(billing: AdminUserBillingSummary): string {
-  switch (billing.status) {
-    case 'missing-wallet':
-      return `Autumn returned the customer ${billing.customerId}, but it did not include a usd_credits wallet balance.`;
-    case 'missing-customer':
-      return `No Autumn customer matched ${billing.customerId}. The user may not have opened billing yet, or their customer id may differ from the template default.`;
-    case 'not-configured':
-      return 'Set AUTUMN_SECRET_KEY in packages/admin/.env to load wallet balances in the admin app.';
-    case 'error':
-      return `The admin app could not load Autumn data for ${billing.customerId}. Check billing credentials and server logs, then try again.`;
-    default:
-      return 'Wallet balance found.';
   }
 }

@@ -7,19 +7,27 @@ import {
   getSearchPrefixBounds,
   normalizeSearchValue,
 } from "@cories-firebase-startup-template-v3/common";
+import type {
+  Balance,
+  ListCustomersList,
+  ListCustomersSubscription,
+} from "autumn-js";
 import {
   ADMIN_DIRECTORY_PAGE_SIZE,
   getPaginationOffset,
-  getPaginationSliceBounds,
   paginateItems,
   type AdminPaginatedResult,
 } from "../pagination";
 import { firestore } from "./auth-server.firebase";
 import { writeAdminAuditLog, type AdminAuditActor } from "./audit-log";
+import { getAutumnAdminClient } from "./billing-data";
 import {
   serializeFirestoreRecord,
   toIsoString,
 } from "./firestore-serialization";
+
+const AUTUMN_ORGANIZATION_CUSTOMER_SCOPE = "org";
+const AUTUMN_WALLET_FEATURE_ID = "usd_credits";
 
 export interface AdminOrganizationDirectoryItem {
   createdAt: string | null;
@@ -38,7 +46,47 @@ export interface AdminOrganizationMember {
   userId: string | null;
 }
 
+export interface AdminOrganizationAutumnSubscription {
+  addOn: boolean;
+  canceledAt: string | null;
+  currentPeriodEnd: string | null;
+  currentPeriodStart: string | null;
+  expiresAt: string | null;
+  id: string;
+  pastDue: boolean;
+  planId: string;
+  planName: string | null;
+  quantity: number;
+  startedAt: string | null;
+  status: string;
+  trialEndsAt: string | null;
+}
+
+export type AdminOrganizationBillingStatus =
+  | "error"
+  | "missing-customer"
+  | "missing-wallet"
+  | "not-configured"
+  | "ready";
+
+export interface AdminOrganizationWalletBalance {
+  featureId: string;
+  featureName: string | null;
+  granted: number;
+  nextResetAt: string | null;
+  remaining: number;
+  usage: number;
+}
+
+export interface AdminOrganizationBillingSummary {
+  customerId: string;
+  status: AdminOrganizationBillingStatus;
+  walletBalance: AdminOrganizationWalletBalance | null;
+}
+
 export interface AdminOrganizationDetail {
+  autumnSubscriptions: AdminOrganizationAutumnSubscription[];
+  billing: AdminOrganizationBillingSummary;
   id: string;
   memberRoleCounts: Record<string, number>;
   members: AdminOrganizationMember[];
@@ -66,21 +114,191 @@ function toDirectoryItem(input: {
 }
 
 /**
+ * Builds the Autumn customer id used for an organization wallet.
+ */
+export function getAutumnOrganizationCustomerId(
+  organizationId: string,
+): string {
+  return `${AUTUMN_ORGANIZATION_CUSTOMER_SCOPE}-${organizationId}`;
+}
+
+function toAutumnIsoString(value: number | null | undefined): string | null {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return null;
+  }
+
+  return new Date(value).toISOString();
+}
+
+function getWalletBalance(
+  customer: Pick<ListCustomersList, "balances">,
+): Balance | null {
+  const directBalance = customer.balances?.[AUTUMN_WALLET_FEATURE_ID];
+  if (directBalance) {
+    return directBalance;
+  }
+
+  return (
+    Object.values(customer.balances ?? {}).find((balance) => {
+      return (
+        balance.featureId === AUTUMN_WALLET_FEATURE_ID ||
+        balance.feature?.id === AUTUMN_WALLET_FEATURE_ID
+      );
+    }) ?? null
+  );
+}
+
+function serializeOrganizationWalletBalance(
+  balance: Balance,
+): AdminOrganizationWalletBalance {
+  return {
+    featureId: balance.featureId,
+    featureName: balance.feature?.name ?? null,
+    granted: balance.granted,
+    nextResetAt: toAutumnIsoString(balance.nextResetAt),
+    remaining: balance.remaining,
+    usage: balance.usage,
+  };
+}
+
+function serializeAutumnSubscription(
+  subscription: ListCustomersSubscription,
+): AdminOrganizationAutumnSubscription {
+  return {
+    id: subscription.id,
+    planId: subscription.planId,
+    planName: subscription.plan?.name ?? null,
+    status: subscription.status,
+    quantity: subscription.quantity,
+    addOn: subscription.addOn,
+    pastDue: subscription.pastDue,
+    startedAt: toAutumnIsoString(subscription.startedAt),
+    currentPeriodStart: toAutumnIsoString(subscription.currentPeriodStart),
+    currentPeriodEnd: toAutumnIsoString(subscription.currentPeriodEnd),
+    trialEndsAt: toAutumnIsoString(subscription.trialEndsAt),
+    expiresAt: toAutumnIsoString(subscription.expiresAt),
+    canceledAt: toAutumnIsoString(subscription.canceledAt),
+  };
+}
+
+function summarizeOrganizationBilling(input: {
+  customerId: string;
+  customers: ListCustomersList[];
+}): AdminOrganizationBillingSummary {
+  const customer =
+    input.customers.find((entry) => entry.id === input.customerId) ?? null;
+
+  if (!customer) {
+    return {
+      customerId: input.customerId,
+      status: "missing-customer",
+      walletBalance: null,
+    };
+  }
+
+  const walletBalance = getWalletBalance(customer);
+  if (!walletBalance) {
+    return {
+      customerId: input.customerId,
+      status: "missing-wallet",
+      walletBalance: null,
+    };
+  }
+
+  return {
+    customerId: input.customerId,
+    status: "ready",
+    walletBalance: serializeOrganizationWalletBalance(walletBalance),
+  };
+}
+
+function getAutumnCustomerById(input: {
+  customerId: string;
+  customers: ListCustomersList[];
+}): ListCustomersList | null {
+  return input.customers.find((entry) => entry.id === input.customerId) ?? null;
+}
+
+async function loadAdminOrganizationAutumnDetail(
+  organizationId: string,
+): Promise<{
+  billing: AdminOrganizationBillingSummary;
+  subscriptions: AdminOrganizationAutumnSubscription[];
+}> {
+  const customerId = getAutumnOrganizationCustomerId(organizationId);
+  const client = getAutumnAdminClient();
+
+  if (!client) {
+    return {
+      billing: {
+        customerId,
+        status: "not-configured",
+        walletBalance: null,
+      },
+      subscriptions: [],
+    };
+  }
+
+  try {
+    const response = await client.customers.list({
+      limit: 10,
+      search: customerId,
+    });
+    const customer = getAutumnCustomerById({
+      customerId,
+      customers: response.list,
+    });
+    const billing = summarizeOrganizationBilling({
+      customerId,
+      customers: response.list,
+    });
+
+    if (!customer) {
+      return {
+        billing,
+        subscriptions: [],
+      };
+    }
+
+    return {
+      billing,
+      subscriptions: customer.subscriptions.map(serializeAutumnSubscription),
+    };
+  } catch {
+    return {
+      billing: {
+        customerId,
+        status: "error",
+        walletBalance: null,
+      },
+      subscriptions: [],
+    };
+  }
+}
+
+/**
  * Lists organizations for the admin directory with exact-id and prefix search support.
  */
 export async function loadOrganizationDirectory(input: {
   page: number;
   searchTerm: string;
 }): Promise<AdminPaginatedResult<AdminOrganizationDirectoryItem>> {
-  const normalizedSearch = normalizeSearchValue(input.searchTerm);
+  const exactSearch = input.searchTerm.trim();
+  const normalizedSearch = normalizeSearchValue(exactSearch);
 
   if (!normalizedSearch) {
-    const snapshot = await firestore
-      .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
-      .orderBy("createdAt", "desc")
-      .offset(getPaginationOffset(input.page, ADMIN_DIRECTORY_PAGE_SIZE))
-      .limit(ADMIN_DIRECTORY_PAGE_SIZE + 1)
-      .get();
+    const [snapshot, totalSnapshot] = await Promise.all([
+      firestore
+        .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
+        .orderBy("createdAt", "desc")
+        .offset(getPaginationOffset(input.page, ADMIN_DIRECTORY_PAGE_SIZE))
+        .limit(ADMIN_DIRECTORY_PAGE_SIZE + 1)
+        .get(),
+      firestore
+        .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
+        .count()
+        .get(),
+    ]);
 
     return {
       hasNextPage: snapshot.docs.length > ADMIN_DIRECTORY_PAGE_SIZE,
@@ -92,23 +310,17 @@ export async function loadOrganizationDirectory(input: {
       ),
       page: input.page,
       pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
+      totalCount: totalSnapshot.data().count,
     };
   }
 
-  const { endIndex } = getPaginationSliceBounds(
-    input.page,
-    ADMIN_DIRECTORY_PAGE_SIZE,
-  );
-  const queryLimit = endIndex + 1;
-
   const [exactSnapshot, nameSnapshot] = await Promise.all([
-    firestore.doc(getOrganizationPath(normalizedSearch)).get(),
+    firestore.doc(getOrganizationPath(exactSearch)).get(),
     firestore
       .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.organization)
       .orderBy("nameSearch")
       .startAt(normalizedSearch)
       .endAt(getSearchPrefixBounds(normalizedSearch)[1])
-      .limit(queryLimit)
       .get(),
   ]);
 
@@ -155,12 +367,16 @@ export async function loadOrganizationDetail(input: {
     return null;
   }
 
-  const memberSnapshot = await firestore
-    .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.member)
-    .where("organizationId", "==", input.organizationId)
-    .orderBy("createdAt", "desc")
-    .limit(100)
-    .get();
+  const [memberSnapshot, autumnDetail] = await Promise.all([
+    firestore
+      .collection(BETTER_AUTH_ORGANIZATION_COLLECTIONS.member)
+      .where("organizationId", "==", input.organizationId)
+      .orderBy("createdAt", "desc")
+      .limit(100)
+      .get(),
+    loadAdminOrganizationAutumnDetail(input.organizationId),
+  ]);
+  const { billing, subscriptions } = autumnDetail;
 
   const memberUserIds = memberSnapshot.docs
     .map((doc) => doc.data().userId)
@@ -199,16 +415,23 @@ export async function loadOrganizationDetail(input: {
       email: typeof authUser?.email === "string" ? authUser.email : null,
     };
   });
+  const hasWalletBalance = Boolean(billing.walletBalance);
 
   await writeAdminAuditLog({
     action: "admin.organization.view",
     actor: input.actor,
+    metadata: {
+      billingStatus: billing.status,
+      hasWalletBalance,
+    },
     resourceType: "organization",
     resourceId: input.organizationId,
     result: "success",
   });
 
   return {
+    autumnSubscriptions: subscriptions,
+    billing,
     id: input.organizationId,
     organization: serializeFirestoreRecord(organizationSnapshot.data()),
     members,

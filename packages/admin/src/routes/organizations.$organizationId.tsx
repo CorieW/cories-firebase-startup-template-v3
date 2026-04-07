@@ -11,9 +11,19 @@ import {
 } from '../components/AdminElements';
 import { loadOrganizationDetailServer } from '../lib/admin-data';
 import { requireActiveAdmin } from '../lib/admin-auth';
-import { formatAdminDateTime, formatAdminText } from '../lib/formatting';
-import type { AdminOrganizationDetail } from '../lib/server/organization-data';
+import {
+  formatAdminBalanceAmount,
+  formatAdminDateTime,
+  formatAdminText,
+} from '../lib/formatting';
+import type {
+  AdminOrganizationBillingSummary,
+  AdminOrganizationDetail,
+} from '../lib/server/organization-data';
 import { badgeClass } from '../lib/ui';
+
+const DATA_UNAVAILABLE_DESCRIPTION =
+  'This data is unavailable right now. Check the admin billing configuration and customer state, then try again.';
 
 export const Route = createFileRoute('/organizations/$organizationId')({
   beforeLoad: async ({ location }) => {
@@ -55,11 +65,17 @@ function OrganizationDetailPage() {
     detail.organization && typeof detail.organization === 'object'
       ? detail.organization
       : {};
+  const walletBalance = detail.billing.walletBalance;
+  const shouldRedactBilling = detail.billing.status !== 'ready';
+  const shouldRedactAutumnSubscriptions =
+    detail.billing.status === 'error' ||
+    detail.billing.status === 'missing-customer' ||
+    detail.billing.status === 'not-configured';
 
   return (
     <div className='space-y-6 py-5'>
       <AdminPageHeader
-        description='Review organization metadata, role distribution, and member details for a single tenant.'
+        description='Review organization metadata, role distribution, member details, and Autumn billing state for a single tenant.'
         title={formatAdminText(
           typeof organizationRecord.name === 'string'
             ? organizationRecord.name
@@ -94,6 +110,162 @@ function OrganizationDetailPage() {
             },
           ]}
         />
+      </AdminPanel>
+
+      <AdminPanel
+        description='Autumn wallet state for this organization. This remains read-only and only loads when billing credentials are configured.'
+        title='Wallet balance'
+      >
+        {shouldRedactBilling ? (
+          <AdminEmptyState
+            description={DATA_UNAVAILABLE_DESCRIPTION}
+            title='Data unavailable'
+            tone='danger'
+          />
+        ) : (
+          <AdminKeyValueList
+            items={[
+              {
+                label: 'Autumn customer ID',
+                value: detail.billing.customerId,
+              },
+              {
+                label: 'Billing status',
+                value: getBillingStatusLabel(detail.billing),
+              },
+              {
+                label: 'Wallet balance',
+                value: walletBalance
+                  ? formatAdminBalanceAmount(
+                      walletBalance.remaining,
+                      walletBalance.featureId
+                    )
+                  : 'Unavailable',
+              },
+              {
+                label: 'Granted',
+                value: walletBalance
+                  ? formatAdminBalanceAmount(
+                      walletBalance.granted,
+                      walletBalance.featureId
+                    )
+                  : 'Unavailable',
+              },
+              {
+                label: 'Used',
+                value: walletBalance
+                  ? formatAdminBalanceAmount(
+                      walletBalance.usage,
+                      walletBalance.featureId
+                    )
+                  : 'Unavailable',
+              },
+              {
+                label: 'Next reset',
+                value: walletBalance
+                  ? formatAdminDateTime(walletBalance.nextResetAt)
+                  : 'Unavailable',
+              },
+            ]}
+          />
+        )}
+      </AdminPanel>
+
+      <AdminPanel
+        description='Recurring Autumn plans currently attached to this organization.'
+        title={`Autumn subscriptions (${detail.autumnSubscriptions.length})`}
+      >
+        {shouldRedactAutumnSubscriptions ? (
+          <AdminEmptyState
+            description={getAutumnSubscriptionsUnavailableDescription(
+              detail.billing
+            )}
+            title={getAutumnSubscriptionsUnavailableTitle(detail.billing)}
+            tone='danger'
+          />
+        ) : detail.autumnSubscriptions.length === 0 ? (
+          <AdminEmptyState
+            description='This organization does not currently have any Autumn subscriptions.'
+            title='No Autumn subscriptions found'
+          />
+        ) : (
+          <div className='overflow-x-auto'>
+            <table className='min-w-full border-separate border-spacing-0 text-sm'>
+              <thead>
+                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Plan
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Status
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Quantity
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Started
+                  </th>
+                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    Current period end
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {detail.autumnSubscriptions.map(subscription => (
+                  <tr key={subscription.id}>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <div className='font-medium'>
+                        {formatAdminText(
+                          subscription.planName ?? subscription.planId
+                        )}
+                      </div>
+                      <div className='mt-1 break-all font-mono text-xs text-[var(--admin-ink-soft)]'>
+                        {subscription.planId}
+                      </div>
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <div className='capitalize'>
+                        {formatAdminText(subscription.status)}
+                      </div>
+                      {subscription.addOn ? (
+                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                          Add-on plan
+                        </div>
+                      ) : null}
+                      {subscription.pastDue ? (
+                        <div className='mt-1 text-xs text-[var(--admin-danger)]'>
+                          Past due
+                        </div>
+                      ) : null}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {subscription.quantity}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      {formatAdminDateTime(subscription.startedAt)}
+                    </td>
+                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <div>
+                        {formatAdminDateTime(subscription.currentPeriodEnd)}
+                      </div>
+                      {subscription.trialEndsAt ? (
+                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                          Trial ends{' '}
+                          {formatAdminDateTime(subscription.trialEndsAt)}
+                        </div>
+                      ) : null}
+                      {subscription.expiresAt ? (
+                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                          Expires {formatAdminDateTime(subscription.expiresAt)}
+                        </div>
+                      ) : null}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </AdminPanel>
 
       <AdminPanel
@@ -176,4 +348,53 @@ function OrganizationDetailPage() {
       />
     </div>
   );
+}
+
+function getAutumnSubscriptionsUnavailableTitle(
+  billing: AdminOrganizationBillingSummary
+): string {
+  switch (billing.status) {
+    case 'missing-customer':
+      return 'Autumn customer not found';
+    case 'not-configured':
+      return 'Billing integration unavailable';
+    case 'error':
+      return 'Autumn lookup failed';
+    default:
+      return 'Data unavailable';
+  }
+}
+
+function getAutumnSubscriptionsUnavailableDescription(
+  billing: AdminOrganizationBillingSummary
+): string {
+  switch (billing.status) {
+    case 'missing-customer':
+      return `No Autumn customer matched ${billing.customerId}, so there are no subscriptions to show for this organization.`;
+    case 'not-configured':
+      return 'Set AUTUMN_SECRET_KEY in packages/admin/.env to load Autumn subscriptions in the admin app.';
+    case 'error':
+      return 'The admin app hit an error while loading Autumn subscriptions. Check the billing credentials and server logs, then try again.';
+    default:
+      return DATA_UNAVAILABLE_DESCRIPTION;
+  }
+}
+
+function getBillingStatusLabel(
+  billing: AdminOrganizationBillingSummary
+): string {
+  switch (billing.status) {
+    case 'ready':
+      return 'Wallet found';
+    case 'missing-wallet':
+      return 'Customer has no wallet balance';
+    case 'missing-customer':
+      return 'No Autumn customer found';
+    case 'not-configured':
+      return 'Billing integration unavailable';
+    case 'error':
+      return 'Wallet lookup failed';
+    default:
+      return 'Unavailable';
+  }
 }

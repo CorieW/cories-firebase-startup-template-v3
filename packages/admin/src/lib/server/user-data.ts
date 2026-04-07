@@ -9,11 +9,14 @@ import {
   getUserPath,
   normalizeSearchValue,
 } from "@cories-firebase-startup-template-v3/common";
-import type { Balance, ListCustomersList } from "autumn-js";
+import type {
+  Balance,
+  ListCustomersList,
+  ListCustomersSubscription,
+} from "autumn-js";
 import {
   ADMIN_DIRECTORY_PAGE_SIZE,
   getPaginationOffset,
-  getPaginationSliceBounds,
   paginateItems,
   type AdminPaginatedResult,
 } from "../pagination";
@@ -45,9 +48,26 @@ export interface AdminUserMembership {
   role: string | null;
 }
 
+export interface AdminUserAutumnSubscription {
+  addOn: boolean;
+  canceledAt: string | null;
+  currentPeriodEnd: string | null;
+  currentPeriodStart: string | null;
+  expiresAt: string | null;
+  id: string;
+  pastDue: boolean;
+  planId: string;
+  planName: string | null;
+  quantity: number;
+  startedAt: string | null;
+  status: string;
+  trialEndsAt: string | null;
+}
+
 export interface AdminUserDetail {
   appUser: Record<string, unknown> | null;
   authUser: Record<string, unknown> | null;
+  autumnSubscriptions: AdminUserAutumnSubscription[];
   billing: AdminUserBillingSummary;
   id: string;
   memberships: AdminUserMembership[];
@@ -149,6 +169,26 @@ function serializeUserWalletBalance(balance: Balance): AdminUserWalletBalance {
   };
 }
 
+function serializeAutumnSubscription(
+  subscription: ListCustomersSubscription,
+): AdminUserAutumnSubscription {
+  return {
+    id: subscription.id,
+    planId: subscription.planId,
+    planName: subscription.plan?.name ?? null,
+    status: subscription.status,
+    quantity: subscription.quantity,
+    addOn: subscription.addOn,
+    pastDue: subscription.pastDue,
+    startedAt: toAutumnIsoString(subscription.startedAt),
+    currentPeriodStart: toAutumnIsoString(subscription.currentPeriodStart),
+    currentPeriodEnd: toAutumnIsoString(subscription.currentPeriodEnd),
+    trialEndsAt: toAutumnIsoString(subscription.trialEndsAt),
+    expiresAt: toAutumnIsoString(subscription.expiresAt),
+    canceledAt: toAutumnIsoString(subscription.canceledAt),
+  };
+}
+
 /**
  * Normalizes a searched Autumn customer list into the wallet state shown on
  * the admin user detail page.
@@ -184,20 +224,31 @@ export function summarizeAdminUserBilling(input: {
   };
 }
 
+function getAutumnCustomerById(input: {
+  customerId: string;
+  customers: ListCustomersList[];
+}): ListCustomersList | null {
+  return input.customers.find((entry) => entry.id === input.customerId) ?? null;
+}
+
 /**
  * Reads the personal Autumn wallet state for an admin user detail page.
  */
-async function loadAdminUserBillingSummary(
-  userId: string,
-): Promise<AdminUserBillingSummary> {
+async function loadAdminUserAutumnDetail(userId: string): Promise<{
+  billing: AdminUserBillingSummary;
+  subscriptions: AdminUserAutumnSubscription[];
+}> {
   const customerId = getAutumnUserCustomerId(userId);
   const client = getAutumnAdminClient();
 
   if (!client) {
     return {
-      customerId,
-      status: "not-configured",
-      walletBalance: null,
+      billing: {
+        customerId,
+        status: "not-configured",
+        walletBalance: null,
+      },
+      subscriptions: [],
     };
   }
 
@@ -206,16 +257,34 @@ async function loadAdminUserBillingSummary(
       limit: 10,
       search: customerId,
     });
-
-    return summarizeAdminUserBilling({
+    const customer = getAutumnCustomerById({
       customerId,
       customers: response.list,
     });
+    const billing = summarizeAdminUserBilling({
+      customerId,
+      customers: response.list,
+    });
+
+    if (!customer) {
+      return {
+        billing,
+        subscriptions: [],
+      };
+    }
+
+    return {
+      billing,
+      subscriptions: customer.subscriptions.map(serializeAutumnSubscription),
+    };
   } catch {
     return {
-      customerId,
-      status: "error",
-      walletBalance: null,
+      billing: {
+        customerId,
+        status: "error",
+        walletBalance: null,
+      },
+      subscriptions: [],
     };
   }
 }
@@ -227,15 +296,19 @@ export async function loadUserDirectory(input: {
   page: number;
   searchTerm: string;
 }): Promise<AdminPaginatedResult<AdminUserDirectoryItem>> {
-  const normalizedSearch = normalizeSearchValue(input.searchTerm);
+  const exactSearch = input.searchTerm.trim();
+  const normalizedSearch = normalizeSearchValue(exactSearch);
 
   if (!normalizedSearch) {
-    const snapshot = await firestore
-      .collection(BETTER_AUTH_COLLECTIONS.users)
-      .orderBy("createdAt", "desc")
-      .offset(getPaginationOffset(input.page, ADMIN_DIRECTORY_PAGE_SIZE))
-      .limit(ADMIN_DIRECTORY_PAGE_SIZE + 1)
-      .get();
+    const [snapshot, totalSnapshot] = await Promise.all([
+      firestore
+        .collection(BETTER_AUTH_COLLECTIONS.users)
+        .orderBy("createdAt", "desc")
+        .offset(getPaginationOffset(input.page, ADMIN_DIRECTORY_PAGE_SIZE))
+        .limit(ADMIN_DIRECTORY_PAGE_SIZE + 1)
+        .get(),
+      firestore.collection(BETTER_AUTH_COLLECTIONS.users).count().get(),
+    ]);
 
     return {
       hasNextPage: snapshot.docs.length > ADMIN_DIRECTORY_PAGE_SIZE,
@@ -247,30 +320,23 @@ export async function loadUserDirectory(input: {
       ),
       page: input.page,
       pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
+      totalCount: totalSnapshot.data().count,
     };
   }
 
-  const { endIndex } = getPaginationSliceBounds(
-    input.page,
-    ADMIN_DIRECTORY_PAGE_SIZE,
-  );
-  const queryLimit = endIndex + 1;
-
   const [exactSnapshot, emailSnapshot, nameSnapshot] = await Promise.all([
-    firestore.doc(getAuthUserPath(normalizedSearch)).get(),
+    firestore.doc(getAuthUserPath(exactSearch)).get(),
     firestore
       .collection(BETTER_AUTH_COLLECTIONS.users)
       .orderBy("emailSearch")
       .startAt(normalizedSearch)
       .endAt(getSearchPrefixBounds(normalizedSearch)[1])
-      .limit(queryLimit)
       .get(),
     firestore
       .collection(BETTER_AUTH_COLLECTIONS.users)
       .orderBy("nameSearch")
       .startAt(normalizedSearch)
       .endAt(getSearchPrefixBounds(normalizedSearch)[1])
-      .limit(queryLimit)
       .get(),
   ]);
 
@@ -328,7 +394,7 @@ export async function loadUserDetail(input: {
     .map((doc) => doc.data().organizationId)
     .filter((value): value is string => typeof value === "string");
 
-  const [organizationSnapshots, billing] = await Promise.all([
+  const [organizationSnapshots, autumnDetail] = await Promise.all([
     Promise.all(
       organizationIds.map((organizationId) =>
         firestore
@@ -337,8 +403,9 @@ export async function loadUserDetail(input: {
           .get(),
       ),
     ),
-    loadAdminUserBillingSummary(input.userId),
+    loadAdminUserAutumnDetail(input.userId),
   ]);
+  const { billing, subscriptions } = autumnDetail;
 
   const hasWalletBalance = Boolean(billing.walletBalance);
 
@@ -369,6 +436,7 @@ export async function loadUserDetail(input: {
     id: input.userId,
     authUser: serializeFirestoreRecord(authUserSnapshot.data()),
     appUser: serializeFirestoreRecord(appUserSnapshot.data()),
+    autumnSubscriptions: subscriptions,
     billing,
     memberships: membershipSnapshot.docs.map((doc) => {
       const data = doc.data();
