@@ -12,6 +12,7 @@ import {
 import {
   badgeClass,
   cardClass,
+  dangerCardClass,
   pageContainerClass,
   primaryButtonClass,
   secondaryButtonClass,
@@ -403,12 +404,12 @@ export function AdminAuthView({ error, mode, token }: AdminAuthViewProps) {
         </div>
 
         {message ? (
-          <p className='m-0 rounded-[18px] bg-[var(--admin-primary-soft)] px-4 py-3 text-sm text-[var(--admin-ink)]'>
+          <p className='m-0 rounded-[18px] border border-[var(--admin-line)] bg-[var(--admin-surface-muted)] px-4 py-3 text-sm text-[var(--admin-ink)]'>
             {message}
           </p>
         ) : null}
         {(errorMessage ?? routeErrorMessage) ? (
-          <p className='m-0 rounded-[18px] border border-[color-mix(in_srgb,var(--admin-danger)_26%,transparent)] bg-[color-mix(in_srgb,var(--admin-danger)_10%,white)] px-4 py-3 text-sm text-[var(--admin-danger)]'>
+          <p className={`${dangerCardClass} m-0 px-4 py-3 text-sm`}>
             {errorMessage ?? routeErrorMessage}
           </p>
         ) : null}

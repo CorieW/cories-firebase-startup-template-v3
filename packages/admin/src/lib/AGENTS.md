@@ -16,7 +16,7 @@ Shared admin client and server-facing helpers for auth, route guarding, formatti
 - `pagination.ts`: Shared admin pagination helpers for search-param normalization and paginated list slicing.
 - `route-guards.ts`: Public-route classification and pathname normalization helpers.
 - `route-paths.ts`: Stable route path constants and path builders for admin navigation.
-- `theme.ts`: Admin design token helpers shared across route and component code.
+- `theme.ts`: Fixed admin document theme constants for the dark-mode shell.
 - `ui.ts`: Shared admin utility class strings for buttons, inputs, badges, and layout.
 
 ## Writing Rules

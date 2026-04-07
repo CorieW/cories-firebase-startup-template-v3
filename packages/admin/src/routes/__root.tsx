@@ -14,9 +14,10 @@ import {
   getAdminSession,
   requireActiveAdmin,
 } from '../lib/admin-auth';
+import { getAdminExternalToolLinks } from '../lib/server/env';
 import { isAdminPublicRoute } from '../lib/route-guards';
+import { ADMIN_THEME_CLASS_NAME, ADMIN_THEME_MODE } from '../lib/theme';
 import { shellFrameClass } from '../lib/ui';
-import { THEME_INIT_SCRIPT } from '../lib/theme';
 import appCss from '../styles.css?url';
 
 export const Route = createRootRoute({
@@ -26,9 +27,11 @@ export const Route = createRootRoute({
   },
   loader: async () => {
     const adminSession = await getAdminSession();
+    const externalToolLinks = getAdminExternalToolLinks();
 
     return {
       adminSession,
+      externalToolLinks,
     };
   },
   head: () => ({
@@ -60,9 +63,14 @@ export const Route = createRootRoute({
  */
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html
+      lang='en'
+      className={ADMIN_THEME_CLASS_NAME}
+      data-theme={ADMIN_THEME_MODE}
+      data-theme-preference={ADMIN_THEME_MODE}
+      suppressHydrationWarning
+    >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className={shellFrameClass}>
@@ -80,7 +88,7 @@ function RootLayout() {
   const pathname = useRouterState({
     select: state => state.location.pathname,
   });
-  const { adminSession } = Route.useLoaderData();
+  const { adminSession, externalToolLinks } = Route.useLoaderData();
   const isPublicRoute = isAdminPublicRoute(pathname);
 
   if (isPublicRoute || !adminSession.isActiveAdmin) {
@@ -88,7 +96,10 @@ function RootLayout() {
   }
 
   return (
-    <AdminShell adminSession={adminSession}>
+    <AdminShell
+      adminSession={adminSession}
+      externalToolLinks={externalToolLinks}
+    >
       <Outlet />
     </AdminShell>
   );

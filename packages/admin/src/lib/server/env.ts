@@ -1,13 +1,18 @@
 /**
  * Admin server environment accessors for auth, billing, email, and Firebase credentials.
  */
-const DEFAULT_ADMIN_APP_URL = 'http://localhost:3002';
+export interface AdminExternalToolLinks {
+  autumn: string | undefined;
+  firebase: string | undefined;
+}
+
+const DEFAULT_ADMIN_APP_URL = "http://localhost:3002";
 const DEFAULT_BETTER_AUTH_SECRET =
-  'better-auth-dev-secret-12345678901234567890';
-const DEFAULT_FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
+  "better-auth-dev-secret-12345678901234567890";
+const DEFAULT_FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 
 function isProductionEnvironment(): boolean {
-  return process.env.NODE_ENV === 'production';
+  return process.env.NODE_ENV === "production";
 }
 
 function trimString(value: string | undefined): string | undefined {
@@ -38,14 +43,14 @@ function isFirebasePrivateKeyPlaceholder(value: string): boolean {
  * Returns the admin app origin used by Better Auth callback links.
  */
 export function getAdminAppUrl(): string {
-  return readEnv('BETTER_AUTH_URL', 'APP_URL') ?? DEFAULT_ADMIN_APP_URL;
+  return readEnv("BETTER_AUTH_URL", "APP_URL") ?? DEFAULT_ADMIN_APP_URL;
 }
 
 /**
  * Returns the shared Better Auth secret for the admin app.
  */
 export function getBetterAuthSecret(): string {
-  return readEnv('BETTER_AUTH_SECRET') ?? DEFAULT_BETTER_AUTH_SECRET;
+  return readEnv("BETTER_AUTH_SECRET") ?? DEFAULT_BETTER_AUTH_SECRET;
 }
 
 /**
@@ -57,8 +62,8 @@ export function getGoogleOAuthConfig():
       clientSecret: string;
     }
   | undefined {
-  const clientId = readEnv('GOOGLE_CLIENT_ID');
-  const clientSecret = readEnv('GOOGLE_CLIENT_SECRET');
+  const clientId = readEnv("GOOGLE_CLIENT_ID");
+  const clientSecret = readEnv("GOOGLE_CLIENT_SECRET");
 
   if (!clientId || !clientSecret) {
     return undefined;
@@ -74,14 +79,24 @@ export function getGoogleOAuthConfig():
  * Returns the Autumn secret key when billing access is configured.
  */
 export function getAutumnSecretKey(): string | undefined {
-  return readEnv('AUTUMN_SECRET_KEY');
+  return readEnv("AUTUMN_SECRET_KEY");
 }
 
 /**
  * Returns a custom Autumn base URL when one is configured.
  */
 export function getAutumnBaseUrl(): string | undefined {
-  return readEnv('AUTUMN_URL', 'AUTUMN_BASE_URL');
+  return readEnv("AUTUMN_URL", "AUTUMN_BASE_URL");
+}
+
+/**
+ * Returns optional external admin tool destinations for the sidebar.
+ */
+export function getAdminExternalToolLinks(): AdminExternalToolLinks {
+  return {
+    autumn: readEnv("AUTUMN_ADMIN_URL"),
+    firebase: readEnv("FIREBASE_CONSOLE_URL"),
+  };
 }
 
 /**
@@ -93,8 +108,8 @@ export function getResendConfig():
       from: string;
     }
   | undefined {
-  const apiKey = readEnv('RESEND_API_KEY');
-  const from = readEnv('RESEND_FROM_EMAIL');
+  const apiKey = readEnv("RESEND_API_KEY");
+  const from = readEnv("RESEND_FROM_EMAIL");
 
   if (!apiKey || !from) {
     return undefined;
@@ -111,8 +126,7 @@ export function getResendConfig():
  */
 export function getFirebaseProjectId(): string {
   return (
-    readEnv('FIREBASE_PROJECT_ID', 'PROJECT_ID') ??
-    'demo-startup-template'
+    readEnv("FIREBASE_PROJECT_ID", "PROJECT_ID") ?? "demo-startup-template"
   );
 }
 
@@ -120,19 +134,19 @@ export function getFirebaseProjectId(): string {
  * Returns the Firebase service account email when configured.
  */
 export function getFirebaseClientEmail(): string | undefined {
-  return readEnv('FIREBASE_CLIENT_EMAIL', 'CLIENT_EMAIL');
+  return readEnv("FIREBASE_CLIENT_EMAIL", "CLIENT_EMAIL");
 }
 
 /**
  * Returns the Firebase private key when configured.
  */
 export function getFirebasePrivateKey(): string | undefined {
-  const key = readEnv('FIREBASE_PRIVATE_KEY', 'PRIVATE_KEY');
+  const key = readEnv("FIREBASE_PRIVATE_KEY", "PRIVATE_KEY");
   if (!key) {
     return undefined;
   }
 
-  const normalized = key.replace(/\r\n/g, '\n').replace(/\\n/g, '\n');
+  const normalized = key.replace(/\r\n/g, "\n").replace(/\\n/g, "\n");
   return isFirebasePrivateKeyPlaceholder(normalized) ? undefined : normalized;
 }
 
@@ -141,7 +155,7 @@ export function getFirebasePrivateKey(): string | undefined {
  */
 export function getFirestoreEmulatorHost(): string | undefined {
   return (
-    readEnv('FIRESTORE_EMULATOR_HOST', 'MY_FIRESTORE_EMULATOR_HOST') ??
+    readEnv("FIRESTORE_EMULATOR_HOST", "MY_FIRESTORE_EMULATOR_HOST") ??
     (isProductionEnvironment() ? undefined : DEFAULT_FIRESTORE_EMULATOR_HOST)
   );
 }

@@ -20,7 +20,6 @@ interface AdminPageHeaderProps {
   actionHref?: string;
   actionLabel?: string;
   description: string;
-  eyebrow?: string;
   title: string;
 }
 
@@ -31,21 +30,17 @@ export function AdminPageHeader({
   actionHref,
   actionLabel,
   description,
-  eyebrow = 'Admin',
   title,
 }: AdminPageHeaderProps) {
   return (
     <div className='flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
-      <div className='space-y-3'>
-        <span className={badgeClass}>{eyebrow}</span>
-        <div className='space-y-2'>
-          <h1 className='m-0 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl'>
-            {title}
-          </h1>
-          <p className='m-0 max-w-3xl text-sm leading-7 text-[var(--admin-ink-soft)] sm:text-base'>
-            {description}
-          </p>
-        </div>
+      <div className='space-y-2'>
+        <h1 className='m-0 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl'>
+          {title}
+        </h1>
+        <p className='m-0 max-w-3xl text-sm leading-7 text-[var(--admin-ink-soft)] sm:text-base'>
+          {description}
+        </p>
       </div>
 
       {actionHref && actionLabel ? (
@@ -275,7 +270,7 @@ export function AdminJsonPreview({
 }: AdminJsonPreviewProps) {
   return (
     <AdminPanel description={description} title={title}>
-      <pre className='m-0 overflow-x-auto rounded-[18px] bg-[#171311] p-4 text-xs leading-6 text-[#f8f2e8]'>
+      <pre className='m-0 overflow-x-auto rounded-[18px] border border-[var(--admin-line)] bg-[var(--admin-surface-muted)] p-4 text-xs leading-6 text-[var(--admin-ink)]'>
         {formatAdminJson(value)}
       </pre>
     </AdminPanel>
@@ -292,15 +287,15 @@ export function AdminRedactedBlock({
 }: AdminRedactedBlockProps) {
   return (
     <div className='relative overflow-hidden rounded-[20px]'>
-      <div className='pointer-events-none select-none opacity-45 blur-[2px]'>
+      <div className='pointer-events-none select-none opacity-25'>
         {children}
       </div>
       <div className='absolute inset-0 flex items-center justify-center p-4'>
-        <div className='w-full rounded-[20px] border border-[color-mix(in_srgb,var(--admin-danger)_26%,transparent)] bg-[color-mix(in_srgb,var(--admin-danger)_16%,white)] bg-[repeating-linear-gradient(135deg,color-mix(in_srgb,var(--admin-danger)_10%,transparent)_0,color-mix(in_srgb,var(--admin-danger)_10%,transparent)_14px,transparent_14px,transparent_28px)] p-5 text-center shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--admin-danger)_8%,transparent)] backdrop-blur-[2px]'>
+        <div className='w-full rounded-[20px] border border-[var(--admin-danger)] bg-[var(--admin-danger-surface)] p-5 text-center'>
           <p className='m-0 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--admin-danger)]'>
             {title}
           </p>
-          <p className='mt-2 mb-0 text-sm leading-6 text-[color-mix(in_srgb,var(--admin-danger)_82%,black_18%)]'>
+          <p className='mt-2 mb-0 text-sm leading-6 text-[var(--admin-danger)] opacity-80'>
             {description}
           </p>
         </div>
