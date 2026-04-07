@@ -100,6 +100,26 @@ function createToastId(): string {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+function normalizeToastText(value?: string): string | undefined {
+  if (!value) {
+    return value;
+  }
+
+  return value.replace(
+    /^([\s"'([{]*)([a-z])(?=[a-z]|\b)/,
+    (_, prefix: string, character: string) =>
+      `${prefix}${character.toUpperCase()}`
+  );
+}
+
+function normalizeToastPayload(payload: ToastPayload): ToastPayload {
+  return {
+    ...payload,
+    title: normalizeToastText(payload.title) ?? payload.title,
+    description: normalizeToastText(payload.description),
+  };
+}
+
 /**
  * Toast provider that centralizes short-lived user feedback messages.
  */
@@ -178,14 +198,21 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const show = useCallback(
     (variant: ToastVariant, payload: ToastPayload) => {
       const id = createToastId();
+      const normalizedPayload = normalizeToastPayload(payload);
       const durationMs =
-        payload.durationMs ?? DEFAULT_TOAST_DURATION_MS[variant];
+        normalizedPayload.durationMs ?? DEFAULT_TOAST_DURATION_MS[variant];
 
       setToasts(previous => {
         if (previous.length < MAX_VISIBLE_TOASTS) {
           return [
             ...previous,
-            { ...payload, durationMs, id, variant, isVisible: false },
+            {
+              ...normalizedPayload,
+              durationMs,
+              id,
+              variant,
+              isVisible: false,
+            },
           ];
         }
 
@@ -195,7 +222,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         clearEnterTimer(oldestToast.id);
         return [
           ...rest,
-          { ...payload, durationMs, id, variant, isVisible: false },
+          {
+            ...normalizedPayload,
+            durationMs,
+            id,
+            variant,
+            isVisible: false,
+          },
         ];
       });
 
