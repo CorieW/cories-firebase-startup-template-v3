@@ -569,7 +569,7 @@ describe('repository CI contracts', () => {
     const sharedEnvScriptContents = readFileSync(sharedEnvScriptPath, 'utf8');
 
     expect(sharedEnvScriptContents).toMatch(
-      /APP_URL:\s*['"]http:\/\/localhost:3000['"]/
+      /APP_URL:\s*['"]http:\/\/localhost:3001['"]/
     );
     expect(sharedEnvScriptContents).toMatch(
       /BETTER_AUTH_SECRET:\s*['"]better-auth-ci-default-secret-12345678901234567890['"]/

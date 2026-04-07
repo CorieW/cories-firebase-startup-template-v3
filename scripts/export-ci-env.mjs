@@ -169,7 +169,7 @@ const secretOverrides = {
 
 const sharedDefaults = {
   NODE_ENV: 'development',
-  APP_URL: 'http://localhost:3000',
+  APP_URL: 'http://localhost:3001',
   BETTER_AUTH_SECRET: 'better-auth-ci-default-secret-12345678901234567890',
   PROJECT_ID: 'demo-startup-template',
   FIREBASE_PROJECT_ID: 'demo-startup-template',

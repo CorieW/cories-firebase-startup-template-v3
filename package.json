@@ -30,7 +30,7 @@
     "test:prod-smoke:dashboard": "node scripts/verify-dashboard-preview.mjs",
     "test:ci": "pnpm run test && pnpm run test:integration",
     "test:coverage": "pnpm --filter @cories-firebase-startup-template-v3/common build && pnpm --filter @cories-firebase-startup-template-v3/common exec vitest run --coverage --coverage.reportsDirectory ../../coverage/common && pnpm --filter @cories-firebase-startup-template-v3/back exec vitest run --coverage --coverage.reportsDirectory ../../coverage/back && pnpm --filter @cories-firebase-startup-template-v3/dashboard exec vitest run --coverage --coverage.reportsDirectory ../../coverage/dashboard",
-    "dev": "concurrently -n \"dashboard,common,back,emulator\" -c \"green,yellow,red,magenta\" \"cd ./packages/dashboard && pnpm dev\" \"cd ./packages/common && pnpm build:watch\" \"cd ./packages/back && pnpm build:watch\" \"pnpm emulator\"",
+    "dev": "concurrently -n \"dashboard,admin,marketing,common,back,emulator\" -c \"green,blue,cyan,yellow,red,magenta\" \"cd ./packages/dashboard && pnpm dev\" \"cd ./packages/admin && pnpm dev\" \"cd ./packages/marketing && pnpm dev\" \"cd ./packages/common && pnpm build:watch\" \"cd ./packages/back && pnpm build:watch\" \"pnpm emulator\"",
     "dev:admin": "cd ./packages/admin && pnpm dev",
     "dev:marketing": "cd ./packages/marketing && pnpm dev",
     "deploy:dashboard": "pnpm --filter @cories-firebase-startup-template-v3/dashboard build && firebase deploy --only apphosting:frontend",

@@ -19,7 +19,7 @@ import {
 import { getAutumnCustomerId } from '../../src/lib/auth-autumn-ids';
 import { firestore } from '../../src/lib/auth-server.firebase';
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3000';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3001';
 const authUsersCollection = 'auth_users';
 
 type StorageState = Awaited<ReturnType<APIRequestContext['storageState']>>;

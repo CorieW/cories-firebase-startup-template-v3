@@ -5,7 +5,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { getDashboardLogLevel } from './dashboard-log-level'
 
-const DEFAULT_APP_URL = 'http://localhost:3000'
+const DEFAULT_APP_URL = 'http://localhost:3001'
 const DEFAULT_BETTER_AUTH_SECRET =
   'better-auth-dev-secret-12345678901234567890'
 const DEFAULT_FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080'

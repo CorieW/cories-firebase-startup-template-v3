@@ -5,7 +5,6 @@ Repository root for the Firebase startup template monorepo. Start here for repo-
 ## Directories
 
 - `.changeset/`: Changesets configuration and contributor guidance for workspace versioning.
-- `.codex/`: Repo-local Codex skills and AI navigation metadata.
 - `.cursor/`: Committed Cursor editor settings for this workspace.
 - `.github/`: GitHub Actions workflows and repository automation.
 - `config/`: Shared linting and formatting configuration.
@@ -53,6 +52,10 @@ Repository root for the Firebase startup template monorepo. Start here for repo-
 - Do not add nested `AGENTS.md` files inside `.codex/skills/`; repo-local skills should rely on `SKILL.md` and `references/` instead.
 - Treat tracked vendor/build outputs as excluded unless they are intentionally documented generated artifacts.
 - Exclude `.git`, all `node_modules`, `packages/back/lib`, `packages/common/lib`, `packages/dashboard/.output`, `packages/dashboard/.tanstack`, `packages/dashboard/playwright-report`, `packages/dashboard/test-results`, `packages/admin/.output`, `packages/admin/.tanstack`, `packages/admin/playwright-report`, and `packages/admin/test-results`.
+
+## Documentation Policy
+
+- Ensure README.md is being updated as things are being added/changed.
 
 ## Coding Policy
 

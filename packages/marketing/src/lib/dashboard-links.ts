@@ -15,7 +15,7 @@ const DASHBOARD_AUTH_PATHS = {
 
 export type DashboardAuthDestination = keyof typeof DASHBOARD_AUTH_PATHS;
 
-const DEFAULT_DASHBOARD_DEV_URL = "http://localhost:3000";
+const DEFAULT_DASHBOARD_DEV_URL = "http://localhost:3001";
 
 function normalizeBaseUrl(value: string | undefined): string | null {
   const trimmedValue = value?.trim();
@@ -42,7 +42,7 @@ export function getDashboardBaseUrl(): string {
   }
 
   const { hostname, origin, port, protocol } = window.location;
-  if (hostname === "localhost" && port === "3001") {
+  if (hostname === "localhost" && port === "3000") {
     return DEFAULT_DASHBOARD_DEV_URL;
   }
 
