@@ -358,7 +358,7 @@ export function AdminAuthView({ error, mode, token }: AdminAuthViewProps) {
       <>
         <AuthCopy
           title='Admin sign in'
-          description='Use a verified admin account and an active `app_admins/{uid}` allowlist record to access the console.'
+          description=''
         />
         <AdminAuthForm
           isPending={isPending}
