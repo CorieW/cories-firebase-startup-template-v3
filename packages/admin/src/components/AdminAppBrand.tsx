@@ -1,15 +1,12 @@
 /**
  * Shared admin brand lockup for the sidebar.
  */
-import { SharedAppBrand } from '@cories-firebase-startup-template-v3/common/client';
-import { Link } from '@tanstack/react-router';
-import { ADMIN_HOME_ROUTE_PATH } from '../lib/route-paths';
-
-const brandRootClass =
-  'flex items-center gap-[0.7rem] rounded-xl p-[0.6rem] text-[var(--admin-ink)] no-underline';
+import { SharedAppBrand } from "@cories-firebase-startup-template-v3/common/client";
+import { Link } from "@tanstack/react-router";
+import { ADMIN_HOME_ROUTE_PATH } from "../lib/route-paths";
 
 const brandMarkClass =
-  'inline-flex h-[34px] w-[34px] items-center justify-center rounded-[11px] border border-[var(--admin-primary)] bg-[var(--admin-primary)] text-[1.02rem] font-extrabold text-[var(--admin-primary-ink)]';
+  "border border-[var(--admin-primary)] bg-[var(--admin-primary)] text-[var(--admin-primary-ink)]";
 
 /**
  * Renders the shared product brand for the admin shell.
@@ -18,12 +15,12 @@ export function AdminAppBrand() {
   return (
     <SharedAppBrand
       markClassName={brandMarkClass}
+      rootClassName="text-[var(--admin-ink)]"
       renderRoot={({ children, className }) => (
         <Link className={className} to={ADMIN_HOME_ROUTE_PATH}>
           {children}
         </Link>
       )}
-      rootClassName={brandRootClass}
     />
   );
 }

@@ -12,6 +12,7 @@
     "outDir": "./lib",
     "sourceMap": true,
     "strict": true,
+    "skipLibCheck": true,
     "target": "esnext",
     "isolatedModules": true,
     "preserveConstEnums": true,

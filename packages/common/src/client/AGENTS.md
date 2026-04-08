@@ -9,6 +9,7 @@ Shared browser-only client helpers, brand primitives, theme UI, and shared front
 ## Files
 
 - `SharedAppBrand.tsx`: Shared brand lockup markup used by app-specific wrappers.
+- `SharedBetterAuthView.tsx`: Shared Better Auth route wrapper used by frontend auth entry screens with app-specific styling overrides.
 - `SharedThemeToggle.tsx`: Shared theme switcher UI for frontend packages that want the common segmented control.
 - `index.ts`: Public export surface for browser-only shared client modules.
 - `shared-theme.css`: Shared dashboard and marketing color tokens used by app-level stylesheets.

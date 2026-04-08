@@ -1,14 +1,11 @@
 /**
  * Shared brand mark and text component.
  */
-import { SharedAppBrand } from '@cories-firebase-startup-template-v3/common/client';
-import { Link } from '@tanstack/react-router';
-
-const brandRootClass =
-  'flex items-center gap-[0.7rem] rounded-xl p-[0.6rem] text-[var(--ink)] no-underline';
+import { SharedAppBrand } from "@cories-firebase-startup-template-v3/common/client";
+import { Link } from "@tanstack/react-router";
 
 const brandMarkClass =
-  'inline-flex h-[34px] w-[34px] items-center justify-center rounded-[11px] border border-[var(--primary)] bg-[var(--primary)] text-[1.02rem] font-extrabold text-[var(--primary-ink)]';
+  "border border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-ink)]";
 
 interface AppBrandProps {
   className?: string;
@@ -22,18 +19,18 @@ interface AppBrandProps {
 export default function AppBrand({
   className,
   onClick,
-  to = '/',
+  to = "/",
 }: AppBrandProps) {
   return (
     <SharedAppBrand
       className={className}
       markClassName={brandMarkClass}
+      rootClassName="text-[var(--ink)]"
       renderRoot={({ children, className: resolvedClassName }) => (
         <Link to={to} className={resolvedClassName} onClick={onClick}>
           {children}
         </Link>
       )}
-      rootClassName={brandRootClass}
     />
   );
 }

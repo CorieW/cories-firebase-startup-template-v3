@@ -136,7 +136,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - Refresh the marketing page layout, storytelling, and visual tokens in `packages/marketing/src/components/marketing` and `packages/marketing/src/styles.css`
 - Update branding, colors, copy, and static assets in `packages/dashboard`
 - Adjust the shared dashboard visual tokens in `packages/dashboard/src/styles.css` and reusable dashboard surface/action classes in `packages/dashboard/src/lib/ui.ts`
-- Reuse shared frontend brand and theme helpers from `packages/common/src/client` before duplicating UI lockups or browser theme logic in app packages
+- Reuse shared frontend auth, brand, and theme helpers from `packages/common/src/client` before duplicating app-entry UI or browser theme logic in app packages
 - Update SEO-related files in `packages/dashboard/index.html` and `packages/dashboard/public`
 - Update shared user-facing messages in `packages/common/src/messages/messages.json`
 - Implement or extend backend callables and triggers in `packages/back/src`
@@ -149,7 +149,7 @@ firebase apphosting:backends:create --project <your-project-id>
 ## Stack
 
 - Dashboard (`packages/dashboard`): TanStack Start, React 19, Better Auth, Better Auth UI, Autumn, Tailwind
-- Admin (`packages/admin`): TanStack Start, Better Auth, Firebase Admin, read-only admin tooling
+- Admin (`packages/admin`): TanStack Start, Better Auth, Better Auth UI, Firebase Admin, read-only admin tooling
 - Backend (`packages/back`): Firebase Functions, Firebase Admin, TypeScript
 - Shared (`packages/common`): shared API types, constants, utilities, and messages
 - Tooling: pnpm workspaces, ESLint, Prettier, Vitest, Playwright, Firebase Emulator Suite
@@ -158,6 +158,7 @@ firebase apphosting:backends:create --project <your-project-id>
 
 - Better Auth runs inside the dashboard Nitro server at `/api/auth/*`
 - The admin app runs its own Better Auth server at `/api/auth/*` and expects admin users to already exist in Better Auth plus be allowlisted in Firestore `app_admins/{uid}` with `role: "admin"`
+- Dashboard and admin auth entry routes share their Better Auth UI wrapper from `packages/common/src/client`
 - The admin shell uses a fixed dark theme to keep the internal tooling visual treatment consistent
 - Admin listing routes keep pagination state in URL search params so filters and page position can be shared directly
 - The admin user detail page can also show a read-only personal Autumn wallet balance when `AUTUMN_SECRET_KEY` is configured for the admin app

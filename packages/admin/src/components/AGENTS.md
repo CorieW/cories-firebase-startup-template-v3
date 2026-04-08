@@ -9,7 +9,7 @@ Shared admin UI building blocks for auth flows, page framing, and the protected 
 ## Files
 
 - `AdminAppBrand.tsx`: Shared admin brand lockup rendered in the sidebar shell.
-- `AdminAuthView.tsx`: Native admin sign-in, reset-password, and sign-out view states.
+- `AdminAuthView.tsx`: Admin-specific wrapper around the shared Better Auth auth-entry component.
 - `AdminElements.tsx`: Reusable admin page headers, panels, empty states, pagination controls, and JSON preview components.
 - `AdminShell.tsx`: Authenticated admin layout with navigation and session context.
 
