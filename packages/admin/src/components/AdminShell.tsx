@@ -8,8 +8,10 @@ import {
   ADMIN_AUDIT_ROUTE_PATH,
   ADMIN_HOME_ROUTE_PATH,
   ADMIN_ORGANIZATIONS_ROUTE_PATH,
-  ADMIN_SIGN_OUT_ROUTE_PATH,
+  ADMIN_SIGN_IN_ROUTE_PATH,
   ADMIN_USERS_ROUTE_PATH,
+  getAdminAuthRouteParams,
+  getAdminAuthRouteSearch,
 } from '../lib/route-paths';
 import { formatAdminText } from '../lib/formatting';
 import {
@@ -133,7 +135,9 @@ export function AdminShell({
 
               <Link
                 className={`${secondaryButtonClass} w-full`}
-                to={ADMIN_SIGN_OUT_ROUTE_PATH}
+                params={getAdminAuthRouteParams('sign-out')}
+                search={getAdminAuthRouteSearch()}
+                to={ADMIN_SIGN_IN_ROUTE_PATH}
               >
                 Sign out
               </Link>

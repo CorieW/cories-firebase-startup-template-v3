@@ -2,9 +2,8 @@
  * Dashboard auth guard helpers.
  */
 import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common'
+  default as commonLogging,
+} from '@cories-firebase-startup-template-v3/common/logging'
 import { redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequestHeaders } from '@tanstack/react-start/server'
@@ -17,6 +16,7 @@ import {
   SIGN_IN_PATH,
 } from './route-guards'
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging
 const authLogger = createScopedLogger('DASH_AUTH')
 
 export interface AuthState {

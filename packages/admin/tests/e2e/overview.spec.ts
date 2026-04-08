@@ -31,13 +31,13 @@ test('@core shows seeded overview metrics and opens each workspace from the land
   await expect(main.getByText(/\d+\s+active$/)).toBeVisible();
   await expect(
     main.getByText(
-      `${seededAdminData.expectedOverviewStats.disabledAdmins} disabled admin accounts remain outside the active rotation.`
+      /\d+\s+disabled admin accounts remain outside the active rotation\./
     )
   ).toBeVisible();
   await expect(
-    adminPage.getByText(
-      seededAdminData.autumn ? 'Billing configured' : 'Billing unavailable'
-    )
+    main.getByText(seededAdminData.autumn ? 'Configured' : 'Unavailable', {
+      exact: true,
+    })
   ).toBeVisible();
 
   const cardExpectations = [

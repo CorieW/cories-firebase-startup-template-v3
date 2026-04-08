@@ -4,9 +4,7 @@ Repo-local Codex extensions and skills that travel with this repository.
 
 ## Directories
 
-- `skills/`: Repo-local Codex skills that ship with the project.
-  Rules:
-  - Skill packages document themselves with `SKILL.md` and `references/`, not nested `AGENTS.md` files.
+- None.
 
 ## Files
 

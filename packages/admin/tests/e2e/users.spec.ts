@@ -169,14 +169,20 @@ test('@core shows the no-membership user states for organizations and subscripti
       adminPage.getByRole('heading', { name: 'Wallet balance' })
     ).toBeVisible();
     await expect(
-      adminPage.getByText(
-        formatAdminBalanceAmount(
-          seededAdminData.autumn.membershiplessCustomer.wallet?.remaining ??
-            null,
-          seededAdminData.autumn.membershiplessCustomer.wallet?.featureId ??
-            null
+      adminPage
+        .locator('dl > div')
+        .filter({
+          has: adminPage.locator('dt').filter({ hasText: 'Wallet balance' }),
+        })
+        .getByText(
+          formatAdminBalanceAmount(
+            seededAdminData.autumn.membershiplessCustomer.wallet?.remaining ??
+              null,
+            seededAdminData.autumn.membershiplessCustomer.wallet?.featureId ??
+              null
+          ),
+          { exact: true }
         )
-      )
     ).toBeVisible();
     await expect(
       adminPage.getByRole('heading', { name: 'Autumn subscriptions (0)' })
@@ -210,26 +216,42 @@ test('@core shows a billing-ready user detail view with a real Autumn wallet and
   ).toBeVisible();
   await expect(adminPage.getByText('Wallet found')).toBeVisible();
   await expect(
-    adminPage.getByText(
-      formatAdminBalanceAmount(
-        autumn.userCustomer.wallet?.remaining ?? null,
-        autumn.userCustomer.wallet?.featureId ?? null
+    adminPage
+      .locator('dl > div')
+      .filter({
+        has: adminPage.locator('dt').filter({ hasText: 'Wallet balance' }),
+      })
+      .getByText(
+        formatAdminBalanceAmount(
+          autumn.userCustomer.wallet?.remaining ?? null,
+          autumn.userCustomer.wallet?.featureId ?? null
+        ),
+        { exact: true }
       )
-    )
   ).toBeVisible();
   await expect(
-    adminPage.getByText(
-      formatAdminBalanceAmount(
-        autumn.userCustomer.wallet?.granted ?? null,
-        autumn.userCustomer.wallet?.featureId ?? null
+    adminPage
+      .locator('dl > div')
+      .filter({
+        has: adminPage.locator('dt').filter({ hasText: 'Granted' }),
+      })
+      .getByText(
+        formatAdminBalanceAmount(
+          autumn.userCustomer.wallet?.granted ?? null,
+          autumn.userCustomer.wallet?.featureId ?? null
+        ),
+        { exact: true }
       )
-    )
   ).toBeVisible();
   await expect(
     adminPage.getByRole('heading', { name: 'Autumn subscriptions (1)' })
   ).toBeVisible();
-  await expect(adminPage.getByText(autumn.userPlanName)).toBeVisible();
-  await expect(adminPage.getByText('active')).toBeVisible();
+  const userSubscriptionRow = adminPage
+    .getByRole('row')
+    .filter({ hasText: autumn.userPlanId });
+  await expect(userSubscriptionRow).toHaveCount(1);
+  await expect(userSubscriptionRow).toContainText(autumn.userPlanId);
+  await expect(userSubscriptionRow).toContainText('active');
 
   if (autumn.userCustomer.wallet?.nextResetAt) {
     await expect(

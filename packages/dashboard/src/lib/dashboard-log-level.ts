@@ -2,9 +2,9 @@
  * Dashboard log-level helpers shared between route loaders and server env consumers.
  */
 import {
-  parseLogSeverity,
+  default as commonLogging,
   type LogSeverity,
-} from '@cories-firebase-startup-template-v3/common'
+} from '@cories-firebase-startup-template-v3/common/logging'
 import { createServerFn } from '@tanstack/react-start'
 
 function isProductionEnvironment(): boolean {
@@ -16,6 +16,7 @@ function readDashboardLogLevelEnv(): string | undefined {
   return value && value.length > 0 ? value : undefined
 }
 
+const { parseLogSeverity } = commonLogging
 export function getDashboardLogLevel(): LogSeverity {
   return parseLogSeverity(
     readDashboardLogLevelEnv(),

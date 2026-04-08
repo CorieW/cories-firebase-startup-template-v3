@@ -11,7 +11,11 @@ import {
 } from '@cories-firebase-startup-template-v3/common';
 import { getRequestHeaders } from '@tanstack/react-start/server';
 import { firestore } from './auth-server.firebase';
-import { serializeFirestoreRecord, toIsoString } from './firestore-serialization';
+import {
+  serializeFirestoreRecord,
+  type SerializedFirestoreRecord,
+  toIsoString,
+} from './firestore-serialization';
 
 const auditLogger = createScopedLogger('ADMIN_AUDIT');
 const REDACTED_AUDIT_VALUE = '[REDACTED]';
@@ -36,7 +40,7 @@ export interface SerializedAdminAuditLog {
   action: string;
   id: string;
   ip: string | null;
-  metadata: Record<string, unknown>;
+  metadata: SerializedFirestoreRecord;
   occurredAt: string | null;
   requestId: string;
   resourceId: string | null;
@@ -133,11 +137,7 @@ export function serializeAdminAuditLog(input: {
     ip: typeof input.data.ip === 'string' ? input.data.ip : null,
     userAgent:
       typeof input.data.userAgent === 'string' ? input.data.userAgent : null,
-    metadata: (serializeFirestoreRecord(input.data.metadata) ?? {}) as Record<
-      string,
-      unknown
-    >,
+    metadata: serializeFirestoreRecord(input.data.metadata) ?? {},
     occurredAt: toIsoString(input.data.occurredAt),
   };
 }
-

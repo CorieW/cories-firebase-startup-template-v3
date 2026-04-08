@@ -1,7 +1,7 @@
 /**
  * Billing dashboard derived data and Autumn hook composition.
  */
-import { createScopedLogger } from '@cories-firebase-startup-template-v3/common';
+import commonLogging from '@cories-firebase-startup-template-v3/common/logging';
 import { useCustomer, useListEvents, useListPlans } from 'autumn-js/react';
 import { useEffect, useMemo, useRef } from 'react';
 import { useActiveMember } from '../../lib/auth-client';
@@ -43,6 +43,7 @@ const scopePlanGroupMap: Record<BillingScope, string> = {
   user: 'user',
   organization: 'org',
 };
+const { createScopedLogger } = commonLogging;
 const billingDataLogger = createScopedLogger('BILLING_DATA');
 
 function matchesBillingScope(

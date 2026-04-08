@@ -3,9 +3,8 @@
  */
 import { Autumn } from 'autumn-js';
 import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
+  default as commonLogging,
+} from '@cories-firebase-startup-template-v3/common/logging';
 import {
   getAutumnBaseUrl,
   getAutumnSecretKey,
@@ -13,6 +12,7 @@ import {
 } from './env';
 import { getAutumnCustomerId, getAutumnEntityId } from './auth-autumn-ids';
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging;
 const autumnLogger = createScopedLogger('DASH_AUTH_AUTUMN');
 
 export function getAutumnServerClient(): Autumn | null {

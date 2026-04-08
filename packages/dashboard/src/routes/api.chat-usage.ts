@@ -2,10 +2,7 @@
  * Server route that records app chat usage against Autumn billing.
  */
 import { createFileRoute } from '@tanstack/react-router';
-import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
+import { default as commonLogging } from '@cories-firebase-startup-template-v3/common/logging';
 import { getAutumnCustomerId } from '../lib/auth-autumn-ids';
 import { auth, getAutumnServerClient } from '../lib/auth-server';
 import {
@@ -18,6 +15,7 @@ import {
   normalizeChatMessage,
 } from '../lib/chat-usage';
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging;
 const chatUsageLogger = createScopedLogger('CHAT_USAGE_API');
 let requestSequence = 0;
 

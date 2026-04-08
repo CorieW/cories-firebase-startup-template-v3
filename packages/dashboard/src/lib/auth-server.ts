@@ -1,13 +1,8 @@
 /**
  * Better Auth server instance, adapter wiring, and provider hooks.
  */
-import {
-  BETTER_AUTH_COLLECTIONS,
-  BETTER_AUTH_ORGANIZATION_COLLECTIONS,
-  buildAuthOrganizationSearchFields,
-  buildAuthUserSearchFields,
-  createScopedLogger,
-} from '@cories-firebase-startup-template-v3/common';
+import commonAuth from '@cories-firebase-startup-template-v3/common/auth';
+import commonLogging from '@cories-firebase-startup-template-v3/common/logging';
 import { autumn } from 'autumn-js/better-auth';
 import { betterAuth } from 'better-auth';
 import { organization } from 'better-auth/plugins';
@@ -32,6 +27,13 @@ import {
 import { firestore } from './auth-server.firebase';
 import { normalizeAuthUserForStorage } from './auth-user-normalization';
 
+const {
+  BETTER_AUTH_COLLECTIONS,
+  BETTER_AUTH_ORGANIZATION_COLLECTIONS,
+  buildAuthOrganizationSearchFields,
+  buildAuthUserSearchFields,
+} = commonAuth;
+const { createScopedLogger } = commonLogging;
 const authServerLogger = createScopedLogger('DASH_AUTH_SERVER');
 export { getAutumnServerClient } from './auth-server.autumn';
 

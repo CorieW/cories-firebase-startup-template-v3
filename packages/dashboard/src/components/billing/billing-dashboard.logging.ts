@@ -1,13 +1,11 @@
 /**
  * Billing dashboard logging and toast reporting helpers.
  */
-import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
+import { default as commonLogging } from '@cories-firebase-startup-template-v3/common/logging';
 import { getAutumnErrorMessage } from './billing-dashboard.lib';
 import type { BillingSubmissionState } from './billing-dashboard.types';
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging;
 const billingActionLogger = createScopedLogger('BILLING_ACTION');
 
 type BillingActionContext = {

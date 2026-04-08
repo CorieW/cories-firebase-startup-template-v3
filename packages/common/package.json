@@ -23,6 +23,18 @@
       "import": "./lib/esm/client/index.js",
       "require": "./lib/client/index.js",
       "default": "./lib/esm/client/index.js"
+    },
+    "./auth": {
+      "types": "./lib/auth.d.ts",
+      "import": "./lib/esm/auth.js",
+      "require": "./lib/auth.js",
+      "default": "./lib/auth.js"
+    },
+    "./logging": {
+      "types": "./lib/logging.d.ts",
+      "import": "./lib/esm/logging.js",
+      "require": "./lib/logging.js",
+      "default": "./lib/logging.js"
     }
   },
   "files": [

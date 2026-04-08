@@ -190,6 +190,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - Dashboard deploy helper: `pnpm deploy:dashboard`
 - Backend deploy helper: `pnpm deploy:back`
 - Full deploy helper: `pnpm deploy`
+- The deploy helpers temporarily pack `packages/common` and switch the backend package to a local tgz; the app workspaces keep the shared package linked through the workspace during normal development and CI.
 - Firestore indexes deploy: `firebase deploy --only firestore:indexes`
 - Direct dashboard deploy: `firebase deploy --only apphosting:frontend`
 - Direct Functions deploy: `firebase deploy --only functions`

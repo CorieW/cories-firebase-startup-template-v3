@@ -171,6 +171,7 @@ function OrganizationDetailPage() {
                         <Link
                           className='font-semibold text-[var(--admin-primary)]'
                           params={{ userId: member.userId }}
+                          search={{ page: 1, search: '' }}
                           to='/users/$userId'
                         >
                           Open profile

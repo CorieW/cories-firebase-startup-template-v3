@@ -1,10 +1,7 @@
 /**
  * Assistant chat state, Autumn usage checks, and submit handling.
  */
-import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
+import { default as commonLogging } from '@cories-firebase-startup-template-v3/common/logging';
 import { useCustomer } from 'autumn-js/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -30,6 +27,7 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging;
 const chatLogger = createScopedLogger('CHAT_UI');
 
 export function useAssistantChat() {

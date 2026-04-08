@@ -2,12 +2,10 @@
  * Better Auth API route mounted under the dashboard server.
  */
 import { createFileRoute } from '@tanstack/react-router';
-import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
+import { default as commonLogging } from '@cories-firebase-startup-template-v3/common/logging';
 import { auth } from '../lib/auth-server';
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging;
 const authApiLogger = createScopedLogger('DASH_AUTH_API');
 
 async function handleAuthRequest(request: Request) {

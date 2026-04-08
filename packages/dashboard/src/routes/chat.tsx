@@ -1,7 +1,7 @@
 /**
  * Chat route module.
  */
-import { createScopedLogger } from '@cories-firebase-startup-template-v3/common';
+import commonLogging from '@cories-firebase-startup-template-v3/common/logging';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
@@ -13,6 +13,7 @@ import { SUPPORT_ROUTE_PATH } from '../lib/route-paths';
 import { contentWrapClass, pageContainerClass } from '../lib/ui';
 
 export const CHAT_ROUTE_PATH = '/chat';
+const { createScopedLogger } = commonLogging;
 const chatRouteLogger = createScopedLogger('CHAT_ROUTE');
 
 interface ChatSearchParams {

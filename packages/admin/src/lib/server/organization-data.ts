@@ -27,6 +27,7 @@ import {
 } from "./billing-data";
 import {
   serializeFirestoreRecord,
+  type SerializedFirestoreRecord,
   toIsoString,
 } from "./firestore-serialization";
 
@@ -95,7 +96,7 @@ export interface AdminOrganizationDetail {
   id: string;
   memberRoleCounts: Record<string, number>;
   members: AdminOrganizationMember[];
-  organization: Record<string, unknown> | null;
+  organization: SerializedFirestoreRecord | null;
 }
 
 function toDirectoryItem(input: {

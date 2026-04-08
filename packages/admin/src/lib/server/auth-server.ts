@@ -4,7 +4,6 @@
 import {
   BETTER_AUTH_COLLECTIONS,
   createScopedLogger,
-  serializeErrorForLogging,
 } from '@cories-firebase-startup-template-v3/common';
 import { betterAuth } from 'better-auth';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
@@ -88,33 +87,6 @@ export const auth = betterAuth({
   advanced: {
     database: {
       generateId: false,
-    },
-  },
-  hooks: {
-    after: async context => {
-      authServerLogger.action(
-        'authRequestCompleted',
-        {
-          path: context.path,
-          method: context.context.request?.method,
-          hasSession: Boolean(context.context.session),
-        },
-        'debug'
-      );
-
-      return {};
-    },
-    onError: async context => {
-      authServerLogger.log(
-        'AUTH_ERROR',
-        {
-          action: 'authRequestFailed',
-          path: context.path,
-          method: context.context.request?.method,
-          error: serializeErrorForLogging(context.error),
-        },
-        'error'
-      );
     },
   },
 });

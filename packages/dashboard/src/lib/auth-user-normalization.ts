@@ -1,8 +1,9 @@
 /**
  * Auth user payload normalization helpers for Firestore-safe writes.
  */
-import { buildAuthUserSearchFields } from '@cories-firebase-startup-template-v3/common'
+import commonAuth from '@cories-firebase-startup-template-v3/common/auth'
 
+const { buildAuthUserSearchFields } = commonAuth
 type AuthUserWithOptionalImage = {
   image?: string | null
   email?: string | null

@@ -2,12 +2,12 @@
  * Better Auth email delivery and message template helpers.
  */
 import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
+  default as commonLogging,
+} from '@cories-firebase-startup-template-v3/common/logging';
 import { Resend } from 'resend';
 import { getAppUrl, getResendConfig } from './env';
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging;
 const emailLogger = createScopedLogger('DASH_AUTH_EMAIL');
 
 async function sendEmail({

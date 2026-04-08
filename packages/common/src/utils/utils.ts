@@ -1,7 +1,7 @@
 /**
  * General-purpose shared helpers.
  */
-import { AuthError } from 'firebase/auth';
+import type { AuthError } from 'firebase/auth';
 import { ZodType } from 'zod';
 
 import {
@@ -13,7 +13,7 @@ import {
   getCommonMessages,
   translateCommonMessage,
 } from '../messages/index.js';
-import { CallableResponseWithData } from '../types/index.js';
+import type { CallableResponseWithData } from '../types/index.js';
 import logger from './logger.js';
 import {
   createScopedLogger,

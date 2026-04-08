@@ -1,10 +1,7 @@
 /**
  * Root route shell, layout, and global providers.
  */
-import {
-  configureLogger,
-  createScopedLogger,
-} from '@cories-firebase-startup-template-v3/common';
+import { default as commonLogging } from '@cories-firebase-startup-template-v3/common/logging';
 import { AuthUIProviderTanstack } from '@daveyplate/better-auth-ui/tanstack';
 import { AuthQueryProvider } from '@daveyplate/better-auth-tanstack';
 import { AutumnProvider } from 'autumn-js/react';
@@ -32,6 +29,7 @@ import { getFooterSocialLinksServer } from '../lib/social-links';
 import { THEME_INIT_SCRIPT } from '../lib/theme';
 
 import appCss from '../styles.css?url';
+const { configureLogger, createScopedLogger } = commonLogging;
 const queryClient = new QueryClient();
 const rootLogger = createScopedLogger('DASHBOARD_APP');
 

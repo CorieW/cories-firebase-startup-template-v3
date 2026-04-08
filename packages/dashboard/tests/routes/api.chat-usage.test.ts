@@ -19,13 +19,17 @@ vi.mock('@tanstack/react-router', () => ({
   },
 }));
 
-vi.mock('@cories-firebase-startup-template-v3/common', async () => {
+vi.mock('@cories-firebase-startup-template-v3/common/logging', async () => {
   const actual = await vi.importActual<
-    typeof import('@cories-firebase-startup-template-v3/common')
-  >('@cories-firebase-startup-template-v3/common');
+    typeof import('@cories-firebase-startup-template-v3/common/logging')
+  >('@cories-firebase-startup-template-v3/common/logging');
 
   return {
     ...actual,
+    default: {
+      ...actual.default,
+      createScopedLogger: () => scopedLoggerMock,
+    },
     createScopedLogger: () => scopedLoggerMock,
   };
 });

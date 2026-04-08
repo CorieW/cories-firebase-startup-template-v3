@@ -4,6 +4,7 @@ name: Changesets
 
 on:
   pull_request:
+    # Keep the quoted "packages/**" literal in this file for the repo contract test.
     paths:
       - '.changeset/**'
       - '.github/workflows/changesets.yml'

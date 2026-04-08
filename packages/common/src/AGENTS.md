@@ -13,10 +13,12 @@ Published shared source used by both frontend and backend packages.
 
 ## Files
 
+- `auth.ts`: Shared Better Auth constants and search-helper entrypoint for app packages.
 - `global.ts`: Shared constants and repo-wide global helpers.
 - `index.ts`: Common package public export surface.
   Rules:
   - Keep exports intentional because downstream packages import from here.
+- `logging.ts`: Shared logging entrypoint with compatibility exports for app packages.
 
 ## Writing Rules
 

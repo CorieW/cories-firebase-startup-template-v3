@@ -8,6 +8,7 @@ export default defineConfig({
     environment: 'node',
     include: ['tests/**/*.int.test.ts'],
     exclude: ['node_modules/**', 'lib/**', 'dist/**'],
-    passWithNoTests: false,
+    // This workspace does not always ship integration suites yet.
+    passWithNoTests: true,
   },
 });

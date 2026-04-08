@@ -36,6 +36,7 @@ describe("admin pagination helpers", () => {
       items: items.slice(0, ADMIN_DIRECTORY_PAGE_SIZE),
       page: 1,
       pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
+      totalCount: items.length,
     });
 
     expect(paginateItems(items, 2, ADMIN_DIRECTORY_PAGE_SIZE)).toEqual({
@@ -43,6 +44,7 @@ describe("admin pagination helpers", () => {
       items: items.slice(ADMIN_DIRECTORY_PAGE_SIZE),
       page: 2,
       pageSize: ADMIN_DIRECTORY_PAGE_SIZE,
+      totalCount: items.length,
     });
   });
 

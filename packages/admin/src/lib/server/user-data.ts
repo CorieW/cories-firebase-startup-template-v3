@@ -29,6 +29,7 @@ import {
 } from "./billing-data";
 import {
   serializeFirestoreRecord,
+  type SerializedFirestoreRecord,
   toIsoString,
 } from "./firestore-serialization";
 
@@ -69,8 +70,8 @@ export interface AdminUserAutumnSubscription {
 }
 
 export interface AdminUserDetail {
-  appUser: Record<string, unknown> | null;
-  authUser: Record<string, unknown> | null;
+  appUser: SerializedFirestoreRecord | null;
+  authUser: SerializedFirestoreRecord | null;
   autumnSubscriptions: AdminUserAutumnSubscription[];
   billing: AdminUserBillingSummary;
   id: string;

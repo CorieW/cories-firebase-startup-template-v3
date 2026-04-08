@@ -13,14 +13,15 @@ test('@smoke renders the sign-in shell with theme controls', async ({
     page.getByRole('link', { name: /Firebase Starter/i })
   ).toBeVisible();
   await expect(
-    page.getByRole('group', { name: 'Theme preference' })
+    page.getByRole('button', { name: /Theme preference/i })
   ).toBeVisible();
 });
 
 test('@smoke persists theme preference across reloads', async ({ page }) => {
   await page.goto('/sign-in');
 
-  await page.getByRole('button', { name: 'Light mode' }).click();
+  await page.getByRole('button', { name: /Theme preference/i }).click();
+  await page.getByRole('menuitemradio', { name: 'Light' }).click();
 
   await expect
     .poll(() =>

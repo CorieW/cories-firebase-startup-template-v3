@@ -1,7 +1,7 @@
 /**
  * Firebase Admin bootstrap and Firestore singleton setup for auth.
  */
-import { createScopedLogger } from '@cories-firebase-startup-template-v3/common';
+import commonLogging from '@cories-firebase-startup-template-v3/common/logging';
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import {
@@ -13,6 +13,7 @@ import {
 } from './env';
 
 const AUTH_APP_NAME = 'dashboard-better-auth';
+const { createScopedLogger } = commonLogging;
 const firebaseLogger = createScopedLogger('DASH_AUTH_FIREBASE');
 
 function getFirebaseAdminApp() {

@@ -1,10 +1,7 @@
 /**
  * Support route module.
  */
-import {
-  createScopedLogger,
-  serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
+import { default as commonLogging } from '@cories-firebase-startup-template-v3/common/logging';
 import { createFileRoute } from '@tanstack/react-router';
 import PageHeader from '../components/PageHeader';
 import SupportArticlesCard from '../components/support/SupportArticlesCard';
@@ -16,6 +13,7 @@ import { SUPPORT_ROUTE_PATH } from '../lib/route-paths';
 import { CHAT_ROUTE_PATH } from './chat';
 import { contentWrapClass, pageContainerClass } from '../lib/ui';
 
+const { createScopedLogger, serializeErrorForLogging } = commonLogging;
 const supportLogger = createScopedLogger('SUPPORT_UI');
 
 export const Route = createFileRoute(SUPPORT_ROUTE_PATH)({

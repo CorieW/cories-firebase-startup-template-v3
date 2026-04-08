@@ -11,6 +11,12 @@
       "@cories-firebase-startup-template-v3/common": ["../common/src/index.ts"],
       "@cories-firebase-startup-template-v3/common/client": [
         "../common/src/client/index.ts"
+      ],
+      "@cories-firebase-startup-template-v3/common/auth": [
+        "../common/src/auth.ts"
+      ],
+      "@cories-firebase-startup-template-v3/common/logging": [
+        "../common/src/logging.ts"
       ]
     },
     "lib": ["ES2022", "DOM", "DOM.Iterable"],

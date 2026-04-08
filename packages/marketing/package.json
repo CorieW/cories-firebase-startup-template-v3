@@ -9,7 +9,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@cories-firebase-startup-template-v3/common": "file:../common/cories-firebase-startup-template-v3-common.tgz",
+    "@cories-firebase-startup-template-v3/common": "link:../common",
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -29,6 +29,6 @@
     "tailwindcss": "^4.1.18",
     "typescript": "^5.7.2",
     "vite": "^7.3.1",
-    "vitest": "^3.0.5"
+    "vitest": "^4.0.18"
   }
 }

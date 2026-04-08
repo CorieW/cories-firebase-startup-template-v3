@@ -22,11 +22,30 @@ const config = defineConfig({
         ),
       },
       {
+        find: '@cories-firebase-startup-template-v3/common/auth',
+        replacement: fileURLToPath(
+          new URL('../common/src/auth.ts', import.meta.url)
+        ),
+      },
+      {
+        find: '@cories-firebase-startup-template-v3/common/logging',
+        replacement: fileURLToPath(
+          new URL('../common/src/logging.ts', import.meta.url)
+        ),
+      },
+      {
         find: '@cories-firebase-startup-template-v3/common',
         replacement: fileURLToPath(
           new URL('../common/src/index.ts', import.meta.url)
         ),
       },
+    ],
+  },
+  ssr: {
+    noExternal: [
+      '@cories-firebase-startup-template-v3/common',
+      '@cories-firebase-startup-template-v3/common/auth',
+      '@cories-firebase-startup-template-v3/common/logging',
     ],
   },
   plugins: [

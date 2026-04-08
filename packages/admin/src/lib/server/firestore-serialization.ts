@@ -3,6 +3,18 @@
  */
 import { Timestamp } from 'firebase-admin/firestore';
 
+export type SerializedFirestoreValue =
+  | boolean
+  | number
+  | string
+  | null
+  | SerializedFirestoreValue[]
+  | SerializedFirestoreRecord;
+
+export interface SerializedFirestoreRecord {
+  [key: string]: SerializedFirestoreValue;
+}
+
 /**
  * Converts common Firestore timestamp shapes into ISO strings.
  */
@@ -25,7 +37,9 @@ export function toIsoString(value: unknown): string | null {
 /**
  * Recursively serializes Firestore-friendly values into plain JSON data.
  */
-export function serializeFirestoreValue(value: unknown): unknown {
+export function serializeFirestoreValue(
+  value: unknown
+): SerializedFirestoreValue {
   if (value instanceof Timestamp) {
     return value.toDate().toISOString();
   }
@@ -34,12 +48,24 @@ export function serializeFirestoreValue(value: unknown): unknown {
     return value.toISOString();
   }
 
+  if (value === null) {
+    return null;
+  }
+
+  if (
+    typeof value === 'boolean' ||
+    typeof value === 'number' ||
+    typeof value === 'string'
+  ) {
+    return value;
+  }
+
   if (Array.isArray(value)) {
     return value.map(entry => serializeFirestoreValue(entry));
   }
 
-  if (!value || typeof value !== 'object') {
-    return value;
+  if (typeof value !== 'object') {
+    return null;
   }
 
   if ('path' in value && typeof value.path === 'string') {
@@ -59,11 +85,10 @@ export function serializeFirestoreValue(value: unknown): unknown {
  */
 export function serializeFirestoreRecord(
   value: Record<string, unknown> | null | undefined
-): Record<string, unknown> | null {
+): SerializedFirestoreRecord | null {
   if (!value) {
     return null;
   }
 
-  return serializeFirestoreValue(value) as Record<string, unknown>;
+  return serializeFirestoreValue(value) as SerializedFirestoreRecord;
 }
-

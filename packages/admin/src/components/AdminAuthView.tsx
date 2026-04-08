@@ -4,10 +4,12 @@
 import { Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import {
-  ADMIN_FORGOT_PASSWORD_ROUTE_PATH,
   ADMIN_HOME_ROUTE_PATH,
   ADMIN_RESET_PASSWORD_ROUTE_PATH,
+  ADMIN_SIGN_IN_ROUTE_PATH,
   ADMIN_SIGN_IN_ROUTE_PREFIX,
+  getAdminAuthRouteParams,
+  getAdminAuthRouteSearch,
 } from '../lib/route-paths';
 import {
   badgeClass,
@@ -256,7 +258,9 @@ export function AdminAuthView({ error, mode, token }: AdminAuthViewProps) {
             links={[
               {
                 label: 'Back to sign in',
-                to: ADMIN_SIGN_IN_ROUTE_PREFIX,
+                params: getAdminAuthRouteParams(),
+                search: getAdminAuthRouteSearch(),
+                to: ADMIN_SIGN_IN_ROUTE_PATH,
               },
             ]}
           />
@@ -303,7 +307,9 @@ export function AdminAuthView({ error, mode, token }: AdminAuthViewProps) {
             links={[
               {
                 label: 'Back to sign in',
-                to: ADMIN_SIGN_IN_ROUTE_PREFIX,
+                params: getAdminAuthRouteParams(),
+                search: getAdminAuthRouteSearch(),
+                to: ADMIN_SIGN_IN_ROUTE_PATH,
               },
             ]}
           />
@@ -337,7 +343,9 @@ export function AdminAuthView({ error, mode, token }: AdminAuthViewProps) {
           <div className='flex flex-wrap gap-3'>
             <Link
               className={primaryButtonClass}
-              to={ADMIN_SIGN_IN_ROUTE_PREFIX}
+              params={getAdminAuthRouteParams()}
+              search={getAdminAuthRouteSearch()}
+              to={ADMIN_SIGN_IN_ROUTE_PATH}
             >
               Back to sign in
             </Link>
@@ -383,7 +391,9 @@ export function AdminAuthView({ error, mode, token }: AdminAuthViewProps) {
           links={[
             {
               label: 'Forgot password',
-              to: ADMIN_FORGOT_PASSWORD_ROUTE_PATH,
+              params: getAdminAuthRouteParams('forgot-password'),
+              search: getAdminAuthRouteSearch(),
+              to: ADMIN_SIGN_IN_ROUTE_PATH,
             },
           ]}
         />
@@ -467,13 +477,21 @@ function FooterLinks({
 }: {
   links: Array<{
     label: string;
-    to: string;
+    params: ReturnType<typeof getAdminAuthRouteParams>;
+    search: ReturnType<typeof getAdminAuthRouteSearch>;
+    to: typeof ADMIN_SIGN_IN_ROUTE_PATH;
   }>;
 }) {
   return (
     <div className='flex flex-wrap gap-3'>
       {links.map(link => (
-        <Link key={link.to} className={secondaryButtonClass} to={link.to}>
+        <Link
+          key={`${link.to}-${link.params._splat}`}
+          className={secondaryButtonClass}
+          params={link.params}
+          search={link.search}
+          to={link.to}
+        >
           {link.label}
         </Link>
       ))}

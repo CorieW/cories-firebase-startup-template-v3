@@ -18,6 +18,6 @@ test('@core allows direct navigation to the sign-up route', async ({
 
   await expect(page).toHaveURL(/\/sign-up/);
   await expect(
-    page.getByRole('group', { name: 'Theme preference' })
+    page.getByRole('button', { name: /Theme preference/i })
   ).toBeVisible();
 });

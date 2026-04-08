@@ -39,4 +39,4 @@ jobs:
           node-version: '22'
 
       - name: Validate AGENTS files
-        run: pnpm run agents:check --strict-placeholders
+        run: pnpm dlx agentsmd-hierarchy@1.0.0 check . --strict-placeholders

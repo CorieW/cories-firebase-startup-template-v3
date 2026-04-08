@@ -1,7 +1,7 @@
 /**
  * Billing dashboard formatting, parsing, and wallet helper functions.
  */
-import { createScopedLogger } from '@cories-firebase-startup-template-v3/common';
+import commonLogging from '@cories-firebase-startup-template-v3/common/logging';
 import { useEffect, useRef } from 'react';
 import {
   type AutumnCustomer,
@@ -10,6 +10,7 @@ import {
   type AutumnPlanItem,
 } from './billing-dashboard.types';
 
+const { createScopedLogger } = commonLogging;
 const billingUiLogger = createScopedLogger('BILLING_UI');
 
 const quantityFormatter = new Intl.NumberFormat(undefined, {

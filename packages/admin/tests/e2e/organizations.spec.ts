@@ -74,7 +74,10 @@ test('@core shows the populated organization detail view', async ({
   await expect(memberRow).toContainText('member');
   await expect(
     memberRow.getByRole('link', { name: 'Open profile' })
-  ).toHaveAttribute('href', `/users/${seededAdminData.subjectUser.id}`);
+  ).toHaveAttribute(
+    'href',
+    new RegExp(`/users/${seededAdminData.subjectUser.id}(\\?.*)?$`)
+  );
   await expect(
     adminPage.getByText(`"name": "${seededAdminData.organization.name}"`)
   ).toBeVisible();
@@ -145,18 +148,30 @@ test('@core shows a billing-ready organization detail view with a real Autumn wa
   ).toBeVisible();
   await expect(adminPage.getByText('Wallet found')).toBeVisible();
   await expect(
-    adminPage.getByText(
-      formatAdminBalanceAmount(
-        autumn.organizationCustomer.wallet?.remaining ?? null,
-        autumn.organizationCustomer.wallet?.featureId ?? null
+    adminPage
+      .locator('dl > div')
+      .filter({
+        has: adminPage.locator('dt').filter({ hasText: 'Wallet balance' }),
+      })
+      .getByText(
+        formatAdminBalanceAmount(
+          autumn.organizationCustomer.wallet?.remaining ?? null,
+          autumn.organizationCustomer.wallet?.featureId ?? null
+        ),
+        { exact: true }
       )
-    )
   ).toBeVisible();
   await expect(
     adminPage.getByRole('heading', { name: 'Autumn subscriptions (1)' })
   ).toBeVisible();
-  await expect(adminPage.getByText(autumn.organizationPlanName)).toBeVisible();
-  await expect(adminPage.getByText('active')).toBeVisible();
+  const organizationSubscriptionRow = adminPage
+    .getByRole('row')
+    .filter({ hasText: autumn.organizationPlanId });
+  await expect(organizationSubscriptionRow).toHaveCount(1);
+  await expect(organizationSubscriptionRow).toContainText(
+    autumn.organizationPlanId
+  );
+  await expect(organizationSubscriptionRow).toContainText('active');
 
   if (autumn.organizationCustomer.wallet?.nextResetAt) {
     await expect(

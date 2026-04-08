@@ -4,6 +4,8 @@
 import { randomUUID } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { Autumn } from 'autumn-js';
+import { hashPassword } from 'better-auth/crypto';
+import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import {
   expect,
   request as playwrightRequest,
@@ -14,12 +16,67 @@ import {
   type BrowserContextOptions,
   type Page,
 } from '@playwright/test';
-import type { Query } from 'firebase-admin/firestore';
+import { getFirestore, type Query } from 'firebase-admin/firestore';
+
+const BETTER_AUTH_COLLECTIONS = {
+  accounts: 'auth_accounts',
+  sessions: 'auth_sessions',
+  users: 'auth_users',
+  verificationTokens: 'auth_verification_tokens',
+} as const;
+
+const BETTER_AUTH_ORGANIZATION_COLLECTIONS = {
+  invitation: 'auth_invitations',
+  member: 'auth_members',
+  organization: 'auth_organizations',
+} as const;
+
+function normalizeSearchValue(value: string | null | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  const normalized = value.trim().toLowerCase().replace(/\s+/g, ' ');
+  return normalized.length > 0 ? normalized : null;
+}
+
+function buildAuthUserSearchFields(input: {
+  email?: string | null;
+  name?: string | null;
+}) {
+  return {
+    emailSearch: normalizeSearchValue(input.email),
+    nameSearch: normalizeSearchValue(input.name),
+  };
+}
+
+function buildAuthOrganizationSearchFields(input: { name?: string | null }) {
+  return {
+    nameSearch: normalizeSearchValue(input.name),
+  };
+}
+
+function getAdminAuditLogsPath() {
+  return 'admin_audit_logs';
+}
+
+function getAppAdminPath(userUid: string) {
+  return `app_admins/${userUid}`;
+}
+
+function getAuthUserPath(userUid: string) {
+  return `auth_users/${userUid}`;
+}
+
+function getUserPath(userUid: string) {
+  return `users/${userUid}`;
+}
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3002';
 const AUTUMN_WALLET_FEATURE_ID = 'usd_credits';
 const BILLING_DIRECTORY_CUSTOMER_COUNT = 26;
 const GENERIC_BILLING_CUSTOMER_COUNT = 23;
+const TEST_AUTH_APP_NAME = 'admin-better-auth-playwright';
 const adminEnvPath = new URL('../../.env', import.meta.url);
 
 interface SeededAdminUser {
@@ -214,6 +271,50 @@ function getAdminTestEnvValue(key: string) {
   }
 
   return readAdminEnvEntries()[key];
+}
+
+function getTestFirestore() {
+  const projectId =
+    getAdminTestEnvValue('FIREBASE_PROJECT_ID') ?? 'demo-startup-template';
+  const clientEmail = getAdminTestEnvValue('FIREBASE_CLIENT_EMAIL');
+  const privateKey = getAdminTestEnvValue('FIREBASE_PRIVATE_KEY')
+    ?.replace(/\r\n/g, '\n')
+    .replace(/\\n/g, '\n');
+  const emulatorHost =
+    getAdminTestEnvValue('FIRESTORE_EMULATOR_HOST') ?? '127.0.0.1:8080';
+
+  if (emulatorHost && !process.env.FIRESTORE_EMULATOR_HOST) {
+    process.env.FIRESTORE_EMULATOR_HOST = emulatorHost;
+  }
+
+  const existing = getApps().find(app => app.name === TEST_AUTH_APP_NAME);
+  if (existing) {
+    return getFirestore(existing);
+  }
+
+  const app =
+    clientEmail &&
+    privateKey &&
+    !/replace_with_your_private_key/i.test(privateKey)
+      ? initializeApp(
+          {
+            credential: cert({
+              clientEmail,
+              privateKey,
+              projectId,
+            }),
+            projectId,
+          },
+          TEST_AUTH_APP_NAME
+        )
+      : initializeApp(
+          {
+            projectId,
+          },
+          TEST_AUTH_APP_NAME
+        );
+
+  return getFirestore(app);
 }
 
 function createAutumnClient() {
@@ -596,33 +697,13 @@ async function cleanupAutumnBillingData(input: {
   }
 }
 
-async function getTestModules() {
-  const [
-    { auth: dashboardAuth },
-    { firestore },
-    {
-      BETTER_AUTH_COLLECTIONS,
-      BETTER_AUTH_ORGANIZATION_COLLECTIONS,
-      buildAuthOrganizationSearchFields,
-      buildAuthUserSearchFields,
-      getAdminAuditLogsPath,
-      getAppAdminPath,
-      getAuthUserPath,
-      getUserPath,
-    },
-  ] = await Promise.all([
-    import('../../../dashboard/src/lib/auth-server'),
-    import('../../src/lib/server/auth-server.firebase'),
-    import('@cories-firebase-startup-template-v3/common'),
-  ]);
-
+function getTestModules() {
   return {
     BETTER_AUTH_COLLECTIONS,
     BETTER_AUTH_ORGANIZATION_COLLECTIONS,
     buildAuthOrganizationSearchFields,
     buildAuthUserSearchFields,
-    dashboardAuth,
-    firestore,
+    firestore: getTestFirestore(),
     getAdminAuditLogsPath,
     getAppAdminPath,
     getAuthUserPath,
@@ -686,30 +767,39 @@ async function seedAdminData(): Promise<SeededAdminArtifacts> {
   };
 
   const disabledAdminId = `disabled-admin-${uniqueId}`;
-  const signUpResult = (await modules.dashboardAuth.api.signUpEmail({
-    body: {
-      email: adminUser.email,
-      name: adminUser.name,
-      password: adminUser.password,
-    },
-  })) as {
-    user: {
-      id: string;
-    };
-  };
-
-  const adminUserId = signUpResult.user.id;
+  const adminUserId = `admin-${uniqueId}`;
+  const adminAccountId = `account-${uniqueId}`;
   const adminCreatedAt = new Date(adminUser.createdAt);
+  const adminPasswordHash = await hashPassword(adminUser.password);
 
   await Promise.all([
     modules.firestore.doc(modules.getAuthUserPath(adminUserId)).set(
       {
         createdAt: adminCreatedAt,
+        email: adminUser.email.toLowerCase(),
         emailVerified: true,
+        id: adminUserId,
+        image: null,
+        name: adminUser.name,
         updatedAt: adminCreatedAt,
+        ...modules.buildAuthUserSearchFields({
+          email: adminUser.email,
+          name: adminUser.name,
+        }),
       },
       { merge: true }
     ),
+    modules.firestore
+      .collection(modules.BETTER_AUTH_COLLECTIONS.accounts)
+      .doc(adminAccountId)
+      .set({
+        accountId: adminUserId,
+        createdAt: adminCreatedAt,
+        password: adminPasswordHash,
+        providerId: 'credential',
+        updatedAt: adminCreatedAt,
+        userId: adminUserId,
+      }),
     modules.firestore.doc(modules.getAppAdminPath(adminUserId)).set({
       createdAt: adminCreatedAt,
       createdBy: null,
@@ -977,7 +1067,7 @@ export const test = base.extend<
         await cleanupSeededAdminData(artifacts);
       }
     },
-    { scope: 'worker' },
+    { scope: 'worker', timeout: 120_000 },
   ],
   seededAdminData: async ({ seededAdminArtifacts }, use) => {
     await use(seededAdminArtifacts.seededData);

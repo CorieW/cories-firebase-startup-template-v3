@@ -3,6 +3,7 @@
  */
 import {
   createScopedLogger,
+  isAdminRole,
   serializeErrorForLogging,
 } from "@cories-firebase-startup-template-v3/common";
 import { redirect } from "@tanstack/react-router";
@@ -11,7 +12,9 @@ import { getRequestHeaders } from "@tanstack/react-start/server";
 import {
   ADMIN_SIGN_OUT_ROUTE_PATH,
   ADMIN_HOME_ROUTE_PATH,
-  ADMIN_SIGN_IN_ROUTE_PREFIX,
+  ADMIN_SIGN_IN_ROUTE_PATH,
+  getAdminAuthRouteParams,
+  getAdminAuthRouteSearch,
 } from "./route-paths";
 import { normalizeAdminPathname } from "./route-guards";
 import { isAdminAuthRoute, isAdminPublicRoute } from "./route-guards";
@@ -87,7 +90,7 @@ const writeAdminAccessAuditLog = createServerFn({ method: "POST" })
       action:
         typeof input.action === "string" ? input.action : "admin.access.denied",
       actorRole:
-        input.actorRole === null || typeof input.actorRole === "string"
+        input.actorRole === null || isAdminRole(input.actorRole)
           ? input.actorRole
           : null,
       actorUid: typeof input.actorUid === "string" ? input.actorUid : "",
@@ -163,23 +166,20 @@ export async function requireActiveAdmin(
 
   if (!adminSession.isAuthenticated) {
     throw redirect({
-      to: ADMIN_SIGN_IN_ROUTE_PREFIX,
-      params: {
-        _splat: "",
-      },
+      params: getAdminAuthRouteParams(),
+      search: getAdminAuthRouteSearch(),
+      to: ADMIN_SIGN_IN_ROUTE_PATH,
     });
   }
 
   if (!adminSession.isActiveAdmin) {
     await auditAccessDenial(pathname, adminSession);
     throw redirect({
-      to: ADMIN_SIGN_IN_ROUTE_PREFIX,
-      params: {
-        _splat: "",
-      },
-      search: {
+      params: getAdminAuthRouteParams(),
+      search: getAdminAuthRouteSearch({
         error: "invalid-credentials",
-      },
+      }),
+      to: ADMIN_SIGN_IN_ROUTE_PATH,
     });
   }
 }
