@@ -8,7 +8,7 @@ Repository root for the Firebase startup template monorepo. Start here for repo-
 - `.cursor/`: Committed Cursor editor settings for this workspace.
 - `.github/`: GitHub Actions workflows and repository automation.
 - `config/`: Shared linting and formatting configuration.
-- `packages/`: Workspace packages for backend, common, dashboard, admin, and marketing code.
+- `packages/`: Workspace packages for backend, common, dashboard, admin, marketing, and docs code.
 - `scripts/`: Repository helper scripts for maintenance and validation.
 
 ## Files

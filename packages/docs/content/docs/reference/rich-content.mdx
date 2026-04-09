@@ -1,0 +1,39 @@
+---
+title: Rich Content Examples
+description: Examples of code, media, text, and embeds that can be authored in the docs package.
+summary: A single page showing the richer blocks available to docs authors.
+icon: MonitorPlay
+---
+
+{/* Rich content example page. */}
+
+## Code blocks
+
+```mdx title="packages/docs/content/docs/reference/rich-content.mdx"
+<Callout title='Heads up'>
+  You can mix standard markdown with React components in MDX.
+</Callout>
+```
+
+## Images
+
+<DocImage
+  src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80'
+  alt='A documentation desk setup with a laptop and notes.'
+  caption='Use framed images for screenshots, UI callouts, or product storytelling.'
+/>
+
+## Video
+
+<DocVideo
+  src='https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'
+  caption='Self-hosted clips can demonstrate setup flows, walkthroughs, or product interaction.'
+/>
+
+## Embeds
+
+<DocEmbed
+  src='https://www.youtube.com/embed/dQw4w9WgXcQ'
+  title='Embedded video example'
+  caption='Trusted embeds work well for hosted demos, talks, and product overviews.'
+/>

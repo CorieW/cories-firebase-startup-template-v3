@@ -1,0 +1,39 @@
+---
+title: Getting Started
+description: Run the docs app locally and add your first documentation pages.
+summary: The quickest path from install to your first published doc.
+icon: Rocket
+---
+
+{/* Getting started docs content. */}
+
+## Run the docs workspace
+
+Use the dedicated docs commands from the repo root:
+
+```bash
+pnpm dev:docs
+pnpm --filter @cories-firebase-startup-template-v3/docs build
+```
+
+The docs app runs on `http://localhost:3003`.
+
+## Add a page
+
+Create a new `.mdx` file somewhere under `packages/docs/content/docs`. Use
+frontmatter for the title and optional description:
+
+```mdx
+---
+title: Team Onboarding
+description: How new contributors get productive quickly.
+---
+
+## First steps
+```
+
+## Organize navigation
+
+Use `meta.json` in any folder to name or order a section. Files named
+`index.mdx` become the page for that folder path, so
+`guides/index.mdx` maps to `/guides`.

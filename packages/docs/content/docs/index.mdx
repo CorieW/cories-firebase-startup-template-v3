@@ -1,0 +1,61 @@
+---
+title: Welcome
+description: Start here to learn how the template is organized, extended, and documented.
+summary: A friendly home page for setup, architecture, and rich content examples.
+icon: BookOpen
+---
+
+{/* Docs home page content. */}
+
+<Callout title='Public docs, shared product feel'>
+  This docs package uses the same brand tokens and theme model as the product
+  apps, but keeps a calmer documentation shell.
+</Callout>
+
+## Build with the template, not around it
+
+These docs are meant to be easy to grow with the project. Add a new `.mdx`
+page, update the nearby `meta.json`, and it immediately joins the navigation,
+table of contents, and search index.
+
+<Cards>
+  <Card href='/getting-started' title='Getting started'>
+    Install the workspace, run the apps, and learn how content pages are wired.
+  </Card>
+  <Card href='/guides' title='Guides'>
+    Walk through broader workflows and product-building patterns.
+  </Card>
+  <Card href='/reference' title='Reference'>
+    Keep API notes, architecture references, and reusable snippets together.
+  </Card>
+</Cards>
+
+## What this package supports
+
+<Steps>
+  <Step>Write pages in MDX with a small frontmatter contract.</Step>
+  <Step>
+    Use shared components for callouts, cards, tabs, code, media, and embeds.
+  </Step>
+  <Step>
+    Let Fumadocs handle navigation, search, breadcrumbs, and table of contents.
+  </Step>
+</Steps>
+
+## Why this setup works
+
+<Tabs items={['Theme', 'Authoring', 'Extensibility']}>
+  <Tab value='Theme'>
+    The docs app imports the same shared palette and document helpers as the
+    dashboard and marketing packages, so typography, brand marks, and light and
+    dark mode stay in the same family.
+  </Tab>
+  <Tab value='Authoring'>
+    Content lives under `packages/docs/content/docs`, with `index.mdx` for
+    landing pages and `meta.json` files to control section structure.
+  </Tab>
+  <Tab value='Extensibility'>
+    Rich content is centralized through the MDX component registry, which keeps
+    docs authoring simple while still allowing custom React-powered sections.
+  </Tab>
+</Tabs>

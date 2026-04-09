@@ -1,0 +1,53 @@
+{
+  "name": "@cories-firebase-startup-template-v3/docs",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "postinstall": "fumadocs-mdx",
+    "dev": "vite dev --port 3003 --strictPort",
+    "build": "vite build",
+    "start": "node .output/server/index.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e:smoke": "playwright test --grep @smoke",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@cories-firebase-startup-template-v3/common": "link:../common",
+    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-start": "latest",
+    "@tanstack/router-plugin": "^1.132.0",
+    "clsx": "^2.1.1",
+    "fumadocs-core": "16.7.11",
+    "fumadocs-mdx": "14.2.11",
+    "fumadocs-ui": "16.7.11",
+    "lucide-react": "^0.545.0",
+    "nitro": "npm:nitro-nightly@latest",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "shiki": "^4.0.2",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.4",
+    "@testing-library/react": "^16.3.0",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.7.2",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.18"
+  }
+}

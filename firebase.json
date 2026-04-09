@@ -31,6 +31,20 @@
         "playwright-report",
         "test-results"
       ]
+    },
+    {
+      "backendId": "docs",
+      "rootDir": "packages/docs",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        ".output",
+        ".tanstack",
+        "playwright-report",
+        "test-results"
+      ]
     }
   ],
   "emulators": {

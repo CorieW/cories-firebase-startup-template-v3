@@ -1,0 +1,30 @@
+{
+  "include": ["**/*.ts", "**/*.tsx", "**/*.mdx"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "#/*": ["./src/*"],
+      "@/*": ["./src/*"],
+      "@cories-firebase-startup-template-v3/common": ["../common/src/index.ts"],
+      "@cories-firebase-startup-template-v3/common/client": [
+        "../common/src/client/index.ts"
+      ],
+      "fumadocs-mdx:collections/*": [".source/*"]
+    },
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "node"],
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  }
+}

@@ -1,6 +1,6 @@
 # packages
 
-Monorepo workspace container for backend, common, dashboard, admin, and marketing packages.
+Monorepo workspace container for backend, common, dashboard, admin, marketing, and docs packages.
 
 ## Directories
 
@@ -8,6 +8,7 @@ Monorepo workspace container for backend, common, dashboard, admin, and marketin
 - `back/`: Firebase Functions backend workspace.
 - `common/`: Shared types, utilities, and repo-contract tests.
 - `dashboard/`: TanStack Start dashboard workspace.
+- `docs/`: Public TanStack Start documentation workspace powered by MDX content.
 - `marketing/`: Static React marketing site workspace.
 
 ## Files

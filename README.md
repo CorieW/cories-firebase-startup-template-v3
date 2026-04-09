@@ -1,6 +1,6 @@
 # Corie's Firebase Startup Template
 
-Monorepo template for Firebase apps with a TanStack Start dashboard, app-specific Firebase Functions backend, and a shared TypeScript package.
+Monorepo template for Firebase apps with TanStack Start dashboard and docs apps, an app-specific Firebase Functions backend, and a shared TypeScript package.
 
 ## Prerequisites
 
@@ -9,7 +9,7 @@ Monorepo template for Firebase apps with a TanStack Start dashboard, app-specifi
 - Firebase CLI (`firebase-tools`) 14.4.0 or newer
 - A Firebase project on the Blaze plan with Firestore and Functions enabled
 
-App Hosting is only required when you are ready to deploy the dashboard.
+App Hosting is only required when you are ready to deploy the dashboard or docs apps.
 
 ## Quick Start: First Local Run
 
@@ -68,6 +68,7 @@ Admin env (`packages/admin/.env`):
 - Required now: `APP_URL`, `BETTER_AUTH_SECRET`, `FIREBASE_PROJECT_ID`
 - `APP_URL` should normally stay `http://localhost:3002` for local development.
 - `BETTER_AUTH_SECRET` should match the dashboard value so admin auth tokens are compatible across both apps.
+- The admin and dashboard apps use separate Better Auth cookie namespaces, so signing into one app does not automatically sign you into the other.
 - Optional now or later: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTUMN_SECRET_KEY`, `ADMIN_EXTERNAL_TOOLS`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
 - Leave `FIRESTORE_EMULATOR_HOST="127.0.0.1:8080"` in place for local emulator usage unless you intentionally changed the Firestore emulator port.
 - `FIREBASE_CLIENT_EMAIL` and `FIREBASE_PRIVATE_KEY` can stay unset locally when you are using the emulator or application default credentials.
@@ -88,7 +89,7 @@ pnpm dev
 1. Verify the app is running.
 
 - Open `http://localhost:3000`
-- Expect the marketing page on `http://localhost:3000`, the dashboard on `http://localhost:3001`, the admin app on `http://localhost:3002`, plus the `common` and `back` watch builds and the Firestore and Functions emulators
+- Expect the marketing page on `http://localhost:3000`, the dashboard on `http://localhost:3001`, the admin app on `http://localhost:3002`, the docs app on `http://localhost:3003`, plus the `common` and `back` watch builds and the Firestore and Functions emulators
 
 1. Create your first admin user.
 
@@ -122,7 +123,7 @@ firebase apphosting:backends:create --project <your-project-id>
 
 - When prompted for the root directory, use `packages/dashboard`
 - `firebase.json` is set up for `backendId: frontend`; if you choose a different backend ID, update `firebase.json`
-- By default, only the dashboard App Hosting backend is configured in `firebase.json`. The admin app runs locally at `packages/admin` but is not wired to a Firebase App Hosting backend out of the box.
+- `firebase.json` now includes App Hosting entries for the dashboard (`backendId: frontend`) and docs (`backendId: docs`). The admin app runs locally at `packages/admin` but is not wired to a Firebase App Hosting backend out of the box.
 
 1. Configure production integrations as needed.
 
@@ -133,13 +134,26 @@ firebase apphosting:backends:create --project <your-project-id>
 
 1. Customize the template for your product.
 
+- Rename the shared template branding, support contact details, and boilerplate constants in `packages/common/src/global.ts` first so the marketing, dashboard, and admin shells pick up your new product identity consistently
+- Update docs-specific metadata, starter pages, and content organization under `packages/docs/content/docs`
 - Refresh the marketing page layout, storytelling, and visual tokens in `packages/marketing/src/components/marketing` and `packages/marketing/src/styles.css`
 - Update branding, colors, copy, and static assets in `packages/dashboard`
+- Adjust the docs shell and theme overrides in `packages/docs/src`
 - Adjust the shared dashboard visual tokens in `packages/dashboard/src/styles.css` and reusable dashboard surface/action classes in `packages/dashboard/src/lib/ui.ts`
-- Reuse shared frontend auth, brand, and theme helpers from `packages/common/src/client` before duplicating app-entry UI or browser theme logic in app packages
+- Reuse shared frontend auth, brand, theme helpers, and shared theme token CSS from `packages/common/src/client` before duplicating app-entry UI, browser theme logic, or palette constants in app packages
+- Reuse shared frontend document/root utility classes from `packages/common/src/client` so typography and text rendering stay aligned across app shells
+- Keep frontend Tailwind scans pointed at `packages/common/src` so shared component utilities compile consistently in dashboard, admin, marketing, and docs
 - Update SEO-related files in `packages/dashboard/index.html` and `packages/dashboard/public`
 - Update shared user-facing messages in `packages/common/src/messages/messages.json`
 - Implement or extend backend callables and triggers in `packages/back/src`
+
+## Docs Authoring
+
+- Docs content lives in `packages/docs/content/docs`
+- Add new pages as `.mdx` files and use nearby `meta.json` files to control section structure and ordering
+- The docs app exposes a shared MDX component registry for callouts, tabs, steps, code blocks, images, video, and embeds
+- Run the docs package by itself with `pnpm dev:docs`
+- Search is powered by Fumadocs' built-in Orama integration and indexes the MDX content tree automatically during build and test runs
 
 1. Set up repo automation if you want the included workflows.
 
@@ -149,6 +163,7 @@ firebase apphosting:backends:create --project <your-project-id>
 ## Stack
 
 - Dashboard (`packages/dashboard`): TanStack Start, React 19, Better Auth, Better Auth UI, Autumn, Tailwind
+- Docs (`packages/docs`): TanStack Start, Fumadocs, MDX, Tailwind
 - Admin (`packages/admin`): TanStack Start, Better Auth, Better Auth UI, Firebase Admin, read-only admin tooling
 - Backend (`packages/back`): Firebase Functions, Firebase Admin, TypeScript
 - Shared (`packages/common`): shared API types, constants, utilities, and messages
@@ -157,9 +172,15 @@ firebase apphosting:backends:create --project <your-project-id>
 ## Architecture
 
 - Better Auth runs inside the dashboard Nitro server at `/api/auth/*`
+- Dashboard email/password sign-up creates a session immediately and does not require email verification before access
 - The admin app runs its own Better Auth server at `/api/auth/*` and expects admin users to already exist in Better Auth plus be allowlisted in Firestore `app_admins/{uid}` with `role: "admin"`
+- Dashboard and admin share the Better Auth backend data and secret, but each app uses its own cookie prefix so browser sessions stay separate.
 - Dashboard and admin auth entry routes share their Better Auth UI wrapper from `packages/common/src/client`
+- Dashboard, admin, marketing, and docs share their base frontend theme constants from `packages/common/src/client`
+- Dashboard, admin, and docs document roots share their body utility class baseline from `packages/common/src/client`
+- Dashboard support navigation is grouped under `/support`, with Docs at `/support/docs` and Contact forwarding straight into support chat
 - The admin shell uses a fixed dark theme to keep the internal tooling visual treatment consistent
+- The docs app uses Fumadocs on TanStack Start with MDX pages under `packages/docs/content/docs` and `meta.json` files for page tree structure
 - Admin listing routes keep pagination state in URL search params so filters and page position can be shared directly
 - The admin user detail page can also show a read-only personal Autumn wallet balance when `AUTUMN_SECRET_KEY` is configured for the admin app
 - Admin Playwright coverage seeds Firestore auth and admin records locally, then enables Autumn-backed billing assertions for user and organization detail views when the admin test environment exposes `AUTUMN_SECRET_KEY`
@@ -171,6 +192,7 @@ firebase apphosting:backends:create --project <your-project-id>
 ## Common Commands
 
 - Start local development: `pnpm dev`
+- Start docs only: `pnpm dev:docs`
 - Build all workspaces: `pnpm build`
 - Typecheck: `pnpm typecheck`
 - Lint: `pnpm lint`
@@ -189,11 +211,13 @@ firebase apphosting:backends:create --project <your-project-id>
 ## Deployment
 
 - Dashboard deploy helper: `pnpm deploy:dashboard`
+- Docs deploy helper: `pnpm deploy:docs`
 - Backend deploy helper: `pnpm deploy:back`
 - Full deploy helper: `pnpm deploy`
 - The deploy helpers temporarily pack `packages/common` and switch the backend package to a local tgz; the app workspaces keep the shared package linked through the workspace during normal development and CI.
 - Firestore indexes deploy: `firebase deploy --only firestore:indexes`
 - Direct dashboard deploy: `firebase deploy --only apphosting:frontend`
+- Direct docs deploy: `firebase deploy --only apphosting:docs`
 - Direct Functions deploy: `firebase deploy --only functions`
 - The admin user and organization detail pages rely on the included `auth_members` composite indexes, so deploy `firestore.indexes.json` before using those views against production.
 
