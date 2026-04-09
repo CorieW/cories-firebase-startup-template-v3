@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @layer theme, base, utilities;
 @import 'tailwindcss';
+@source "../../common/src";
 @import '@daveyplate/better-auth-ui/css';
 @import '../../common/src/client/shared-theme.css';
 @plugin "@tailwindcss/typography";
@@ -22,14 +23,6 @@
   --auth-provider-line: #342c23;
   --auth-provider-line-strong: #514533;
   --auth-provider-ink: #f6efe4;
-  --success: #166534;
-  --success-surface: #dcfce7;
-  --info: #1d4ed8;
-  --info-surface: #dbeafe;
-  --warning: #b45309;
-  --warning-surface: #fef3c7;
-  --danger: #b42318;
-  --danger-surface: #fee2e2;
   --background: var(--surface);
   --foreground: var(--ink);
   --card: var(--surface);
@@ -60,14 +53,6 @@
   --auth-provider-line: #ece4d9;
   --auth-provider-line-strong: #dcccb5;
   --auth-provider-ink: #171412;
-  --success: #86efac;
-  --success-surface: #1d3526;
-  --info: #93c5fd;
-  --info-surface: #1f3654;
-  --warning: #fbbf24;
-  --warning-surface: #3d2b16;
-  --danger: #fca5a5;
-  --danger-surface: #4a1f1f;
 }
 
 @layer base {

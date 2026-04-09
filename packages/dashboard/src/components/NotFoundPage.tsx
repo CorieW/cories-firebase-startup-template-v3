@@ -2,7 +2,7 @@
  * Root 404 component.
  */
 import { useMemo } from 'react';
-import { SUPPORT_ROUTE_PATH } from '../lib/route-paths';
+import { APP_CHAT_ROUTE_PATH, SUPPORT_ROUTE_PATH } from '../lib/route-paths';
 import {
   contentWrapClass,
   pageContainerClass,
@@ -11,7 +11,6 @@ import {
 } from '../lib/ui';
 import { useToast } from './toast/ToastProvider';
 
-const HOME_ROUTE_PATH = '/';
 const FALLBACK_PATH_LABEL = 'this page';
 
 /**
@@ -58,8 +57,8 @@ export default function NotFoundPage() {
         </div>
 
         <div className='flex flex-wrap gap-2'>
-          <a href={HOME_ROUTE_PATH} className={subtleActionClass}>
-            Go to home
+          <a href={APP_CHAT_ROUTE_PATH} className={subtleActionClass}>
+            Go to dashboard
           </a>
           <a href={SUPPORT_ROUTE_PATH} className={subtleActionClass}>
             Visit support

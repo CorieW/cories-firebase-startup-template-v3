@@ -38,6 +38,7 @@ const authServerLogger = createScopedLogger('DASH_AUTH_SERVER');
 export { getAutumnServerClient } from './auth-server.autumn';
 
 const googleOAuthConfig = getGoogleOAuthConfig();
+const AUTH_COOKIE_PREFIX = 'dashboard-auth';
 
 function normalizeAuthUserUpdateForStorage(user: {
   email?: string;
@@ -113,8 +114,8 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
-    autoSignIn: false,
-    requireEmailVerification: true,
+    autoSignIn: true,
+    requireEmailVerification: false,
     revokeSessionsOnPasswordReset: true,
     sendResetPassword: async ({ user, url }) => {
       await sendPasswordResetEmail({
@@ -127,7 +128,7 @@ export const auth = betterAuth({
   emailVerification: {
     autoSignInAfterVerification: true,
     sendOnSignIn: true,
-    sendOnSignUp: true,
+    sendOnSignUp: false,
     sendVerificationEmail: async ({ user, url }) => {
       await sendVerificationEmail({
         email: user.email,
@@ -375,4 +376,7 @@ export const auth = betterAuth({
       },
     }),
   ],
+  advanced: {
+    cookiePrefix: AUTH_COOKIE_PREFIX,
+  },
 });

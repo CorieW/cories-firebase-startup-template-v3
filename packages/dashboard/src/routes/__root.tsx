@@ -1,6 +1,8 @@
 /**
  * Root route shell, layout, and global providers.
  */
+import { TEMPLATE_APP_TITLES } from '@cories-firebase-startup-template-v3/common';
+import { sharedDocumentBodyClass } from '@cories-firebase-startup-template-v3/common/client';
 import { default as commonLogging } from '@cories-firebase-startup-template-v3/common/logging';
 import { AuthUIProviderTanstack } from '@daveyplate/better-auth-ui/tanstack';
 import { AuthQueryProvider } from '@daveyplate/better-auth-tanstack';
@@ -25,10 +27,17 @@ import { enforceAuthentication, getAuthState } from '../lib/auth';
 import { getAutumnCustomerScopeKey } from '../lib/billing-api';
 import { getDashboardLogLevelServer } from '../lib/dashboard-log-level';
 import { showBetterAuthToast } from '../lib/auth-ui-toast';
+import { isPublicRoute } from '../lib/route-guards';
+import { isAuthRoutePath } from '../lib/route-paths';
 import { getFooterSocialLinksServer } from '../lib/social-links';
 import { THEME_INIT_SCRIPT } from '../lib/theme';
 
 import appCss from '../styles.css?url';
+import {
+  SharedPageLoader,
+  SharedPageLoaderHead,
+  useSharedPageLoaderDismiss,
+} from '@cories-firebase-startup-template-v3/common/client';
 const { configureLogger, createScopedLogger } = commonLogging;
 const queryClient = new QueryClient();
 const rootLogger = createScopedLogger('DASHBOARD_APP');
@@ -37,13 +46,19 @@ export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
     await enforceAuthentication(location.pathname);
   },
-  loader: async () => {
+  loader: async ({ location }) => {
     const startedAt = Date.now();
     const dashboardLogLevel = await getDashboardLogLevelServer();
+    const authState = isPublicRoute(location.pathname)
+      ? {
+          isAuthenticated: false,
+          orgId: null,
+          userId: null,
+        }
+      : await getAuthState();
 
     configureLogger(dashboardLogLevel);
 
-    const authState = await getAuthState();
     const footerSocialLinks = await getFooterSocialLinksServer();
 
     rootLogger.log(
@@ -76,7 +91,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Firebase Starter',
+        title: TEMPLATE_APP_TITLES.dashboard,
       },
     ],
     links: [
@@ -95,9 +110,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang='en' suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <SharedPageLoaderHead />
         <HeadContent />
       </head>
-      <body className='m-0 overflow-x-hidden bg-[var(--bg)] font-sans text-[var(--ink)] antialiased [overflow-wrap:anywhere]'>
+      <body className={sharedDocumentBodyClass}>
+        <SharedPageLoader />
         <QueryClientProvider client={queryClient}>
           <AuthQueryProvider>
             <ToastProvider>
@@ -187,9 +204,16 @@ function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({
     select: state => state.location.pathname,
   });
+  const isAuthRoute = isAuthRoutePath(pathname);
   const isSessionPending = isPending && !session;
-  const showSignedInShell =
+  const shouldShowSignedInShell =
     Boolean(session) || (isSessionPending && authState.isAuthenticated);
+  const showSignedInShell = !isAuthRoute && shouldShowSignedInShell;
+  const isAwaitingAuthRedirect = isAuthRoute && Boolean(session);
+  const isPageLoaderReady =
+    !isAwaitingAuthRedirect && (Boolean(session) || !isPending);
+
+  useSharedPageLoaderDismiss(isPageLoaderReady);
 
   useEffect(() => {
     configureLogger(dashboardLogLevel);
@@ -226,7 +250,9 @@ function AppShell({ children }: { children: React.ReactNode }) {
         showSignedInShell={showSignedInShell}
       />
       <main
-        className={`flex-1 ${showSignedInShell ? 'max-[979px]:pt-11' : ''}`}
+        className={`${
+          isAuthRoute && !showSignedInShell ? 'flex flex-1' : 'flex-1'
+        } ${showSignedInShell ? 'max-[979px]:pt-11' : ''}`}
       >
         {children}
       </main>

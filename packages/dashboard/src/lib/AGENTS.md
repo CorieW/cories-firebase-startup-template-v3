@@ -14,7 +14,7 @@ Dashboard library modules for auth, routing, theming, and API helpers.
 - `auth-server.email.ts`: Better Auth email delivery and message template helpers.
 - `auth-server.firebase.ts`: Firebase Admin bootstrap and Firestore singleton setup for auth.
 - `auth-server.ts`: Better Auth server instance, adapter wiring, and provider hooks.
-- `auth-ui-toast.ts`: Better Auth UI toast normalization and dashboard toast bridge helpers.
+- `auth-ui-toast.ts`: Dashboard compatibility wrapper that re-exports the shared Better Auth toast helpers.
 - `auth-user-normalization.ts`: Auth user payload normalization helpers for Firestore-safe writes.
 - `auth.ts`: Dashboard auth guard helpers.
 - `billing-api.ts`: Shared billing scope types used by the dashboard billing UI.

@@ -8,7 +8,7 @@ Toast notification provider components.
 
 ## Files
 
-- `ToastProvider.tsx`: App-wide toast provider and helpers.
+- `ToastProvider.tsx`: Dashboard compatibility wrapper that re-exports the shared common toast provider.
 
 ## Writing Rules
 
