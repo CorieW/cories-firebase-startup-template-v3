@@ -5,33 +5,33 @@ import {
   AuthView,
   type AuthViewProps,
   type AuthViewPaths,
-} from "@daveyplate/better-auth-ui";
+} from '@daveyplate/better-auth-ui';
 
-export type SharedBetterAuthMode = "sign-in" | "sign-up";
+export type SharedBetterAuthMode = 'sign-in' | 'sign-up';
 export type SharedBetterAuthPath = keyof AuthViewPaths;
 export type SharedBetterAuthViewMap = Partial<
   Record<string, SharedBetterAuthPath>
 >;
 
 const defaultSignInViewMap = {
-  callback: "CALLBACK",
-  "email-verification": "EMAIL_VERIFICATION",
-  "forgot-password": "FORGOT_PASSWORD",
-  "recover-account": "RECOVER_ACCOUNT",
-  "reset-password": "RESET_PASSWORD",
-  "sign-out": "SIGN_OUT",
-  "two-factor": "TWO_FACTOR",
+  callback: 'CALLBACK',
+  'email-verification': 'EMAIL_VERIFICATION',
+  'forgot-password': 'FORGOT_PASSWORD',
+  'recover-account': 'RECOVER_ACCOUNT',
+  'reset-password': 'RESET_PASSWORD',
+  'sign-out': 'SIGN_OUT',
+  'two-factor': 'TWO_FACTOR',
 } satisfies SharedBetterAuthViewMap;
 
 const defaultContainerClassName =
-  "grid min-h-screen place-items-center px-4 py-10 sm:px-6";
+  'grid min-h-screen place-items-center px-4 py-10 sm:px-6';
 
 function normalizeSplat(splat: string | undefined): string {
   if (!splat) {
-    return "";
+    return '';
   }
 
-  return splat.replace(/^\/+|\/+$/g, "");
+  return splat.replace(/^\/+|\/+$/g, '');
 }
 
 /**
@@ -48,28 +48,28 @@ export function resolveSharedBetterAuthView({
 }): SharedBetterAuthPath {
   const normalizedSplat = normalizeSplat(splat);
 
-  if (mode === "sign-up") {
-    return normalizedSplat === "callback" ? "CALLBACK" : "SIGN_UP";
+  if (mode === 'sign-up') {
+    return normalizedSplat === 'callback' ? 'CALLBACK' : 'SIGN_UP';
   }
 
-  return signInViewMap[normalizedSplat] ?? "SIGN_IN";
+  return signInViewMap[normalizedSplat] ?? 'SIGN_IN';
 }
 
 export interface SharedBetterAuthViewProps {
-  authViewClassName?: AuthViewProps["className"];
-  authViewClassNames?: AuthViewProps["classNames"];
-  callbackURL?: AuthViewProps["callbackURL"];
-  cardFooter?: AuthViewProps["cardFooter"];
-  cardHeader?: AuthViewProps["cardHeader"];
+  authViewClassName?: AuthViewProps['className'];
+  authViewClassNames?: AuthViewProps['classNames'];
+  callbackURL?: AuthViewProps['callbackURL'];
+  cardFooter?: AuthViewProps['cardFooter'];
+  cardHeader?: AuthViewProps['cardHeader'];
   containerClassName?: string;
-  localization?: AuthViewProps["localization"];
+  localization?: AuthViewProps['localization'];
   mode: SharedBetterAuthMode;
-  otpSeparators?: AuthViewProps["otpSeparators"];
-  path?: AuthViewProps["path"];
-  pathname?: AuthViewProps["pathname"];
-  redirectTo?: AuthViewProps["redirectTo"];
+  otpSeparators?: AuthViewProps['otpSeparators'];
+  path?: AuthViewProps['path'];
+  pathname?: AuthViewProps['pathname'];
+  redirectTo?: AuthViewProps['redirectTo'];
   signInViewMap?: SharedBetterAuthViewMap;
-  socialLayout?: AuthViewProps["socialLayout"];
+  socialLayout?: AuthViewProps['socialLayout'];
   splat?: string;
 }
 
@@ -88,9 +88,9 @@ export function SharedBetterAuthView({
   otpSeparators,
   path,
   pathname,
-  redirectTo = "/",
+  redirectTo = '/',
   signInViewMap,
-  socialLayout = "vertical",
+  socialLayout = 'vertical',
   splat,
 }: SharedBetterAuthViewProps) {
   return (

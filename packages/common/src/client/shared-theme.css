@@ -1,4 +1,4 @@
-/* Shared light and dark palette tokens for the dashboard and marketing apps. */
+/* Shared light and dark palette tokens for the frontend app packages. */
 
 :root {
   --bg: #f4f0e8;
@@ -13,6 +13,14 @@
   --primary-strong: #b58e2e;
   --primary-ink: #18120a;
   --accent: #8b7b60;
+  --success: #166534;
+  --success-surface: #dcfce7;
+  --info: #1d4ed8;
+  --info-surface: #dbeafe;
+  --warning: #b45309;
+  --warning-surface: #fef3c7;
+  --danger: #b42318;
+  --danger-surface: #fee2e2;
   color-scheme: light;
 }
 
@@ -29,5 +37,13 @@
   --primary-strong: #e0bf69;
   --primary-ink: #171109;
   --accent: #948467;
+  --success: #86efac;
+  --success-surface: #1d3526;
+  --info: #93c5fd;
+  --info-surface: #1f3654;
+  --warning: #fbbf24;
+  --warning-surface: #3d2b16;
+  --danger: #fca5a5;
+  --danger-surface: #4a1f1f;
   color-scheme: dark;
 }

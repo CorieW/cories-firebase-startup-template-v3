@@ -2,8 +2,12 @@
  * Shared browser theme helpers for frontend packages.
  */
 export type ThemeMode = 'light' | 'dark' | 'system';
+export type ResolvedThemeMode = Exclude<ThemeMode, 'system'>;
 
 export const THEME_STORAGE_KEY = 'theme';
+export const DEFAULT_THEME_MODE: ThemeMode = 'system';
+export const FIXED_DARK_THEME_MODE: ResolvedThemeMode = 'dark';
+export const FIXED_DARK_THEME_CLASS_NAME = FIXED_DARK_THEME_MODE;
 export const THEME_INIT_SCRIPT = `(function(){var root=document.documentElement;var parse=function(value){return value==='light'||value==='dark'||value==='system'?value:null;};var fromPreference=parse(root.getAttribute('data-theme-preference'));var fromResolved=(root.getAttribute('data-theme')==='light'||root.getAttribute('data-theme')==='dark')?root.getAttribute('data-theme'):null;var fromClass=root.classList.contains('light')?'light':(root.classList.contains('dark')?'dark':null);var fromStorage=null;try{fromStorage=parse(window.localStorage.getItem('theme'));}catch(e){fromStorage=null;}var pref=fromPreference||fromResolved||fromClass||fromStorage||'system';var systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var mode=pref==='system'?(systemDark?'dark':'light'):pref;root.classList.remove('light','dark');root.classList.add(mode);root.setAttribute('data-theme',mode);root.setAttribute('data-theme-preference',pref);root.style.colorScheme=mode;})();`;
 
 /**
@@ -24,7 +28,7 @@ export function parseThemeMode(
  */
 export function normalizeThemeMode(
   mode: string | null | undefined,
-  fallback: ThemeMode = 'dark'
+  fallback: ThemeMode = DEFAULT_THEME_MODE
 ): ThemeMode {
   return parseThemeMode(mode) ?? fallback;
 }
@@ -68,7 +72,7 @@ function readStoredThemeMode(): ThemeMode | null {
  */
 export function readThemeMode(
   root: HTMLElement,
-  fallback: ThemeMode = 'system'
+  fallback: ThemeMode = DEFAULT_THEME_MODE
 ): ThemeMode {
   const fromPreference = parseThemeMode(
     root.getAttribute('data-theme-preference')
@@ -112,7 +116,7 @@ export function applyThemeMode(
  */
 export function syncThemeMode(
   root: HTMLElement,
-  fallback: ThemeMode = 'system'
+  fallback: ThemeMode = DEFAULT_THEME_MODE
 ): ThemeMode {
   const mode = readThemeMode(root, fallback);
 

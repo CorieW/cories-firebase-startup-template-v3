@@ -2,6 +2,61 @@
  * Shared constants and repo-wide global helpers.
  */
 // =============================================================================
+// TEMPLATE BRANDING AND BOILERPLATE
+// =============================================================================
+
+/**
+ * Default product name used across the template apps.
+ */
+export const TEMPLATE_BRAND_NAME = 'Firebase Starter';
+
+/**
+ * Default product subtitle shown in shared app-brand lockups.
+ */
+export const TEMPLATE_BRAND_SUBTITLE = 'Better Auth + Billing';
+
+/**
+ * Default single-character brand mark shown in shared app-brand lockups.
+ */
+export const TEMPLATE_BRAND_MARK = 'C';
+
+/**
+ * Default document titles for the template apps.
+ */
+export const TEMPLATE_APP_TITLES = {
+  admin: 'Admin Console',
+  dashboard: TEMPLATE_BRAND_NAME,
+  docs: `${TEMPLATE_BRAND_NAME} Docs`,
+  marketing: `${TEMPLATE_BRAND_NAME} Marketing`,
+} as const;
+
+/**
+ * Shared boilerplate copy meant to be customized early in a new project.
+ */
+export const TEMPLATE_COPY = {
+  dashboardFooterOwnerName: 'Your name here',
+  docsMetaDescription: `Documentation for the ${TEMPLATE_BRAND_NAME} starter template.`,
+  legalSuffix: 'All rights reserved.',
+  marketingFooterSummary:
+    'A stylish static marketing package designed to feel like the public face of the same product family as the dashboard.',
+  marketingFooterTagline: 'Public-facing polish for the template.',
+  marketingMetaDescription: `A polished marketing site for the ${TEMPLATE_BRAND_NAME} template.`,
+} as const;
+
+/**
+ * Shared support destinations meant to be customized early in a new project.
+ */
+export const TEMPLATE_SUPPORT = {
+  docsHref: 'http://localhost:3003',
+  emailAddress: 'support@yourcompany.com',
+} as const;
+
+/**
+ * Shared mailto link for the template support inbox.
+ */
+export const TEMPLATE_SUPPORT_EMAIL_HREF = `mailto:${TEMPLATE_SUPPORT.emailAddress}`;
+
+// =============================================================================
 // FIRESTORE COLLECTION PATHS
 // =============================================================================
 
