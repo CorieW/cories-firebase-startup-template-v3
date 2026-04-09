@@ -1,5 +1,10 @@
 /**
  * Fixed dark theme constants for the admin app document shell.
  */
-export const ADMIN_THEME_MODE = "dark";
-export const ADMIN_THEME_CLASS_NAME = ADMIN_THEME_MODE;
+import {
+  FIXED_DARK_THEME_CLASS_NAME,
+  FIXED_DARK_THEME_MODE,
+} from "../../../common/src/client/theme";
+
+export const ADMIN_THEME_MODE = FIXED_DARK_THEME_MODE;
+export const ADMIN_THEME_CLASS_NAME = FIXED_DARK_THEME_CLASS_NAME;

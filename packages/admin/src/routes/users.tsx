@@ -7,6 +7,7 @@ import {
   createFileRoute,
   useRouterState,
 } from '@tanstack/react-router';
+import { useToast } from '../../../common/src/client/SharedToastProvider';
 import {
   AdminEmptyState,
   AdminPagination,
@@ -53,6 +54,7 @@ function UsersPage() {
   const pathname = useRouterState({
     select: state => state.location.pathname,
   });
+  const { toast } = useToast();
   const users = Route.useLoaderData();
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -60,6 +62,21 @@ function UsersPage() {
   if (pathname.startsWith('/users/')) {
     return <Outlet />;
   }
+
+  const showUserSearchToast = (nextSearch: string) => {
+    if (nextSearch) {
+      toast.success({
+        title: 'User filter updated',
+        description: `Showing matching users for "${nextSearch}".`,
+      });
+      return;
+    }
+
+    toast.info({
+      title: 'User filter cleared',
+      description: 'Showing the latest users again.',
+    });
+  };
 
   return (
     <div className='space-y-6 py-5'>
@@ -85,6 +102,7 @@ function UsersPage() {
                 search: nextSearch,
               },
             });
+            showUserSearchToast(nextSearch);
           }}
         >
           <input
@@ -107,6 +125,10 @@ function UsersPage() {
                       page: 1,
                       search: '',
                     },
+                  });
+                  toast.info({
+                    title: 'User filter cleared',
+                    description: 'Showing the latest users again.',
                   });
                 }}
                 type='button'
@@ -155,17 +177,17 @@ function UsersPage() {
             <div className='overflow-x-auto'>
               <table className='min-w-full border-separate border-spacing-0 text-sm'>
                 <thead>
-                  <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       User
                     </th>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       ID
                     </th>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       Created
                     </th>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       Details
                     </th>
                   </tr>
@@ -173,23 +195,23 @@ function UsersPage() {
                 <tbody>
                   {users.items.map(user => (
                     <tr key={user.id}>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                         <div className='font-medium'>
                           {formatAdminText(user.name)}
                         </div>
-                        <div className='mt-1 text-[var(--admin-ink-soft)]'>
+                        <div className='mt-1 text-[var(--ink-soft)]'>
                           {formatAdminText(user.email)}
                         </div>
                       </td>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top font-mono text-xs'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top font-mono text-xs'>
                         {user.id}
                       </td>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                         {formatAdminDateTime(user.createdAt)}
                       </td>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                         <Link
-                          className='font-semibold text-[var(--admin-primary)]'
+                          className='font-semibold text-[var(--primary)]'
                           params={{ userId: user.id }}
                           search={{ page: search.page, search: search.search }}
                           to='/users/$userId'

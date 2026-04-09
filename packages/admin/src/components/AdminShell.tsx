@@ -49,7 +49,7 @@ const navItems = [
 ];
 
 const sidebarNavButtonClass =
-  'block rounded-[18px] px-4 py-3 text-sm font-semibold bg-[var(--admin-surface)] text-[var(--admin-ink)] transition hover:bg-[var(--admin-surface-strong)]';
+  'block rounded-[18px] px-4 py-3 text-sm font-semibold bg-[var(--surface)] text-[var(--ink)] transition hover:bg-[var(--surface-emphasis)]';
 
 /**
  * Renders navigation and context around protected admin routes.
@@ -89,7 +89,7 @@ export function AdminShell({
                       <Link
                         className={`block rounded-[18px] px-4 py-3 text-sm font-semibold transition ${
                           isActive
-                            ? 'border border-[var(--admin-line-strong)] bg-[var(--admin-surface-muted)] text-[var(--admin-ink)]'
+                            ? 'border border-[var(--line-strong)] bg-[var(--surface-soft)] text-[var(--ink)]'
                             : sidebarNavButtonClass
                         }`}
                         to={item.to}
@@ -104,7 +104,7 @@ export function AdminShell({
 
             {externalToolLinks.length > 0 ? (
               <div className='space-y-3'>
-                <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
                   External Tools
                 </p>
                 <div className='space-y-3'>
@@ -123,9 +123,9 @@ export function AdminShell({
               </div>
             ) : null}
 
-            <div className='mt-auto space-y-4 border-t border-[var(--admin-line)] pt-4 text-sm'>
+            <div className='mt-auto space-y-4 border-t border-[var(--line)] pt-4 text-sm'>
               <div>
-                <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
                   Signed in as
                 </p>
                 <p className='mt-2 mb-0 break-words font-medium'>

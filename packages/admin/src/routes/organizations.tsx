@@ -7,6 +7,7 @@ import {
   createFileRoute,
   useRouterState,
 } from '@tanstack/react-router';
+import { useToast } from '../../../common/src/client/SharedToastProvider';
 import {
   AdminEmptyState,
   AdminPagination,
@@ -53,6 +54,7 @@ function OrganizationsPage() {
   const pathname = useRouterState({
     select: state => state.location.pathname,
   });
+  const { toast } = useToast();
   const organizations = Route.useLoaderData();
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -60,6 +62,21 @@ function OrganizationsPage() {
   if (pathname.startsWith('/organizations/')) {
     return <Outlet />;
   }
+
+  const showOrganizationSearchToast = (nextSearch: string) => {
+    if (nextSearch) {
+      toast.success({
+        title: 'Organization filter updated',
+        description: `Showing matching organizations for "${nextSearch}".`,
+      });
+      return;
+    }
+
+    toast.info({
+      title: 'Organization filter cleared',
+      description: 'Showing the latest organizations again.',
+    });
+  };
 
   return (
     <div className='space-y-6 py-5'>
@@ -85,6 +102,7 @@ function OrganizationsPage() {
                 search: nextSearch,
               },
             });
+            showOrganizationSearchToast(nextSearch);
           }}
         >
           <input
@@ -107,6 +125,10 @@ function OrganizationsPage() {
                       page: 1,
                       search: '',
                     },
+                  });
+                  toast.info({
+                    title: 'Organization filter cleared',
+                    description: 'Showing the latest organizations again.',
                   });
                 }}
                 type='button'
@@ -155,20 +177,20 @@ function OrganizationsPage() {
             <div className='overflow-x-auto'>
               <table className='min-w-full border-separate border-spacing-0 text-sm'>
                 <thead>
-                  <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       Organization
                     </th>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       Slug
                     </th>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       ID
                     </th>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       Created
                     </th>
-                    <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                    <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                       Details
                     </th>
                   </tr>
@@ -176,21 +198,21 @@ function OrganizationsPage() {
                 <tbody>
                   {organizations.items.map(organization => (
                     <tr key={organization.id}>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top font-medium'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top font-medium'>
                         {formatAdminText(organization.name)}
                       </td>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                         {formatAdminText(organization.slug)}
                       </td>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top font-mono text-xs'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top font-mono text-xs'>
                         {organization.id}
                       </td>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                         {formatAdminDateTime(organization.createdAt)}
                       </td>
-                      <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                      <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                         <Link
-                          className='font-semibold text-[var(--admin-primary)]'
+                          className='font-semibold text-[var(--primary)]'
                           params={{ organizationId: organization.id }}
                           search={{
                             page: search.page,

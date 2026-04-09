@@ -38,7 +38,7 @@ export function AdminPageHeader({
         <h1 className='m-0 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl'>
           {title}
         </h1>
-        <p className='m-0 max-w-3xl text-sm leading-7 text-[var(--admin-ink-soft)] sm:text-base'>
+        <p className='m-0 max-w-3xl text-sm leading-7 text-[var(--ink-soft)] sm:text-base'>
           {description}
         </p>
       </div>
@@ -76,7 +76,7 @@ export function AdminPanel({
             {title}
           </h2>
           {description ? (
-            <p className='m-0 text-sm leading-6 text-[var(--admin-ink-soft)]'>
+            <p className='m-0 text-sm leading-6 text-[var(--ink-soft)]'>
               {description}
             </p>
           ) : null}
@@ -121,7 +121,7 @@ export function AdminEmptyState({
         </h2>
         <p
           className={`m-0 max-w-2xl leading-6 ${
-            isDanger ? dangerMutedTextClass : 'text-[var(--admin-ink-soft)]'
+            isDanger ? dangerMutedTextClass : 'text-[var(--ink-soft)]'
           }`}
         >
           {description}
@@ -175,7 +175,7 @@ export function AdminPagination({
     <div
       className={`${subtleCardClass} flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between`}
     >
-      <p className='m-0 text-sm text-[var(--admin-ink-soft)]'>{summaryText}</p>
+      <p className='m-0 text-sm text-[var(--ink-soft)]'>{summaryText}</p>
       <div className='flex flex-wrap items-center gap-2'>
         <button
           className={secondaryButtonClass}
@@ -229,14 +229,14 @@ export function AdminKeyValueList({ items }: AdminKeyValueListProps) {
           >
             <dt
               className={`text-[0.72rem] font-semibold uppercase tracking-[0.08em] ${
-                isDanger ? dangerMutedTextClass : 'text-[var(--admin-ink-soft)]'
+                isDanger ? dangerMutedTextClass : 'text-[var(--ink-soft)]'
               }`}
             >
               {item.label}
             </dt>
             <dd
               className={`m-0 break-words ${
-                isDanger ? dangerTextClass : 'text-[var(--admin-ink)]'
+                isDanger ? dangerTextClass : 'text-[var(--ink)]'
               }`}
             >
               {item.value}
@@ -270,7 +270,7 @@ export function AdminJsonPreview({
 }: AdminJsonPreviewProps) {
   return (
     <AdminPanel description={description} title={title}>
-      <pre className='m-0 overflow-x-auto rounded-[18px] border border-[var(--admin-line)] bg-[var(--admin-surface-muted)] p-4 text-xs leading-6 text-[var(--admin-ink)]'>
+      <pre className='m-0 overflow-x-auto rounded-[18px] border border-[var(--line)] bg-[var(--surface-soft)] p-4 text-xs leading-6 text-[var(--ink)]'>
         {formatAdminJson(value)}
       </pre>
     </AdminPanel>
@@ -291,11 +291,11 @@ export function AdminRedactedBlock({
         {children}
       </div>
       <div className='absolute inset-0 flex items-center justify-center p-4'>
-        <div className='w-full rounded-[20px] border border-[var(--admin-danger)] bg-[var(--admin-danger-surface)] p-5 text-center'>
-          <p className='m-0 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--admin-danger)]'>
+        <div className='w-full rounded-[20px] border border-[var(--danger)] bg-[var(--danger-surface)] p-5 text-center'>
+          <p className='m-0 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--danger)]'>
             {title}
           </p>
-          <p className='mt-2 mb-0 text-sm leading-6 text-[var(--admin-danger)] opacity-80'>
+          <p className='mt-2 mb-0 text-sm leading-6 text-[var(--danger)] opacity-80'>
             {description}
           </p>
         </div>

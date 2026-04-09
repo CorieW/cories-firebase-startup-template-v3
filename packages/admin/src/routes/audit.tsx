@@ -2,6 +2,7 @@
  * Audit route for recent read-only admin activity inspection.
  */
 import { createFileRoute } from '@tanstack/react-router';
+import { useToast } from '../../../common/src/client/SharedToastProvider';
 import {
   AdminEmptyState,
   AdminPagination,
@@ -61,6 +62,7 @@ export const Route = createFileRoute('/audit')({
  * Renders recent admin audit rows with lightweight client-facing filters.
  */
 function AuditPage() {
+  const { toast } = useToast();
   const entries =
     Route.useLoaderData() as AdminPaginatedResult<SerializedAdminAuditLog>;
   const search = Route.useSearch() ?? {
@@ -72,6 +74,28 @@ function AuditPage() {
     to: '',
   };
   const navigate = Route.useNavigate();
+  const showAuditFilterToast = (nextSearch: {
+    action: string;
+    actor: string;
+    from: string;
+    resourceType: string;
+    to: string;
+  }) => {
+    const activeFilterCount = Object.values(nextSearch).filter(Boolean).length;
+
+    if (activeFilterCount > 0) {
+      toast.success({
+        title: 'Audit filters updated',
+        description: `Applied ${activeFilterCount} audit filter${activeFilterCount === 1 ? '' : 's'}.`,
+      });
+      return;
+    }
+
+    toast.info({
+      title: 'Audit filters cleared',
+      description: 'Showing the latest audit entries again.',
+    });
+  };
 
   return (
     <div className='space-y-6 py-5'>
@@ -89,17 +113,25 @@ function AuditPage() {
           onSubmit={event => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
+            const nextSearch = {
+              action: String(formData.get('action') ?? '').trim(),
+              actor: String(formData.get('actor') ?? '').trim(),
+              from: String(formData.get('from') ?? '').trim(),
+              resourceType: String(formData.get('resourceType') ?? '').trim(),
+              to: String(formData.get('to') ?? '').trim(),
+            };
 
             void navigate({
               search: {
-                action: String(formData.get('action') ?? '').trim(),
-                actor: String(formData.get('actor') ?? '').trim(),
-                from: String(formData.get('from') ?? '').trim(),
+                action: nextSearch.action,
+                actor: nextSearch.actor,
+                from: nextSearch.from,
                 page: 1,
-                resourceType: String(formData.get('resourceType') ?? '').trim(),
-                to: String(formData.get('to') ?? '').trim(),
+                resourceType: nextSearch.resourceType,
+                to: nextSearch.to,
               },
             });
+            showAuditFilterToast(nextSearch);
           }}
         >
           <input
@@ -159,6 +191,10 @@ function AuditPage() {
                       to: '',
                     },
                   });
+                  toast.info({
+                    title: 'Audit filters cleared',
+                    description: 'Showing the latest audit entries again.',
+                  });
                 }}
                 type='button'
               >
@@ -210,44 +246,44 @@ function AuditPage() {
             {entries.items.map(entry => (
               <article
                 key={entry.id}
-                className='rounded-[20px] border border-[var(--admin-line)] bg-[var(--admin-surface)] p-5'
+                className='rounded-[20px] border border-[var(--line)] bg-[var(--surface)] p-5'
               >
                 <div className='flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between'>
                   <div className='space-y-2'>
                     <p className='m-0 text-lg font-semibold tracking-[-0.02em]'>
                       {entry.action}
                     </p>
-                    <p className='m-0 text-sm text-[var(--admin-ink-soft)]'>
+                    <p className='m-0 text-sm text-[var(--ink-soft)]'>
                       {formatAdminDateTime(entry.occurredAt)} by{' '}
                       {entry.actorUid}
                     </p>
                   </div>
-                  <div className='flex flex-wrap gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                  <div className='flex flex-wrap gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
                     <span>{entry.resourceType}</span>
                     <span>{entry.result}</span>
                   </div>
                 </div>
 
                 <div className='mt-4 grid gap-3 md:grid-cols-2'>
-                  <div className='rounded-[16px] bg-[var(--admin-surface-strong)] p-4 text-sm'>
+                  <div className='rounded-[16px] bg-[var(--surface-emphasis)] p-4 text-sm'>
                     <p className='m-0 font-semibold'>Resource ID</p>
-                    <p className='mt-2 mb-0 break-words text-[var(--admin-ink-soft)]'>
+                    <p className='mt-2 mb-0 break-words text-[var(--ink-soft)]'>
                       {entry.resourceId ?? 'Unavailable'}
                     </p>
                   </div>
-                  <div className='rounded-[16px] bg-[var(--admin-surface-strong)] p-4 text-sm'>
+                  <div className='rounded-[16px] bg-[var(--surface-emphasis)] p-4 text-sm'>
                     <p className='m-0 font-semibold'>Request ID</p>
-                    <p className='mt-2 mb-0 break-words text-[var(--admin-ink-soft)]'>
+                    <p className='mt-2 mb-0 break-words text-[var(--ink-soft)]'>
                       {entry.requestId}
                     </p>
                   </div>
                 </div>
 
                 <details className='mt-4'>
-                  <summary className='cursor-pointer text-sm font-semibold text-[var(--admin-primary)]'>
+                  <summary className='cursor-pointer text-sm font-semibold text-[var(--primary)]'>
                     View metadata
                   </summary>
-                  <pre className='mt-3 overflow-x-auto rounded-[16px] border border-[var(--admin-line)] bg-[var(--admin-surface-muted)] p-4 text-xs leading-6 text-[var(--admin-ink)]'>
+                  <pre className='mt-3 overflow-x-auto rounded-[16px] border border-[var(--line)] bg-[var(--surface-soft)] p-4 text-xs leading-6 text-[var(--ink)]'>
                     {formatAdminJson(entry.metadata)}
                   </pre>
                 </details>

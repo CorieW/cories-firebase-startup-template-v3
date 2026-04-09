@@ -18,6 +18,7 @@ import { firestore } from './auth-server.firebase';
 
 const authServerLogger = createScopedLogger('ADMIN_AUTH_SERVER');
 const googleOAuthConfig = getGoogleOAuthConfig();
+const AUTH_COOKIE_PREFIX = 'admin-auth';
 
 authServerLogger.action(
   'initializeBetterAuth',
@@ -85,6 +86,7 @@ export const auth = betterAuth({
     : {},
   plugins: [tanstackStartCookies()],
   advanced: {
+    cookiePrefix: AUTH_COOKIE_PREFIX,
     database: {
       generateId: false,
     },

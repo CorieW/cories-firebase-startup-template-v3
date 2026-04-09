@@ -96,7 +96,7 @@ function AdminHomePage() {
                 The core admin signals stay visible, but the page no longer
                 crams them into narrow cards.
               </h2>
-              <p className='m-0 max-w-3xl text-sm leading-7 text-[var(--admin-ink-soft)] sm:text-base'>
+              <p className='m-0 max-w-3xl text-sm leading-7 text-[var(--ink-soft)] sm:text-base'>
                 This overview uses larger panels and fewer columns so the main
                 counts can breathe while still keeping the important tools close
                 by.
@@ -107,15 +107,15 @@ function AdminHomePage() {
               {primaryStats.map(stat => (
                 <div
                   key={stat.label}
-                  className='min-w-0 rounded-[20px] border border-[var(--admin-line)] bg-[var(--admin-bg)]/35 p-4'
+                  className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'
                 >
-                  <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+                  <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
                     {stat.label}
                   </p>
                   <p className='mt-3 mb-1 break-words text-4xl font-semibold tracking-[-0.04em]'>
                     {stat.value}
                   </p>
-                  <p className='m-0 text-sm leading-6 text-[var(--admin-ink-soft)]'>
+                  <p className='m-0 text-sm leading-6 text-[var(--ink-soft)]'>
                     {stat.description}
                   </p>
                 </div>
@@ -130,20 +130,20 @@ function AdminHomePage() {
             <h2 className='m-0 text-2xl font-semibold tracking-[-0.03em]'>
               System state
             </h2>
-            <p className='m-0 text-sm leading-7 text-[var(--admin-ink-soft)]'>
+            <p className='m-0 text-sm leading-7 text-[var(--ink-soft)]'>
               Billing availability and audit visibility stay pinned here so
               operational checks are always one glance away.
             </p>
           </div>
 
           <div className='mt-5 grid gap-3'>
-            <div className='min-w-0 rounded-[20px] border border-[var(--admin-line)] bg-[var(--admin-bg)]/35 p-4'>
-              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+            <div className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'>
+              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
                 Billing
               </p>
               <p
                 className={`mt-3 mb-1 break-words text-2xl font-semibold tracking-[-0.03em] ${
-                  overview.billingConfigured ? '' : 'text-[var(--admin-danger)]'
+                  overview.billingConfigured ? '' : 'text-[var(--danger)]'
                 }`}
               >
                 {overview.billingConfigured ? 'Configured' : 'Unavailable'}
@@ -151,7 +151,7 @@ function AdminHomePage() {
               <p
                 className={`m-0 text-sm leading-6 ${
                   overview.billingConfigured
-                    ? 'text-[var(--admin-ink-soft)]'
+                    ? 'text-[var(--ink-soft)]'
                     : dangerMutedTextClass
                 }`}
               >
@@ -160,27 +160,27 @@ function AdminHomePage() {
               </p>
             </div>
 
-            <div className='min-w-0 rounded-[20px] border border-[var(--admin-line)] bg-[var(--admin-bg)]/35 p-4'>
-              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+            <div className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'>
+              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
                 Access
               </p>
               <p className='mt-3 mb-1 break-words text-2xl font-semibold tracking-[-0.03em]'>
                 {formatAdminNumber(overview.stats.activeAdmins)} active
               </p>
-              <p className='m-0 text-sm leading-6 text-[var(--admin-ink-soft)]'>
+              <p className='m-0 text-sm leading-6 text-[var(--ink-soft)]'>
                 {formatAdminNumber(overview.stats.disabledAdmins)} disabled
                 admin accounts remain outside the active rotation.
               </p>
             </div>
 
-            <div className='min-w-0 rounded-[20px] border border-[var(--admin-line)] bg-[var(--admin-bg)]/35 p-4'>
-              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
+            <div className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'>
+              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
                 Audit log
               </p>
               <p className='mt-3 mb-1 break-words text-2xl font-semibold tracking-[-0.03em]'>
                 {formatAdminNumber(overview.stats.audits)}
               </p>
-              <p className='m-0 text-sm leading-6 text-[var(--admin-ink-soft)]'>
+              <p className='m-0 text-sm leading-6 text-[var(--ink-soft)]'>
                 Stored admin audit entries ready for trace review.
               </p>
             </div>
@@ -197,7 +197,7 @@ function AdminHomePage() {
                 <h2 className='m-0 text-xl font-semibold tracking-[-0.02em]'>
                   {card.title}
                 </h2>
-                <p className='m-0 text-sm leading-7 text-[var(--admin-ink-soft)]'>
+                <p className='m-0 text-sm leading-7 text-[var(--ink-soft)]'>
                   {card.description}
                 </p>
               </div>

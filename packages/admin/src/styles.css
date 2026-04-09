@@ -1,49 +1,34 @@
 /* Global admin design tokens and base styles. */
 
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @layer theme, base, utilities;
-@import "tailwindcss";
-@import "@daveyplate/better-auth-ui/css";
+@import 'tailwindcss';
+@source "../../common/src";
+@import '@daveyplate/better-auth-ui/css';
+@import '../../common/src/client/shared-theme.css';
 
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --admin-bg: #15120f;
-  --admin-surface: #1d1915;
-  --admin-surface-muted: #24201b;
-  --admin-surface-strong: #2c2721;
-  --admin-ink: #f6efe4;
-  --admin-ink-soft: #b7ac9b;
-  --admin-line: #342c23;
-  --admin-line-strong: #514533;
-  --admin-primary: #d2b05a;
-  --admin-primary-strong: #e0bf69;
-  --admin-primary-ink: #171109;
-  --admin-accent: #948467;
-  --admin-danger: #fca5a5;
-  --admin-danger-surface: #4a1f1f;
-  --background: var(--admin-bg);
-  --foreground: var(--admin-ink);
-  --card: var(--admin-surface);
-  --card-foreground: var(--admin-ink);
-  --popover: var(--admin-surface);
-  --popover-foreground: var(--admin-ink);
-  --primary: var(--admin-primary);
-  --primary-foreground: var(--admin-primary-ink);
-  --secondary: var(--admin-surface-muted);
-  --secondary-foreground: var(--admin-ink);
-  --muted: var(--admin-surface-muted);
-  --muted-foreground: var(--admin-ink-soft);
-  --accent: var(--admin-surface-strong);
-  --accent-foreground: var(--admin-ink);
-  --border: var(--admin-line);
-  --input: var(--admin-line);
-  --ring: var(--admin-line-strong);
-  --destructive: var(--admin-danger);
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary-foreground: var(--primary-ink);
+  --secondary: var(--surface-soft);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface-soft);
+  --muted-foreground: var(--ink-soft);
+  --accent-foreground: var(--ink);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--line-strong);
+  --destructive: var(--danger);
   --destructive-foreground: #ffffff;
-  color-scheme: dark;
 }
 
 @layer base {
@@ -55,8 +40,8 @@
 
   body {
     margin: 0;
-    background: var(--admin-bg);
-    color: var(--admin-ink);
+    background: var(--bg);
+    color: var(--ink);
     font-family: var(--font-sans);
   }
 
@@ -75,35 +60,35 @@
     font: inherit;
   }
 
-  [data-slot="dialog-overlay"] {
-    background: color-mix(in srgb, var(--admin-bg) 84%, transparent);
+  [data-slot='dialog-overlay'] {
+    background: color-mix(in srgb, var(--bg) 84%, transparent);
   }
 
-  [data-slot="dialog-content"] {
-    border-color: var(--admin-line);
-    background: var(--admin-surface);
-    color: var(--admin-ink);
+  [data-slot='dialog-content'] {
+    border-color: var(--line);
+    background: var(--surface);
+    color: var(--ink);
     border-radius: 22px;
   }
 
-  [data-slot="dialog-title"] {
-    color: var(--admin-ink);
+  [data-slot='dialog-title'] {
+    color: var(--ink);
   }
 
-  [data-slot="dialog-description"] {
-    color: var(--admin-ink-soft);
+  [data-slot='dialog-description'] {
+    color: var(--ink-soft);
     line-height: 1.6;
   }
 
-  [data-slot="dialog-footer"] {
-    border-top: 1px solid var(--admin-line);
+  [data-slot='dialog-footer'] {
+    border-top: 1px solid var(--line);
     padding-top: 0.875rem;
   }
 
-  [data-slot="input"] {
-    border-color: var(--admin-line);
-    background: var(--admin-surface-muted);
-    color: var(--admin-ink);
+  [data-slot='input'] {
+    border-color: var(--line);
+    background: var(--surface-soft);
+    color: var(--ink);
     border-radius: 16px;
     box-shadow: none;
     transition:
@@ -112,19 +97,19 @@
       color 150ms ease;
   }
 
-  [data-slot="input"]::placeholder {
-    color: var(--admin-ink-soft);
+  [data-slot='input']::placeholder {
+    color: var(--ink-soft);
   }
 
-  [data-slot="input"]:focus-visible {
-    border-color: var(--admin-line-strong);
+  [data-slot='input']:focus-visible {
+    border-color: var(--line-strong);
     box-shadow: none;
-    outline: 2px solid var(--admin-line-strong);
+    outline: 2px solid var(--line-strong);
     outline-offset: 1px;
   }
 
   ::selection {
-    background: var(--admin-surface-strong);
-    color: var(--admin-ink);
+    background: var(--surface-emphasis);
+    color: var(--ink);
   }
 }

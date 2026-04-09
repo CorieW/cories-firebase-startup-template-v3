@@ -128,20 +128,20 @@ function OrganizationDetailPage() {
           <div className='overflow-x-auto'>
             <table className='min-w-full border-separate border-spacing-0 text-sm'>
               <thead>
-                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Member
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     User ID
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Role
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Joined
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Details
                   </th>
                 </tr>
@@ -149,27 +149,27 @@ function OrganizationDetailPage() {
               <tbody>
                 {detail.members.map(member => (
                   <tr key={member.id}>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       <div className='font-medium'>
                         {formatAdminText(member.name)}
                       </div>
-                      <div className='mt-1 text-[var(--admin-ink-soft)]'>
+                      <div className='mt-1 text-[var(--ink-soft)]'>
                         {formatAdminText(member.email)}
                       </div>
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top font-mono text-xs'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top font-mono text-xs'>
                       {formatAdminText(member.userId)}
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top capitalize'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top capitalize'>
                       {formatAdminText(member.role)}
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       {formatAdminDateTime(member.createdAt)}
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       {member.userId ? (
                         <Link
-                          className='font-semibold text-[var(--admin-primary)]'
+                          className='font-semibold text-[var(--primary)]'
                           params={{ userId: member.userId }}
                           search={{ page: 1, search: '' }}
                           to='/users/$userId'
@@ -277,20 +277,20 @@ function OrganizationDetailPage() {
           <div className='overflow-x-auto'>
             <table className='min-w-full border-separate border-spacing-0 text-sm'>
               <thead>
-                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--admin-ink-soft)]'>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Plan
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Status
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Quantity
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Started
                   </th>
-                  <th className='border-b border-[var(--admin-line)] px-3 py-3 font-semibold'>
+                  <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Current period end
                   </th>
                 </tr>
@@ -298,49 +298,49 @@ function OrganizationDetailPage() {
               <tbody>
                 {detail.autumnSubscriptions.map(subscription => (
                   <tr key={subscription.id}>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       <div className='font-medium'>
                         {formatAdminText(
                           subscription.planName ?? subscription.planId
                         )}
                       </div>
-                      <div className='mt-1 break-all font-mono text-xs text-[var(--admin-ink-soft)]'>
+                      <div className='mt-1 break-all font-mono text-xs text-[var(--ink-soft)]'>
                         {subscription.planId}
                       </div>
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       <div className='capitalize'>
                         {formatAdminText(subscription.status)}
                       </div>
                       {subscription.addOn ? (
-                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                        <div className='mt-1 text-xs text-[var(--ink-soft)]'>
                           Add-on plan
                         </div>
                       ) : null}
                       {subscription.pastDue ? (
-                        <div className='mt-1 text-xs text-[var(--admin-danger)]'>
+                        <div className='mt-1 text-xs text-[var(--danger)]'>
                           Past due
                         </div>
                       ) : null}
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       {subscription.quantity}
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       {formatAdminDateTime(subscription.startedAt)}
                     </td>
-                    <td className='border-b border-[var(--admin-line)] px-3 py-3 align-top'>
+                    <td className='border-b border-[var(--line)] px-3 py-3 align-top'>
                       <div>
                         {formatAdminDateTime(subscription.currentPeriodEnd)}
                       </div>
                       {subscription.trialEndsAt ? (
-                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                        <div className='mt-1 text-xs text-[var(--ink-soft)]'>
                           Trial ends{' '}
                           {formatAdminDateTime(subscription.trialEndsAt)}
                         </div>
                       ) : null}
                       {subscription.expiresAt ? (
-                        <div className='mt-1 text-xs text-[var(--admin-ink-soft)]'>
+                        <div className='mt-1 text-xs text-[var(--ink-soft)]'>
                           Expires {formatAdminDateTime(subscription.expiresAt)}
                         </div>
                       ) : null}
