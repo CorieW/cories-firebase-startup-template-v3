@@ -445,7 +445,7 @@ describe('BillingDashboard wallet', () => {
     expect(amountInput.value).toBe('125');
   });
 
-  it('blocks wallet top-up when Autumn omits the wallet plan item', () => {
+  it('blocks wallet top-up when the wallet plan item is missing', () => {
     plansState.data = [
       {
         id: 'top_up',
@@ -468,13 +468,13 @@ describe('BillingDashboard wallet', () => {
     expect(addFundsButton.hasAttribute('disabled')).toBe(true);
     expect(
       screen.getByText(
-        'The Autumn "top_up" product does not currently include a balance feature item, so checkout cannot honor the requested quantity or grant balance. Update the Autumn product to include the intended balance feature and its pricing before enabling top-ups here.'
+        'The "top_up" top-up product does not currently include a balance feature item, so checkout cannot honor the requested quantity or grant balance. Update the product to include the intended balance feature and pricing before enabling top-ups here.'
       )
     ).not.toBeNull();
     expect(attachMock).not.toHaveBeenCalled();
   });
 
-  it('shows a helpful message when Autumn returns a wallet currency mismatch', async () => {
+  it('shows a helpful message when billing returns a wallet currency mismatch', async () => {
     attachMock.mockRejectedValueOnce({
       body: JSON.stringify({
         message:
@@ -492,7 +492,7 @@ describe('BillingDashboard wallet', () => {
     await waitFor(() => {
       expect(
         screen.getAllByText(
-          'Wallet top-up is configured for USD, but Autumn is trying to bill this customer in GBP. Add a matching GBP price to the Autumn top-up product, or align your billing currencies.'
+          'Wallet top-up is configured for USD, but your current billing currency is GBP. Add a matching GBP price to the top-up product or align your billing currencies.'
         ).length
       ).toBeGreaterThan(0);
     });
@@ -500,7 +500,7 @@ describe('BillingDashboard wallet', () => {
     expect(screen.getByText('Unable to start wallet top-up')).not.toBeNull();
   });
 
-  it('shows a plain-text Autumn rate-limit message in the wallet toast', async () => {
+  it('shows a plain-text rate-limit message in the wallet toast', async () => {
     attachMock.mockRejectedValueOnce({
       statusCode: 429,
       body: 'Too many requests, please try again later.',

@@ -1,6 +1,13 @@
 /**
  * Assistant chat reply and error parsing helpers.
  */
+function sanitizeBillingMessage(message: string) {
+  return message
+    .replaceAll('Autumn-backed', 'billing')
+    .replaceAll('Autumn', 'Billing')
+    .replaceAll('autumn', 'billing');
+}
+
 export function buildAssistantReply(message: string) {
   const normalizedMessage = message.toLowerCase();
 
@@ -73,13 +80,13 @@ export async function getChatUsageErrorMessage(response: Response) {
       const message = extractErrorMessage(await response.json());
 
       if (message) {
-        return message;
+        return sanitizeBillingMessage(message);
       }
     } else {
       const message = extractErrorMessage(await response.text());
 
       if (message) {
-        return message;
+        return sanitizeBillingMessage(message);
       }
     }
   } catch {
@@ -97,5 +104,7 @@ export function getRequestErrorMessage(
   caughtError: unknown,
   fallbackMessage: string
 ) {
-  return extractErrorMessage(caughtError) ?? fallbackMessage;
+  const message = extractErrorMessage(caughtError);
+
+  return message ? sanitizeBillingMessage(message) : fallbackMessage;
 }

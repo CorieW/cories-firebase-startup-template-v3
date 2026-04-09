@@ -9,10 +9,13 @@ import SupportChatPanel, {
   type ChatSource,
 } from '../components/chat/SupportChatPanel';
 import { useToast } from '../components/toast/ToastProvider';
-import { SUPPORT_ROUTE_PATH } from '../lib/route-paths';
+import {
+  SUPPORT_CHAT_ROUTE_PATH,
+  SUPPORT_ROUTE_PATH,
+} from '../lib/route-paths';
 import { contentWrapClass, pageContainerClass } from '../lib/ui';
 
-export const CHAT_ROUTE_PATH = '/chat';
+export const CHAT_ROUTE_PATH = SUPPORT_CHAT_ROUTE_PATH;
 const { createScopedLogger } = commonLogging;
 const chatRouteLogger = createScopedLogger('CHAT_ROUTE');
 

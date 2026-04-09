@@ -267,7 +267,7 @@ export function useBillingDashboardData({
   const walletLabel = walletUsesCurrencyDisplay
     ? 'Balance'
     : walletFeatureDisplayName;
-  const walletTopUpDescription = 'Add balance through Autumn checkout.';
+  const walletTopUpDescription = 'Add balance through secure checkout.';
 
   const walletCreditCostByFeatureId = useMemo(() => {
     return new Map(

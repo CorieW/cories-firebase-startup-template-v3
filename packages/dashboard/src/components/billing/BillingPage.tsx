@@ -30,7 +30,7 @@ const headerCopy: Record<
       eyebrow: 'User Billing',
       title: 'Review personal wallet activity',
       description:
-        'Check your Autumn wallet balance, recent balance activity, and linked billing actions.',
+        'Check your wallet balance, recent balance activity, and linked billing actions.',
     },
   },
   organization: {
@@ -38,13 +38,13 @@ const headerCopy: Record<
       eyebrow: 'Organization Billing',
       title: 'Manage organization billing',
       description:
-        'View your organization subscription status and manage Autumn-backed plans.',
+        'View your organization subscription status and manage billing plans.',
     },
     wallet: {
       eyebrow: 'Organization Billing',
       title: 'Review organization wallet activity',
       description:
-        'Inspect your organization wallet balance, recent balance transactions, and Autumn billing activity.',
+        'Inspect your organization wallet balance, recent balance transactions, and billing activity.',
     },
   },
 };

@@ -110,7 +110,7 @@ export function useBillingDashboardActions({
       action: 'openCustomerPortal',
       startNotice: {
         title: 'Opening billing portal',
-        message: 'Redirecting you to the Autumn billing portal.',
+        message: 'Redirecting you to the billing portal.',
       },
       errorTitle: 'Unable to open billing portal',
       fallbackErrorMessage: 'Unable to open the billing portal.',
@@ -136,7 +136,7 @@ export function useBillingDashboardActions({
       },
       startNotice: {
         title: 'Opening checkout',
-        message: 'Redirecting you to Autumn checkout for the selected plan.',
+        message: 'Redirecting you to checkout for the selected plan.',
       },
       errorTitle: 'Unable to update plan',
       fallbackErrorMessage: 'Unable to update the subscription.',
@@ -277,7 +277,7 @@ export function useBillingDashboardActions({
       },
       startNotice: {
         title: 'Opening checkout',
-        message: 'Redirecting you to Autumn checkout for the wallet top-up.',
+        message: 'Redirecting you to checkout for the wallet top-up.',
       },
       errorTitle: 'Unable to start wallet top-up',
       fallbackErrorMessage: 'Unable to start the wallet top-up checkout.',

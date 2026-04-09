@@ -43,6 +43,11 @@ describe('SupportChatPanel', () => {
     expect(
       screen.getByText('Welcome to live chat. How can we help today?')
     ).not.toBeNull();
+    expect(
+      screen
+        .getByRole('link', { name: 'support@yourcompany.com' })
+        .getAttribute('href')
+    ).toBe('mailto:support@yourcompany.com');
 
     fireEvent.click(screen.getByRole('button', { name: 'Back to support' }));
 

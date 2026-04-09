@@ -54,7 +54,7 @@ export function getSubscriptionPlanName(
     subscription.plan?.name ??
     (planId ? plansById?.get(planId)?.name : null) ??
     planId ??
-    'Autumn plan'
+    'Billing plan'
   );
 }
 
@@ -313,8 +313,17 @@ export function getAutumnErrorMessage(
   caughtError: unknown,
   fallbackMessage: string
 ) {
+  function sanitizeBillingMessage(message: string) {
+    return message
+      .replaceAll('Autumn-backed', 'billing')
+      .replaceAll('Autumn', 'Billing')
+      .replaceAll('autumn', 'billing');
+  }
+
   if (!caughtError || typeof caughtError !== 'object') {
-    return caughtError instanceof Error ? caughtError.message : fallbackMessage;
+    return caughtError instanceof Error
+      ? sanitizeBillingMessage(caughtError.message)
+      : fallbackMessage;
   }
 
   const typedError = caughtError as {
@@ -333,14 +342,14 @@ export function getAutumnErrorMessage(
     if (currencyMismatch) {
       const [, supportedCurrency, expectedCurrency] = currencyMismatch;
 
-      return `Wallet top-up is configured for ${supportedCurrency.toUpperCase()}, but Autumn is trying to bill this customer in ${expectedCurrency.toUpperCase()}. Add a matching ${expectedCurrency.toUpperCase()} price to the Autumn top-up product, or align your billing currencies.`;
+      return `Wallet top-up is configured for ${supportedCurrency.toUpperCase()}, but your current billing currency is ${expectedCurrency.toUpperCase()}. Add a matching ${expectedCurrency.toUpperCase()} price to the top-up product or align your billing currencies.`;
     }
 
-    return parsedBodyMessage;
+    return sanitizeBillingMessage(parsedBodyMessage);
   }
 
   if (typeof typedError.message === 'string' && typedError.message.trim()) {
-    return typedError.message;
+    return sanitizeBillingMessage(typedError.message);
   }
 
   if (typedError.status === 429 || typedError.statusCode === 429) {
@@ -396,7 +405,7 @@ export function getWalletTopUpConfigurationMessage(plan: AutumnPlan | null) {
     return null;
   }
 
-  return `The Autumn "${plan.id}" product does not currently include a balance feature item, so checkout cannot honor the requested quantity or grant balance. Update the Autumn product to include the intended balance feature and its pricing before enabling top-ups here.`;
+  return `The "${plan.id}" top-up product does not currently include a balance feature item, so checkout cannot honor the requested quantity or grant balance. Update the product to include the intended balance feature and pricing before enabling top-ups here.`;
 }
 
 export function getWalletTopUpPlan(plans: AutumnPlan[] | null | undefined) {

@@ -253,7 +253,7 @@ describe('AssistantChatPanel', () => {
     ).not.toBeNull();
   });
 
-  it('shows a toast when the Autumn customer hook fails', async () => {
+  it('shows a toast when the billing customer hook fails', async () => {
     customerHookError = {
       body: JSON.stringify({
         message: 'Autumn customer lookup failed.',
@@ -263,13 +263,13 @@ describe('AssistantChatPanel', () => {
     renderAssistantChatPanel();
 
     await waitFor(() => {
-      expect(screen.getByText('Autumn billing is unavailable')).not.toBeNull();
+      expect(screen.getByText('Billing is unavailable')).not.toBeNull();
     });
 
-    expect(screen.getByText('Autumn customer lookup failed.')).not.toBeNull();
+    expect(screen.getByText('Billing customer lookup failed.')).not.toBeNull();
   });
 
-  it('shows a toast when the Autumn access check throws', async () => {
+  it('shows a toast when the chat access check throws', async () => {
     checkMock.mockImplementation(() => {
       throw new Error('Autumn access check failed.');
     });
@@ -277,11 +277,9 @@ describe('AssistantChatPanel', () => {
     renderAssistantChatPanel();
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Autumn chat access check failed')
-      ).not.toBeNull();
+      expect(screen.getByText('Chat access check failed')).not.toBeNull();
     });
 
-    expect(screen.getByText('Autumn access check failed.')).not.toBeNull();
+    expect(screen.getByText('Billing access check failed.')).not.toBeNull();
   });
 });

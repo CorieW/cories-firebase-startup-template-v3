@@ -710,7 +710,7 @@ describe('BillingDashboard subscriptions', () => {
     });
   });
 
-  it('shows a toast when Autumn rejects opening the billing portal', async () => {
+  it('shows a toast when billing rejects opening the billing portal', async () => {
     openCustomerPortalMock.mockRejectedValueOnce({
       body: JSON.stringify({
         message: 'Autumn could not open the customer portal right now.',
@@ -729,12 +729,12 @@ describe('BillingDashboard subscriptions', () => {
 
     expect(
       screen.getAllByText(
-        'Autumn could not open the customer portal right now.'
+        'Billing could not open the customer portal right now.'
       ).length
     ).toBeGreaterThan(0);
   });
 
-  it('shows a toast when billing details fail to load from Autumn', async () => {
+  it('shows a toast when billing details fail to load', async () => {
     customerState.error = {
       body: JSON.stringify({
         message: 'Autumn customer lookup failed.',
@@ -747,7 +747,7 @@ describe('BillingDashboard subscriptions', () => {
       expect(screen.getByText('Unable to load billing details')).not.toBeNull();
     });
 
-    expect(screen.getAllByText('Autumn customer lookup failed.').length).toBe(
+    expect(screen.getAllByText('Billing customer lookup failed.').length).toBe(
       2
     );
   });
@@ -771,7 +771,7 @@ describe('BillingDashboard subscriptions', () => {
     ).not.toBeNull();
   });
 
-  it('starts an Autumn checkout attach flow when a paid plan is selected', async () => {
+  it('starts the checkout attach flow when a paid plan is selected', async () => {
     plansState.data = [
       {
         id: 'starter',

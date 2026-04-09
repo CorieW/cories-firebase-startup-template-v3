@@ -1,6 +1,10 @@
 /**
  * Support chat panel UI.
  */
+import {
+  TEMPLATE_SUPPORT,
+  TEMPLATE_SUPPORT_EMAIL_HREF,
+} from '@cories-firebase-startup-template-v3/common';
 import { ArrowLeft, MessageCircle, Send } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { panelClass, panelMutedClass } from '../../lib/ui';
@@ -250,6 +254,18 @@ export default function SupportChatPanel({
           </div>
         </div>
       </article>
+
+      <div
+        className={`${panelMutedClass} px-4 py-3 text-sm text-[var(--ink-soft)]`}
+      >
+        Need to follow up by email instead?{' '}
+        <a
+          href={TEMPLATE_SUPPORT_EMAIL_HREF}
+          className='font-semibold text-[var(--ink)] underline underline-offset-4'
+        >
+          {TEMPLATE_SUPPORT.emailAddress}
+        </a>
+      </div>
     </section>
   );
 }

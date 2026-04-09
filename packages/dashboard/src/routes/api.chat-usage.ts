@@ -88,7 +88,7 @@ export const Route = createFileRoute('/api/chat-usage')({
             'warn'
           );
           return Response.json(
-            { error: 'Autumn is not configured' },
+            { error: 'Billing is not configured' },
             { status: 503 }
           );
         }

@@ -109,7 +109,7 @@ export function useAssistantChat() {
     return customerError
       ? getRequestErrorMessage(
           customerError,
-          'We could not load your Autumn billing customer record.'
+          'We could not load your billing record.'
         )
       : null;
   }, [customerError]);
@@ -135,7 +135,7 @@ export function useAssistantChat() {
         access: null,
         errorMessage: getRequestErrorMessage(
           caughtError,
-          'We could not validate your Autumn chat access right now.'
+          'We could not validate your chat access right now.'
         ),
       };
     }
@@ -158,7 +158,7 @@ export function useAssistantChat() {
       'error'
     );
     toast.error({
-      title: 'Autumn billing is unavailable',
+      title: 'Billing is unavailable',
       description: customerErrorMessage,
       durationMs: 7200,
     });
@@ -179,7 +179,7 @@ export function useAssistantChat() {
       'error'
     );
     toast.error({
-      title: 'Autumn chat access check failed',
+      title: 'Chat access check failed',
       description: chatAccessResult.errorMessage,
       durationMs: 7200,
     });
@@ -406,7 +406,7 @@ export function useAssistantChat() {
   const draftUsageLabel =
     draftUsageUnits > 0
       ? `${draftUsageUnits} ${draftUsageUnits === 1 ? 'usage unit' : 'usage units'}`
-      : 'Configured in Autumn';
+      : 'Configured by billing rules';
 
   return {
     canSendChatMessage,

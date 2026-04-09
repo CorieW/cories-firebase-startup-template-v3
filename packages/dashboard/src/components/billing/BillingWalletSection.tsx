@@ -110,7 +110,7 @@ function WalletTopUpCard({
           {walletTopUpMaxPurchase !== null &&
           walletTopUpMaxPurchase !== undefined
             ? `Maximum per purchase: ${formatBalanceAmount(walletTopUpMaxPurchase, walletBalance, walletFeatureId)}.`
-            : 'Use Autumn checkout to purchase additional balance.'}
+            : 'Use checkout to purchase additional balance.'}
         </p>
       )}
     </article>
@@ -187,7 +187,7 @@ export default function BillingWalletSection({
             )}
           </p>
           <p className='m-0 text-xs text-[var(--ink-soft)]'>
-            Total balance Autumn has added so far.
+            Total balance added so far.
           </p>
         </article>
 
@@ -306,8 +306,8 @@ export default function BillingWalletSection({
             <div
               className={`${panelMutedClass} p-4 text-sm text-[var(--ink-soft)]`}
             >
-              No usage history yet. Autumn purchases and usage events will show
-              up here.
+              No usage history yet. Purchases and usage events will show up
+              here.
             </div>
           )}
 
@@ -337,8 +337,7 @@ export default function BillingWalletSection({
             Available balance
           </p>
           <p className='m-0 text-xs text-[var(--ink-soft)]'>
-            Balance will appear here after Autumn grants or purchases are
-            recorded.
+            Balance will appear here after grants or purchases are recorded.
           </p>
         </article>
 
@@ -362,7 +361,7 @@ export default function BillingWalletSection({
             {formatBalanceAmount(0, walletBalance, walletFeatureId)}
           </p>
           <p className='m-0 text-xs text-[var(--ink-soft)]'>
-            Usage will show here once Autumn records wallet activity.
+            Usage will show here once wallet activity is recorded.
           </p>
         </article>
       </div>
@@ -388,8 +387,8 @@ export default function BillingWalletSection({
               Usage history
             </p>
             <p className='m-0 mt-1 text-sm text-[var(--ink-soft)]'>
-              Autumn purchases and usage events will show up here once this
-              customer has activity.
+              Purchases and usage events will show up here once this customer
+              has activity.
             </p>
           </div>
           <div
