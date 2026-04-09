@@ -1,6 +1,10 @@
 /**
  * Footer for the marketing page.
  */
+import {
+  TEMPLATE_BRAND_NAME,
+  TEMPLATE_COPY,
+} from '@cories-firebase-startup-template-v3/common';
 import AppBrand from '../AppBrand';
 
 const footerLinks = [
@@ -23,8 +27,7 @@ export default function MarketingFooter() {
             <div className='space-y-3'>
               <AppBrand className='p-0' />
               <p className='m-0 max-w-md text-sm leading-6 text-[var(--ink-soft)]'>
-                A stylish static marketing package designed to feel like the
-                public face of the same product family as the dashboard.
+                {TEMPLATE_COPY.marketingFooterSummary}
               </p>
             </div>
             <div className='flex flex-wrap gap-4 text-sm font-semibold text-[var(--ink-soft)]'>
@@ -40,7 +43,8 @@ export default function MarketingFooter() {
             </div>
           </div>
           <p className='mb-0 mt-8 text-xs uppercase tracking-[0.1em] text-[var(--ink-soft)]'>
-            © {year} Firebase Starter. Public-facing polish for the template.
+            © {year} {TEMPLATE_BRAND_NAME}.{' '}
+            {TEMPLATE_COPY.marketingFooterTagline}
           </p>
         </div>
       </div>

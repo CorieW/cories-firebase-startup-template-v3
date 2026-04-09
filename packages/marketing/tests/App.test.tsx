@@ -17,7 +17,7 @@ describe('Marketing App', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /marketing pricing now hands off to the real autumn billing flow/i,
+        name: /marketing pricing now hands off to the live billing flow/i,
       })
     ).toBeTruthy();
 

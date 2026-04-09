@@ -13,7 +13,7 @@ const proofItems = [
 const partnerLabels = [
   'Firebase',
   'Better Auth',
-  'Autumn',
+  'React',
   'TanStack',
   'Tailwind',
 ];

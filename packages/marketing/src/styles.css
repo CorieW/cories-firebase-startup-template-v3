@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @layer theme, base, utilities;
 @import 'tailwindcss';
+@source "../../common/src";
 @import '../../common/src/client/shared-theme.css';
 
 @theme {
@@ -14,8 +15,6 @@
   --hero-a: rgba(199, 160, 59, 0.16);
   --hero-b: rgba(23, 20, 18, 0.08);
   --hero-c: rgba(255, 255, 255, 0.52);
-  --success: #166534;
-  --info: #1d4ed8;
   --shadow-card: 0 20px 48px rgba(91, 72, 39, 0.08);
   --shadow-soft: 0 32px 80px rgba(91, 72, 39, 0.12);
 }
@@ -25,8 +24,6 @@
   --hero-a: rgba(210, 176, 90, 0.14);
   --hero-b: rgba(255, 255, 255, 0.06);
   --hero-c: rgba(36, 32, 27, 0.64);
-  --success: #86efac;
-  --info: #93c5fd;
   --shadow-card: 0 20px 48px rgba(0, 0, 0, 0.28);
   --shadow-soft: 0 34px 90px rgba(0, 0, 0, 0.36);
 }
