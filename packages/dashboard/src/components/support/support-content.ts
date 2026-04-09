@@ -1,8 +1,19 @@
 /**
  * Shared support page content data.
  */
+import {
+  TEMPLATE_SUPPORT,
+  TEMPLATE_SUPPORT_EMAIL_HREF,
+} from '@cories-firebase-startup-template-v3/common';
+
+export type SupportOptionId =
+  | 'documentation'
+  | 'live-chat'
+  | 'email-support'
+  | 'faq';
+
 export interface SupportOption {
-  id: 'documentation' | 'live-chat' | 'email-support' | 'faq';
+  id: SupportOptionId;
   title: string;
   description: string;
   href: string;
@@ -15,12 +26,26 @@ export interface SupportArticle {
   href: string;
 }
 
+export const SUPPORT_EMAIL_ADDRESS = TEMPLATE_SUPPORT.emailAddress;
+export const SUPPORT_EMAIL_HREF = TEMPLATE_SUPPORT_EMAIL_HREF;
+export const SUPPORT_DOCS_HREF = TEMPLATE_SUPPORT.docsHref;
+
+export const SUPPORT_CONTACT_OPTION_IDS = [
+  'live-chat',
+  'email-support',
+] as const satisfies readonly SupportOptionId[];
+
+export const SUPPORT_DOC_OPTION_IDS = [
+  'documentation',
+  'faq',
+] as const satisfies readonly SupportOptionId[];
+
 export const SUPPORT_OPTIONS: SupportOption[] = [
   {
     id: 'documentation',
     title: 'Documentation',
     description: 'Review setup guides and implementation walkthroughs.',
-    href: 'https://docs.yourcompany.com',
+    href: SUPPORT_DOCS_HREF,
     cta: 'Open docs',
   },
   {
@@ -34,7 +59,7 @@ export const SUPPORT_OPTIONS: SupportOption[] = [
     id: 'email-support',
     title: 'Email Support',
     description: 'Send account, billing, or technical questions by email.',
-    href: 'mailto:support@yourcompany.com',
+    href: SUPPORT_EMAIL_HREF,
     cta: 'Email support',
   },
   {
@@ -46,25 +71,38 @@ export const SUPPORT_OPTIONS: SupportOption[] = [
   },
 ];
 
+/**
+ * Filters support options for a subset of support pages.
+ */
+export function getSupportOptions(optionIds?: readonly SupportOptionId[]) {
+  if (!optionIds) {
+    return SUPPORT_OPTIONS;
+  }
+
+  const allowedOptionIds = new Set(optionIds);
+
+  return SUPPORT_OPTIONS.filter(option => allowedOptionIds.has(option.id));
+}
+
 export const SUPPORT_ARTICLES: SupportArticle[] = [
   {
     title: 'Getting started',
     description: 'Set up your workspace and complete first-run steps.',
-    href: 'https://docs.yourcompany.com/getting-started',
+    href: `${SUPPORT_DOCS_HREF}/getting-started`,
   },
   {
     title: 'Account management',
     description: 'Update profile details, security settings, and sessions.',
-    href: 'https://docs.yourcompany.com/account-management',
+    href: `${SUPPORT_DOCS_HREF}/account-management`,
   },
   {
     title: 'Troubleshooting',
     description: 'Resolve common setup and runtime issues quickly.',
-    href: 'https://docs.yourcompany.com/troubleshooting',
+    href: `${SUPPORT_DOCS_HREF}/troubleshooting`,
   },
   {
     title: 'API documentation',
     description: 'Find endpoint references, auth requirements, and examples.',
-    href: 'https://docs.yourcompany.com/api',
+    href: `${SUPPORT_DOCS_HREF}/api`,
   },
 ];

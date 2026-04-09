@@ -18,82 +18,44 @@ async function clickUntilNavigated(
   });
 }
 
-test('@core opens live chat from the support page', async ({
+test('@smoke redirects the support index to the docs page', async ({
   personalPage,
 }) => {
   await personalPage.goto('/support');
-  await expect(
-    personalPage.getByRole('heading', { name: 'Get help from the team' })
-  ).toBeVisible();
 
-  const liveChatCard = personalPage.getByRole('button', {
-    name: /^Live Chat/i,
-  });
-  await clickUntilNavigated(
-    personalPage,
-    () =>
-      liveChatCard.evaluate(node => {
-        (node as HTMLButtonElement).click();
-      }),
-    /\/chat\?source=live-chat$/
-  );
-
+  await expect(personalPage).toHaveURL(/\/support\/docs$/);
   await expect(
-    personalPage.getByRole('heading', { name: 'Live chat support' })
-  ).toBeVisible();
-  await expect(
-    personalPage.getByText('Welcome to live chat. How can we help today?')
+    personalPage.getByRole('heading', { name: 'Support docs' })
   ).toBeVisible();
 });
 
-test('@core opens contact support chat from the support page', async ({
+test('@core shows the support docs page resources', async ({
   personalPage,
 }) => {
-  await personalPage.goto('/support');
+  await personalPage.goto('/support/docs');
+
   await expect(
-    personalPage.getByRole('heading', { name: 'Get help from the team' })
+    personalPage.getByRole('heading', { name: 'Support docs' })
   ).toBeVisible();
+  await expect(
+    personalPage.getByRole('link', { name: /Open docs/i })
+  ).toBeVisible();
+  await expect(
+    personalPage.getByRole('link', { name: /View FAQ/i })
+  ).toBeVisible();
+});
 
-  await clickUntilNavigated(
-    personalPage,
-    () => personalPage.getByRole('button', { name: 'Contact support' }).click(),
-    /\/chat\?source=contact-support$/
-  );
+test('@core redirects the contact support route to chat', async ({
+  personalPage,
+}) => {
+  await personalPage.goto('/support/contact');
 
+  await expect(personalPage).toHaveURL(/\/chat\?source=contact-support$/);
   await expect(
     personalPage.getByRole('heading', { name: 'Contact support' })
   ).toBeVisible();
   await expect(
-    personalPage.getByText(
-      'Thanks for reaching out. What can we help you solve?'
-    )
-  ).toBeVisible();
-});
-
-test('@core sends a support message and shows the simulated reply', async ({
-  personalPage,
-}) => {
-  await personalPage.goto('/chat?source=live-chat');
-
-  await expect(
-    personalPage.getByRole('heading', { name: 'Live chat support' })
-  ).toBeVisible();
-
-  const chatInput = personalPage.getByPlaceholder('Write a message to support');
-  const sendButton = personalPage.getByRole('button', { name: 'Send message' });
-
-  await expect(chatInput).toBeVisible();
-  await chatInput.fill('I need help understanding the billing page.');
-  await expect(sendButton).toBeEnabled();
-  await sendButton.click();
-
-  await expect(
-    personalPage.getByText('I need help understanding the billing page.')
-  ).toBeVisible();
-  await expect(
-    personalPage.getByText(
-      'Thanks for the details. A support specialist will follow up shortly.'
-    )
+    personalPage.getByRole('link', { name: 'support@yourcompany.com' })
   ).toBeVisible();
 });
 
@@ -108,11 +70,11 @@ test('@smoke returns from support chat back to the support page', async ({
   await clickUntilNavigated(
     personalPage,
     () => personalPage.getByRole('button', { name: 'Back to support' }).click(),
-    /\/support$/
+    /\/support\/docs$/
   );
 
   await expect(
-    personalPage.getByRole('heading', { name: 'Get help from the team' })
+    personalPage.getByRole('heading', { name: 'Support docs' })
   ).toBeVisible();
 });
 

@@ -1,10 +1,14 @@
 /**
  * Signed-in sidebar nav definitions and shared class constants.
  */
+import { TEMPLATE_SUPPORT } from '@cories-firebase-startup-template-v3/common';
 import {
-  Home,
+  BookOpen,
+  ExternalLink,
+  House,
   Layers,
   LifeBuoy,
+  Mail,
   MessageSquare,
   WalletCards,
   type LucideIcon,
@@ -12,8 +16,9 @@ import {
 import {
   type BillingSection,
   APP_CHAT_ROUTE_PATH,
+  ROOT_ROUTE_PATH,
+  SUPPORT_CHAT_ROUTE_PATH,
   getBillingRoutePath,
-  HOME_ROUTE_PATH,
   SUPPORT_ROUTE_PATH,
 } from '../../lib/route-paths';
 
@@ -21,6 +26,9 @@ export interface NavItem {
   icon: LucideIcon;
   label: string;
   to: string;
+  external?: boolean;
+  externalIcon?: LucideIcon;
+  search?: Record<string, string>;
 }
 
 interface BillingNavItemDefinition {
@@ -30,9 +38,8 @@ interface BillingNavItemDefinition {
 }
 
 export const primaryNavItems: readonly NavItem[] = [
-  { icon: Home, label: 'Home', to: HOME_ROUTE_PATH },
+  { icon: House, label: 'Home', to: ROOT_ROUTE_PATH },
   { icon: MessageSquare, label: 'Chat', to: APP_CHAT_ROUTE_PATH },
-  { icon: LifeBuoy, label: 'Support', to: SUPPORT_ROUTE_PATH },
 ] as const;
 
 const billingNavItemDefinitions: readonly BillingNavItemDefinition[] = [
@@ -48,12 +55,39 @@ const billingNavItemDefinitions: readonly BillingNavItemDefinition[] = [
   },
 ] as const;
 
+export const supportParentNavItem: NavItem = {
+  icon: LifeBuoy,
+  label: 'Support',
+  to: SUPPORT_ROUTE_PATH,
+};
+
+const supportNavItemDefinitions: readonly NavItem[] = [
+  {
+    icon: Mail,
+    label: 'Contact',
+    to: SUPPORT_CHAT_ROUTE_PATH,
+    search: {
+      source: 'contact-support',
+    },
+  },
+  {
+    icon: BookOpen,
+    label: 'Docs',
+    to: TEMPLATE_SUPPORT.docsHref,
+    external: true,
+    externalIcon: ExternalLink,
+  },
+] as const;
+
 export const billingNavItems = billingNavItemDefinitions.map(
   ({ section, ...item }) => ({
     ...item,
     to: getBillingRoutePath(section),
   })
 ) satisfies readonly NavItem[];
+
+export const supportNavItems =
+  supportNavItemDefinitions satisfies readonly NavItem[];
 
 export const sidebarDropdownSurfaceClass =
   'z-[80] min-w-64 rounded-[18px] border border-[var(--line)] bg-[var(--surface)] p-1.5';

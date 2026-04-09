@@ -5,7 +5,11 @@ import { Search } from 'lucide-react';
 import { useState } from 'react';
 import { panelClass } from '../../lib/ui';
 import { useToast } from '../toast/ToastProvider';
-import { SUPPORT_ARTICLES, SUPPORT_OPTIONS } from './support-content';
+import {
+  getSupportOptions,
+  SUPPORT_ARTICLES,
+  type SupportOptionId,
+} from './support-content';
 
 function includesSearchQuery(searchQuery: string, values: string[]): boolean {
   return values.some(value => value.toLowerCase().includes(searchQuery));
@@ -14,9 +18,14 @@ function includesSearchQuery(searchQuery: string, values: string[]): boolean {
 /**
  * Search input used as the first entry point on the support page.
  */
-export default function SupportSearchCard() {
+export default function SupportSearchCard({
+  optionIds,
+}: {
+  optionIds?: readonly SupportOptionId[];
+}) {
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
+  const supportOptions = getSupportOptions(optionIds);
 
   function handleSearch() {
     const trimmedQuery = searchQuery.trim();
@@ -37,7 +46,7 @@ export default function SupportSearchCard() {
           article.href,
         ])
       );
-      const optionMatches = SUPPORT_OPTIONS.filter(option =>
+      const optionMatches = supportOptions.filter(option =>
         includesSearchQuery(normalizedQuery, [
           option.title,
           option.description,

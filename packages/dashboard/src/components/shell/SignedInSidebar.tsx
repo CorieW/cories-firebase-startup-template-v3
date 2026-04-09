@@ -2,10 +2,10 @@
  * Authenticated navigation and sidebar shell.
  */
 import { useRouterState } from '@tanstack/react-router';
-import { ChevronDown, WalletCards, X } from 'lucide-react';
+import { ChevronDown, LifeBuoy, WalletCards, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAuthSession } from '../../lib/auth-client';
-import { isBillingRoutePath } from '../../lib/route-paths';
+import { isBillingRoutePath, isSupportRoutePath } from '../../lib/route-paths';
 import { normalizePathname } from '../../lib/route-guards';
 import AppBrand from '../AppBrand';
 import ThemeToggle from '../ThemeToggle';
@@ -15,6 +15,8 @@ import SidebarNavLink from './SidebarNavLink';
 import {
   billingNavItems,
   primaryNavItems,
+  supportNavItems,
+  supportParentNavItem,
   sidebarNavItemActiveClass,
   sidebarNavItemBaseClass,
   sidebarNavItemInactiveClass,
@@ -30,12 +32,16 @@ export default function SignedInSidebar({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBillingOpen, setIsBillingOpen] = useState(true);
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
   const { user } = useAuthSession();
   const pathname = useRouterState({
     select: state => state.location.pathname,
   });
   const normalizedPathname = normalizePathname(pathname);
   const onBillingPath = isBillingRoutePath(normalizedPathname);
+  const onSupportPath = isSupportRoutePath(normalizedPathname);
+  const SupportIcon = LifeBuoy;
+  const BillingIcon = WalletCards;
   const userEmail = user?.email ?? 'No email available';
   const accountBadge = (
     user?.name?.trim().charAt(0) ||
@@ -48,6 +54,12 @@ export default function SignedInSidebar({
       setIsBillingOpen(true);
     }
   }, [onBillingPath]);
+
+  useEffect(() => {
+    if (onSupportPath) {
+      setIsSupportOpen(true);
+    }
+  }, [onSupportPath]);
 
   function closeMenu() {
     setIsMenuOpen(false);
@@ -86,7 +98,7 @@ export default function SignedInSidebar({
       >
         <div className='flex h-full flex-col p-4'>
           <div className='flex items-start justify-between'>
-            <AppBrand />
+            <AppBrand to='/' />
             <div className='mt-2 flex items-center gap-2 min-[980px]:hidden'>
               <ThemeToggle />
               <button
@@ -114,6 +126,60 @@ export default function SignedInSidebar({
               <button
                 type='button'
                 className={`${sidebarNavItemBaseClass} h-10 w-full text-left ${
+                  onSupportPath
+                    ? sidebarNavItemActiveClass
+                    : sidebarNavItemInactiveClass
+                }`}
+                onClick={() => setIsSupportOpen(current => !current)}
+                aria-expanded={isSupportOpen}
+                aria-controls='support-sidebar-links'
+                disabled={isSessionPending}
+              >
+                <SupportIcon aria-hidden='true' className='h-4 w-4 shrink-0' />
+                <span className='flex-1 truncate whitespace-nowrap'>
+                  {supportParentNavItem.label}
+                </span>
+                <ChevronDown
+                  aria-hidden='true'
+                  className={`h-4 w-4 shrink-0 transition-transform ${
+                    isSupportOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {isSupportOpen ? (
+                <div
+                  id='support-sidebar-links'
+                  className='mt-1 grid gap-1 pl-3'
+                >
+                  {isSessionPending
+                    ? Array.from({ length: supportNavItems.length }).map(
+                        (_, index) => (
+                          <Skeleton
+                            key={index}
+                            className='h-9 rounded-[10px]'
+                          />
+                        )
+                      )
+                    : supportNavItems.map(item => (
+                        <SidebarNavLink
+                          key={item.to}
+                          isActive={
+                            normalizedPathname === normalizePathname(item.to)
+                          }
+                          item={item}
+                          nested
+                          onClick={closeMenu}
+                        />
+                      ))}
+                </div>
+              ) : null}
+            </div>
+
+            <div className='rounded-[12px] border border-transparent'>
+              <button
+                type='button'
+                className={`${sidebarNavItemBaseClass} h-10 w-full text-left ${
                   onBillingPath
                     ? sidebarNavItemActiveClass
                     : sidebarNavItemInactiveClass
@@ -123,7 +189,7 @@ export default function SignedInSidebar({
                 aria-controls='billing-sidebar-links'
                 disabled={isSessionPending}
               >
-                <WalletCards aria-hidden='true' className='h-4 w-4 shrink-0' />
+                <BillingIcon aria-hidden='true' className='h-4 w-4 shrink-0' />
                 <span className='flex-1 truncate whitespace-nowrap'>
                   Billing
                 </span>

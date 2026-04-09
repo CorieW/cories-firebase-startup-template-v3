@@ -3,7 +3,8 @@
 /**
  * Tests signed-in sidebar navigation, billing groups, and organization state.
  */
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { SUPPORT_DOCS_HREF } from '@/components/support/support-content';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import SignedInSidebar from '@/components/shell/SignedInSidebar';
 import { ToastProvider } from '@/components/toast/ToastProvider';
@@ -35,17 +36,25 @@ vi.mock('@tanstack/react-router', () => ({
   Link: ({
     children,
     className,
+    search,
     to,
     ...props
   }: {
     children: import('react').ReactNode;
     className?: string;
+    search?: Record<string, string>;
     to: string;
-  }) => (
-    <a href={to} className={className} {...props}>
-      {children}
-    </a>
-  ),
+  }) => {
+    const href = search
+      ? `${to}?${new URLSearchParams(search).toString()}`
+      : to;
+
+    return (
+      <a href={href} className={className} {...props}>
+        {children}
+      </a>
+    );
+  },
   useRouterState: ({
     select,
   }: {
@@ -84,6 +93,11 @@ describe('SignedInSidebar', () => {
 
     expect(
       screen
+        .getByRole('button', { name: 'Support' })
+        .getAttribute('aria-expanded')
+    ).toBe('false');
+    expect(
+      screen
         .getByRole('button', { name: 'Billing' })
         .getAttribute('aria-expanded')
     ).toBe('true');
@@ -97,9 +111,23 @@ describe('SignedInSidebar', () => {
     expect(
       screen.getByRole('link', { name: 'Chat' }).getAttribute('href')
     ).toBe('/assistant');
+    expect(screen.queryByRole('link', { name: 'Contact' })).toBeNull();
+  });
+
+  it('expands the support group and shows the support child links', () => {
+    renderSignedInSidebar();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Support' }));
+
     expect(
-      screen.getByRole('link', { name: 'Support' }).getAttribute('href')
-    ).toBe('/support');
+      screen.getByRole('link', { name: 'Contact' }).getAttribute('href')
+    ).toBe('/chat?source=contact-support');
+    expect(
+      screen.getByRole('link', { name: 'Docs' }).getAttribute('href')
+    ).toBe(SUPPORT_DOCS_HREF);
+    expect(
+      screen.getByRole('link', { name: 'Docs' }).getAttribute('target')
+    ).toBe('_blank');
   });
 
   it('shows organization billing links when an active organization exists', () => {
@@ -124,6 +152,18 @@ describe('SignedInSidebar', () => {
     expect(
       screen
         .getByRole('button', { name: 'Billing' })
+        .getAttribute('aria-expanded')
+    ).toBe('true');
+  });
+
+  it('keeps the support group expanded when a support child route is active', () => {
+    hookState.pathname = '/support/docs';
+
+    renderSignedInSidebar();
+
+    expect(
+      screen
+        .getByRole('button', { name: 'Support' })
         .getAttribute('aria-expanded')
     ).toBe('true');
   });

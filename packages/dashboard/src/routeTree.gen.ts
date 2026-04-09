@@ -16,6 +16,8 @@ import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserProfileSplatRouteImport } from './routes/user-profile.$'
+import { Route as SupportDocsRouteImport } from './routes/support.docs'
+import { Route as SupportContactRouteImport } from './routes/support.contact'
 import { Route as SignUpSplatRouteImport } from './routes/sign-up.$'
 import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
 import { Route as PricingWalletRouteImport } from './routes/pricing.wallet'
@@ -59,6 +61,16 @@ const UserProfileSplatRoute = UserProfileSplatRouteImport.update({
   id: '/user-profile/$',
   path: '/user-profile/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SupportDocsRoute = SupportDocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportContactRoute = SupportContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => SupportRoute,
 } as any)
 const SignUpSplatRoute = SignUpSplatRouteImport.update({
   id: '/sign-up/$',
@@ -109,7 +121,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/create-organization': typeof CreateOrganizationRoute
   '/pricing': typeof PricingRouteWithChildren
-  '/support': typeof SupportRoute
+  '/support': typeof SupportRouteWithChildren
   '/api/chat-usage': typeof ApiChatUsageRoute
   '/organization-profile/$': typeof OrganizationProfileSplatRoute
   '/organization-profile/accept-invitation': typeof OrganizationProfileAcceptInvitationRoute
@@ -117,6 +129,8 @@ export interface FileRoutesByFullPath {
   '/pricing/wallet': typeof PricingWalletRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
+  '/support/contact': typeof SupportContactRoute
+  '/support/docs': typeof SupportDocsRoute
   '/user-profile/$': typeof UserProfileSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -126,7 +140,7 @@ export interface FileRoutesByTo {
   '/chat': typeof ChatRoute
   '/create-organization': typeof CreateOrganizationRoute
   '/pricing': typeof PricingRouteWithChildren
-  '/support': typeof SupportRoute
+  '/support': typeof SupportRouteWithChildren
   '/api/chat-usage': typeof ApiChatUsageRoute
   '/organization-profile/$': typeof OrganizationProfileSplatRoute
   '/organization-profile/accept-invitation': typeof OrganizationProfileAcceptInvitationRoute
@@ -134,6 +148,8 @@ export interface FileRoutesByTo {
   '/pricing/wallet': typeof PricingWalletRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
+  '/support/contact': typeof SupportContactRoute
+  '/support/docs': typeof SupportDocsRoute
   '/user-profile/$': typeof UserProfileSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -144,7 +160,7 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/create-organization': typeof CreateOrganizationRoute
   '/pricing': typeof PricingRouteWithChildren
-  '/support': typeof SupportRoute
+  '/support': typeof SupportRouteWithChildren
   '/api/chat-usage': typeof ApiChatUsageRoute
   '/organization-profile/$': typeof OrganizationProfileSplatRoute
   '/organization-profile/accept-invitation': typeof OrganizationProfileAcceptInvitationRoute
@@ -152,6 +168,8 @@ export interface FileRoutesById {
   '/pricing/wallet': typeof PricingWalletRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
+  '/support/contact': typeof SupportContactRoute
+  '/support/docs': typeof SupportDocsRoute
   '/user-profile/$': typeof UserProfileSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -171,6 +189,8 @@ export interface FileRouteTypes {
     | '/pricing/wallet'
     | '/sign-in/$'
     | '/sign-up/$'
+    | '/support/contact'
+    | '/support/docs'
     | '/user-profile/$'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
@@ -188,6 +208,8 @@ export interface FileRouteTypes {
     | '/pricing/wallet'
     | '/sign-in/$'
     | '/sign-up/$'
+    | '/support/contact'
+    | '/support/docs'
     | '/user-profile/$'
     | '/api/auth/$'
   id:
@@ -205,6 +227,8 @@ export interface FileRouteTypes {
     | '/pricing/wallet'
     | '/sign-in/$'
     | '/sign-up/$'
+    | '/support/contact'
+    | '/support/docs'
     | '/user-profile/$'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
@@ -215,7 +239,7 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   CreateOrganizationRoute: typeof CreateOrganizationRoute
   PricingRoute: typeof PricingRouteWithChildren
-  SupportRoute: typeof SupportRoute
+  SupportRoute: typeof SupportRouteWithChildren
   ApiChatUsageRoute: typeof ApiChatUsageRoute
   OrganizationProfileSplatRoute: typeof OrganizationProfileSplatRoute
   OrganizationProfileAcceptInvitationRoute: typeof OrganizationProfileAcceptInvitationRoute
@@ -275,6 +299,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/user-profile/$'
       preLoaderRoute: typeof UserProfileSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/support/docs': {
+      id: '/support/docs'
+      path: '/docs'
+      fullPath: '/support/docs'
+      preLoaderRoute: typeof SupportDocsRouteImport
+      parentRoute: typeof SupportRoute
+    }
+    '/support/contact': {
+      id: '/support/contact'
+      path: '/contact'
+      fullPath: '/support/contact'
+      preLoaderRoute: typeof SupportContactRouteImport
+      parentRoute: typeof SupportRoute
     }
     '/sign-up/$': {
       id: '/sign-up/$'
@@ -348,13 +386,26 @@ const PricingRouteChildren: PricingRouteChildren = {
 const PricingRouteWithChildren =
   PricingRoute._addFileChildren(PricingRouteChildren)
 
+interface SupportRouteChildren {
+  SupportContactRoute: typeof SupportContactRoute
+  SupportDocsRoute: typeof SupportDocsRoute
+}
+
+const SupportRouteChildren: SupportRouteChildren = {
+  SupportContactRoute: SupportContactRoute,
+  SupportDocsRoute: SupportDocsRoute,
+}
+
+const SupportRouteWithChildren =
+  SupportRoute._addFileChildren(SupportRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AssistantRoute: AssistantRoute,
   ChatRoute: ChatRoute,
   CreateOrganizationRoute: CreateOrganizationRoute,
   PricingRoute: PricingRouteWithChildren,
-  SupportRoute: SupportRoute,
+  SupportRoute: SupportRouteWithChildren,
   ApiChatUsageRoute: ApiChatUsageRoute,
   OrganizationProfileSplatRoute: OrganizationProfileSplatRoute,
   OrganizationProfileAcceptInvitationRoute:

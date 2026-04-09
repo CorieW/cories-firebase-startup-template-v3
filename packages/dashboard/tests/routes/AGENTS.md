@@ -9,6 +9,7 @@ Route-level tests for dashboard redirects, handlers, and server-side behavior.
 ## Files
 
 - `-pricing-redirects.test.ts`: Tests canonical pricing route redirect behavior.
+- `-support-redirects.test.ts`: Tests canonical support route redirect behavior.
 - `api.chat-usage.test.ts`: Tests chat-usage route validation and pricing snapshot recording.
 
 ## Writing Rules

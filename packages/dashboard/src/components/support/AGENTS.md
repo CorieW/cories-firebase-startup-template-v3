@@ -9,7 +9,6 @@ Support-page cards, content, and search or presentation components.
 ## Files
 
 - `SupportArticlesCard.tsx`: Support articles card UI.
-- `SupportContactCard.tsx`: Support contact card UI.
 - `SupportOptionsGrid.tsx`: Support options grid component.
 - `SupportSearchCard.tsx`: Support search card component.
 - `support-content.ts`: Shared support page content data.

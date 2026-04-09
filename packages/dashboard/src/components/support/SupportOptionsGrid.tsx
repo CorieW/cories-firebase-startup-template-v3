@@ -4,7 +4,7 @@
 import { BookOpen, HelpCircle, Mail, MessageCircle } from 'lucide-react';
 import { panelClass, panelMutedClass } from '../../lib/ui';
 import { useToast } from '../toast/ToastProvider';
-import { SUPPORT_OPTIONS } from './support-content';
+import { getSupportOptions, type SupportOptionId } from './support-content';
 
 const optionIconMap = {
   documentation: BookOpen,
@@ -17,15 +17,18 @@ const optionIconMap = {
  * Quick support channels shown as card links.
  */
 interface SupportOptionsGridProps {
-  onLiveChatClick: () => void;
+  onLiveChatClick?: () => void;
+  optionIds?: readonly SupportOptionId[];
 }
 
 export default function SupportOptionsGrid({
   onLiveChatClick,
+  optionIds,
 }: SupportOptionsGridProps) {
   const { toast } = useToast();
+  const supportOptions = getSupportOptions(optionIds);
 
-  function handleSupportLinkClick(option: (typeof SUPPORT_OPTIONS)[number]) {
+  function handleSupportLinkClick(option: (typeof supportOptions)[number]) {
     const descriptions = {
       documentation: 'Opening the documentation in a new tab.',
       'email-support': 'Opening your email app with the support address.',
@@ -41,7 +44,7 @@ export default function SupportOptionsGrid({
 
   return (
     <section className='grid grid-cols-1 gap-3 min-[760px]:grid-cols-2'>
-      {SUPPORT_OPTIONS.map(option => {
+      {supportOptions.map(option => {
         const Icon = optionIconMap[option.id];
         const cardClass = `${panelClass} ${panelMutedClass} group block p-4 text-left no-underline transition hover:border-[var(--line-strong)] hover:bg-[var(--surface)]`;
 
@@ -52,7 +55,7 @@ export default function SupportOptionsGrid({
               type='button'
               onClick={() => {
                 handleSupportLinkClick(option);
-                onLiveChatClick();
+                onLiveChatClick?.();
               }}
               className={cardClass}
             >

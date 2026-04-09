@@ -14,7 +14,7 @@ File-based route modules for the dashboard app.
 - `assistant.tsx`: Simple wallet-backed product chat route module.
 - `chat.tsx`: Chat route module.
 - `create-organization.tsx`: Organization creation route.
-- `index.tsx`: Landing or home route module.
+- `index.tsx`: Logged-in dashboard home route module for the default landing page.
 - `organization-profile.$.tsx`: Organization profile route module.
 - `organization-profile.accept-invitation.tsx`: Organization invitation acceptance route module.
 - `pricing.subscriptions.tsx`: Generic subscriptions pricing route that resolves billing scope from the active session.
@@ -22,7 +22,9 @@ File-based route modules for the dashboard app.
 - `pricing.wallet.tsx`: Generic wallet pricing route that resolves billing scope from the active session.
 - `sign-in.$.tsx`: Sign-in route module.
 - `sign-up.$.tsx`: Sign-up route module.
-- `support.tsx`: Support route module.
+- `support.contact.tsx`: Support contact route module that redirects to support chat.
+- `support.docs.tsx`: Support docs route module for self-serve help resources.
+- `support.tsx`: Support index route module that redirects to the default support page.
 - `user-profile.$.tsx`: User profile route module.
 
 ## Writing Rules
