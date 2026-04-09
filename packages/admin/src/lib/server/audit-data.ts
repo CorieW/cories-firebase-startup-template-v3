@@ -77,7 +77,7 @@ function isWithinDateRange(
 /**
  * Filters serialized audit entries client-side to avoid fragile composite index requirements.
  */
-export function filterAuditEntries<
+function filterAuditEntries<
   T extends {
     action: string;
     actorUid: string;

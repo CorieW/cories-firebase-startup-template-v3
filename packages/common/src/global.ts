@@ -94,14 +94,6 @@ export const BETTER_AUTH_ORGANIZATION_COLLECTIONS = {
 // =============================================================================
 
 /**
- * Get the Firestore collection path for users
- * @returns The users collection path string
- */
-export function getUsersPath() {
-  return USERS_COLLECTION;
-}
-
-/**
  * Get the Firestore document path for a specific user
  * @param userUid - The unique identifier for the user
  * @returns The complete document path for the specified user
@@ -125,30 +117,6 @@ export function getAuthUsersPath() {
  */
 export function getAuthUserPath(userUid: string) {
   return AUTH_USERS_COLLECTION + '/' + userUid;
-}
-
-/**
- * Get the Firestore collection path for Better Auth organizations.
- * @returns The organization collection path string.
- */
-export function getOrganizationsPath() {
-  return AUTH_ORGANIZATIONS_COLLECTION;
-}
-
-/**
- * Get the Firestore collection path for Better Auth organization memberships.
- * @returns The organization member collection path string.
- */
-export function getAuthMembersPath() {
-  return AUTH_MEMBERS_COLLECTION;
-}
-
-/**
- * Get the Firestore collection path for Better Auth invitations.
- * @returns The invitation collection path string.
- */
-export function getAuthInvitationsPath() {
-  return AUTH_INVITATIONS_COLLECTION;
 }
 
 /**
@@ -185,15 +153,6 @@ export function getAdminAuditLogsPath() {
   return ADMIN_AUDIT_LOGS_COLLECTION;
 }
 
-/**
- * Get the Firestore document path for a specific admin audit log.
- * @param logId - Audit log identifier.
- * @returns The complete audit log document path.
- */
-export function getAdminAuditLogPath(logId: string) {
-  return ADMIN_AUDIT_LOGS_COLLECTION + '/' + logId;
-}
-
 // ===========================================================================
 // NETWORK REQUEST CONFIGURATION
 // ===========================================================================
@@ -217,45 +176,7 @@ export let NETWORK_REQUEST_TIMEOUT_MS = 30_000;
  */
 export let ARTIFICIAL_CALLABLE_DELAY = 0;
 /**
- * The delay in milliseconds to add before auth client API requests.
- * This is useful for testing auth loading states in the application.
- * @default 0
+ * Skips shared client-side validation when tests or local debugging need it.
+ * @default false
  */
-export let ARTIFICIAL_AUTH_DELAY = 0;
 export let DISABLE_CLIENT_SIDE_VALIDATION = false;
-
-/**
- * Set the delay in milliseconds to add to the response of a callable function
- * This is useful for testing the loading state of the application
- * @param delay - The delay in milliseconds
- */
-export function setArtificialCallableDelay(delay: number) {
-  ARTIFICIAL_CALLABLE_DELAY = delay;
-}
-
-/**
- * Set the delay in milliseconds to add before auth client API requests.
- * This is useful for testing auth loading states in the application.
- * @param delay - The delay in milliseconds
- */
-export function setArtificialAuthDelay(delay: number) {
-  ARTIFICIAL_AUTH_DELAY = delay;
-}
-
-/**
- * Set the flag to disable client-side validation
- * This is useful for testing the loading state of the application
- * @param disable - The flag to disable client-side validation
- */
-export function setDisableClientSideValidation(disable: boolean) {
-  DISABLE_CLIENT_SIDE_VALIDATION = disable;
-}
-
-/**
- * Set the timeout in milliseconds for network-bound operations.
- * Useful for tests and local debugging.
- * @param timeoutMs - Timeout in milliseconds
- */
-export function setNetworkRequestTimeout(timeoutMs: number) {
-  NETWORK_REQUEST_TIMEOUT_MS = timeoutMs;
-}

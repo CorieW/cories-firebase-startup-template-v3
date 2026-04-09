@@ -4,11 +4,11 @@
 import {
   createScopedLogger,
   serializeErrorForLogging,
-} from '@cories-firebase-startup-template-v3/common';
-import { Resend } from 'resend';
-import { getAdminAppUrl, getResendConfig } from './env';
+} from "@cories-firebase-startup-template-v3/common";
+import { Resend } from "resend";
+import { getResendConfig } from "./env";
 
-const emailLogger = createScopedLogger('ADMIN_AUTH_EMAIL');
+const emailLogger = createScopedLogger("ADMIN_AUTH_EMAIL");
 
 async function sendEmail({
   template,
@@ -17,7 +17,7 @@ async function sendEmail({
   html,
   text,
 }: {
-  template: 'password-reset' | 'verification';
+  template: "password-reset" | "verification";
   to: string;
   subject: string;
   html: string;
@@ -27,13 +27,13 @@ async function sendEmail({
 
   if (!resendConfig) {
     emailLogger.action(
-      'sendEmailSkipped',
+      "sendEmailSkipped",
       {
         template,
-        reason: 'resend-not-configured',
+        reason: "resend-not-configured",
         hasRecipient: Boolean(to),
       },
-      'info'
+      "info",
     );
     return;
   }
@@ -50,25 +50,25 @@ async function sendEmail({
     });
 
     emailLogger.action(
-      'sendEmail',
+      "sendEmail",
       {
         template,
         subject,
-        status: 'success',
+        status: "success",
       },
-      'info'
+      "info",
     );
   } catch (error) {
     emailLogger.log(
-      'SEND_EMAIL_ERROR',
+      "SEND_EMAIL_ERROR",
       {
-        action: 'sendEmail',
+        action: "sendEmail",
         template,
         subject,
-        status: 'error',
+        status: "error",
         error: serializeErrorForLogging(error),
       },
-      'error'
+      "error",
     );
     throw error;
   }
@@ -86,12 +86,12 @@ export async function sendVerificationEmail({
   name?: string | null;
   url: string;
 }) {
-  const greeting = name ? `Hi ${name},` : 'Hi,';
+  const greeting = name ? `Hi ${name},` : "Hi,";
 
   await sendEmail({
-    template: 'verification',
+    template: "verification",
     to: email,
-    subject: 'Verify your admin email address',
+    subject: "Verify your admin email address",
     text: `${greeting}\n\nVerify your admin sign-in by opening this link:\n${url}`,
     html: `<p>${greeting}</p><p>Verify your admin sign-in by opening the link below.</p><p><a href="${url}">${url}</a></p>`,
   });
@@ -109,21 +109,13 @@ export async function sendPasswordResetEmail({
   name?: string | null;
   url: string;
 }) {
-  const greeting = name ? `Hi ${name},` : 'Hi,';
+  const greeting = name ? `Hi ${name},` : "Hi,";
 
   await sendEmail({
-    template: 'password-reset',
+    template: "password-reset",
     to: email,
-    subject: 'Reset your admin password',
+    subject: "Reset your admin password",
     text: `${greeting}\n\nReset your admin password by opening this link:\n${url}\n\nIf you did not request this, you can ignore this message.`,
     html: `<p>${greeting}</p><p>Reset your admin password by opening the link below.</p><p><a href="${url}">${url}</a></p><p>If you did not request this, you can ignore this message.</p>`,
   });
 }
-
-/**
- * Builds the default admin reset-password route used by email copy.
- */
-export function getAdminResetPasswordFallbackUrl() {
-  return `${getAdminAppUrl()}/sign-in/reset-password`;
-}
-

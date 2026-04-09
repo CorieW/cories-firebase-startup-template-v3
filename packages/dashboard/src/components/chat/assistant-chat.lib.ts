@@ -35,7 +35,7 @@ export function buildAssistantReply(message: string) {
   return 'Message received. This lightweight chat is ready to be connected to a real assistant whenever you are ready.';
 }
 
-export function extractErrorMessage(value: unknown): string | null {
+function extractErrorMessage(value: unknown): string | null {
   if (typeof value === 'string') {
     const trimmedValue = value.trim();
 

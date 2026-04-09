@@ -114,7 +114,7 @@ export function mapDomainErrorToCallableResponse(
   };
 }
 
-export function toReadableMessage(message: string): string {
+function toReadableMessage(message: string): string {
   return translateCommonMessage(message);
 }
 

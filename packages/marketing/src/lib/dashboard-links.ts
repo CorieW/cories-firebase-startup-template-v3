@@ -29,7 +29,7 @@ function normalizeBaseUrl(value: string | undefined): string | null {
 /**
  * Resolves the dashboard base URL for Autumn-backed pricing handoffs.
  */
-export function getDashboardBaseUrl(): string {
+function getDashboardBaseUrl(): string {
   const configuredBaseUrl = normalizeBaseUrl(
     import.meta.env.VITE_DASHBOARD_URL,
   );

@@ -98,7 +98,7 @@ export function formatQuantity(value: number) {
   return quantityFormatter.format(value);
 }
 
-export function formatCurrency(value: number, currency = 'USD') {
+function formatCurrency(value: number, currency = 'USD') {
   try {
     return new Intl.NumberFormat(undefined, {
       style: 'currency',

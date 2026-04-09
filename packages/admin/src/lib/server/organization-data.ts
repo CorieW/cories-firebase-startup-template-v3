@@ -21,10 +21,7 @@ import {
 } from "../pagination";
 import { firestore } from "./auth-server.firebase";
 import { writeAdminAuditLog, type AdminAuditActor } from "./audit-log";
-import {
-  findAutumnCustomerById,
-  getAutumnAdminClient,
-} from "./billing-data";
+import { findAutumnCustomerById, getAutumnAdminClient } from "./billing-data";
 import {
   serializeFirestoreRecord,
   type SerializedFirestoreRecord,
@@ -122,9 +119,7 @@ function toDirectoryItem(input: {
 /**
  * Builds the Autumn customer id used for an organization wallet.
  */
-export function getAutumnOrganizationCustomerId(
-  organizationId: string,
-): string {
+function getAutumnOrganizationCustomerId(organizationId: string): string {
   return `${AUTUMN_ORGANIZATION_CUSTOMER_SCOPE}-${organizationId}`;
 }
 

@@ -16,7 +16,7 @@ export const scopedLoggerMock = mockedScopedLogger;
 export const openCustomerPortalMock = vi.fn();
 export const attachMock = vi.fn();
 export const updateSubscriptionMock = vi.fn();
-export const nextEventsPageMock = vi.fn();
+const nextEventsPageMock = vi.fn();
 
 vi.mock('@cories-firebase-startup-template-v3/common/logging', async () => {
   const actual = await vi.importActual<

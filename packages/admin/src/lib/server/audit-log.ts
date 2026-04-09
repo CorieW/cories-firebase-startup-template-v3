@@ -8,17 +8,17 @@ import {
   serializeErrorForLogging,
   type AdminAuditLogRecord,
   type AdminRole,
-} from '@cories-firebase-startup-template-v3/common';
-import { getRequestHeaders } from '@tanstack/react-start/server';
-import { firestore } from './auth-server.firebase';
+} from "@cories-firebase-startup-template-v3/common";
+import { getRequestHeaders } from "@tanstack/react-start/server";
+import { firestore } from "./auth-server.firebase";
 import {
   serializeFirestoreRecord,
   type SerializedFirestoreRecord,
   toIsoString,
-} from './firestore-serialization';
+} from "./firestore-serialization";
 
-const auditLogger = createScopedLogger('ADMIN_AUDIT');
-const REDACTED_AUDIT_VALUE = '[REDACTED]';
+const auditLogger = createScopedLogger("ADMIN_AUDIT");
+const REDACTED_AUDIT_VALUE = "[REDACTED]";
 
 export interface AdminAuditActor {
   role: AdminRole | null;
@@ -57,8 +57,8 @@ function isSearchField(fieldName: string): boolean {
  * Sanitizes metadata before audit persistence so searches and free-form text do
  * not land in immutable audit storage.
  */
-export function sanitizeAdminAuditMetadata(
-  metadata: Record<string, unknown> | undefined
+function sanitizeAdminAuditMetadata(
+  metadata: Record<string, unknown> | undefined,
 ): Record<string, unknown> {
   if (!metadata) {
     return {};
@@ -68,24 +68,26 @@ export function sanitizeAdminAuditMetadata(
     Object.entries(metadata).map(([key, value]) => [
       key,
       isSearchField(key) ? REDACTED_AUDIT_VALUE : sanitizeForLogging(value),
-    ])
+    ]),
   );
 }
 
 function getClientIp(headers: Headers): string | null {
-  const forwardedFor = headers.get('x-forwarded-for');
+  const forwardedFor = headers.get("x-forwarded-for");
   if (forwardedFor) {
-    return forwardedFor.split(',')[0]?.trim() ?? null;
+    return forwardedFor.split(",")[0]?.trim() ?? null;
   }
 
-  return headers.get('x-real-ip');
+  return headers.get("x-real-ip");
 }
 
 /**
  * Persists a single admin audit-log row. Failures are logged but do not block
  * the admin request.
  */
-export async function writeAdminAuditLog(entry: AdminAuditEntry): Promise<void> {
+export async function writeAdminAuditLog(
+  entry: AdminAuditEntry,
+): Promise<void> {
   try {
     const headers = getRequestHeaders();
     const metadata = sanitizeAdminAuditMetadata(entry.metadata);
@@ -97,22 +99,22 @@ export async function writeAdminAuditLog(entry: AdminAuditEntry): Promise<void> 
       resourceType: entry.resourceType,
       resourceId: entry.resourceId ?? null,
       result: entry.result,
-      requestId: headers.get('x-request-id') ?? crypto.randomUUID(),
+      requestId: headers.get("x-request-id") ?? crypto.randomUUID(),
       ip: getClientIp(headers),
-      userAgent: headers.get('user-agent'),
+      userAgent: headers.get("user-agent"),
       metadata,
       occurredAt: new Date(),
     } satisfies AdminAuditLogRecord);
   } catch (error) {
     auditLogger.log(
-      'WRITE_ERROR',
+      "WRITE_ERROR",
       {
         action: entry.action,
         actorUid: entry.actor.uid,
         resourceType: entry.resourceType,
         error: serializeErrorForLogging(error),
       },
-      'error'
+      "error",
     );
   }
 }
@@ -131,12 +133,12 @@ export function serializeAdminAuditLog(input: {
     action: input.data.action,
     resourceType: input.data.resourceType,
     resourceId:
-      typeof input.data.resourceId === 'string' ? input.data.resourceId : null,
+      typeof input.data.resourceId === "string" ? input.data.resourceId : null,
     result: input.data.result,
     requestId: input.data.requestId,
-    ip: typeof input.data.ip === 'string' ? input.data.ip : null,
+    ip: typeof input.data.ip === "string" ? input.data.ip : null,
     userAgent:
-      typeof input.data.userAgent === 'string' ? input.data.userAgent : null,
+      typeof input.data.userAgent === "string" ? input.data.userAgent : null,
     metadata: serializeFirestoreRecord(input.data.metadata) ?? {},
     occurredAt: toIsoString(input.data.occurredAt),
   };

@@ -89,15 +89,15 @@ export const billingNavItems = billingNavItemDefinitions.map(
 export const supportNavItems =
   supportNavItemDefinitions satisfies readonly NavItem[];
 
-export const sidebarDropdownSurfaceClass =
+const sidebarDropdownSurfaceClass =
   'z-[80] min-w-64 rounded-[18px] border border-[var(--line)] bg-[var(--surface)] p-1.5';
 
-export const sidebarDropdownMenuItemClass =
+const sidebarDropdownMenuItemClass =
   'flex w-full items-center justify-between gap-2.5 rounded-[12px] px-3 py-2 text-sm font-semibold text-[var(--ink-soft)] outline-none transition-[background-color,color] data-[highlighted]:bg-[var(--surface)] data-[highlighted]:text-[var(--ink)] [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0';
 
-export const sidebarDropdownSeparatorClass = 'my-1 bg-[var(--line)]';
+const sidebarDropdownSeparatorClass = 'my-1 bg-[var(--line)]';
 
-export const sidebarDropdownEntityViewClassNames = {
+const sidebarDropdownEntityViewClassNames = {
   base: 'sidebar-account-dropdown__entity min-w-0 flex-1 items-center gap-3 rounded-[14px] bg-[var(--surface-soft)] px-3 py-2.5',
   content: 'min-w-0 flex-1',
   subtitle: 'truncate text-xs text-[var(--ink-soft)] opacity-100',

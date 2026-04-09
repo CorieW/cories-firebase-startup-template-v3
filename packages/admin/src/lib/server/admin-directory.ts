@@ -11,10 +11,7 @@ import {
 } from "@cories-firebase-startup-template-v3/common";
 import type { User } from "better-auth";
 import { firestore } from "./auth-server.firebase";
-import {
-  serializeFirestoreRecord,
-  toIsoString,
-} from "./firestore-serialization";
+import { toIsoString } from "./firestore-serialization";
 
 export interface ResolvedAdminRecord {
   uid: string;
@@ -89,13 +86,4 @@ export function buildAdminSessionState(input: {
     status,
     adminRecord,
   };
-}
-
-/**
- * Creates a plain JSON snapshot of a raw admin record for debug views and tests.
- */
-export function serializeAdminRecord(
-  value: Record<string, unknown> | null | undefined,
-) {
-  return serializeFirestoreRecord(value);
 }

@@ -26,21 +26,9 @@ export interface SupportArticle {
   href: string;
 }
 
-export const SUPPORT_EMAIL_ADDRESS = TEMPLATE_SUPPORT.emailAddress;
-export const SUPPORT_EMAIL_HREF = TEMPLATE_SUPPORT_EMAIL_HREF;
+const SUPPORT_EMAIL_HREF = TEMPLATE_SUPPORT_EMAIL_HREF;
 export const SUPPORT_DOCS_HREF = TEMPLATE_SUPPORT.docsHref;
-
-export const SUPPORT_CONTACT_OPTION_IDS = [
-  'live-chat',
-  'email-support',
-] as const satisfies readonly SupportOptionId[];
-
-export const SUPPORT_DOC_OPTION_IDS = [
-  'documentation',
-  'faq',
-] as const satisfies readonly SupportOptionId[];
-
-export const SUPPORT_OPTIONS: SupportOption[] = [
+const SUPPORT_OPTIONS: SupportOption[] = [
   {
     id: 'documentation',
     title: 'Documentation',

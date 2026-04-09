@@ -254,12 +254,6 @@ interface AdminJsonPreviewProps {
   value: unknown;
 }
 
-interface AdminRedactedBlockProps {
-  children: ReactNode;
-  description: string;
-  title: string;
-}
-
 /**
  * Shows a structured Firestore or API record as formatted JSON.
  */
@@ -274,32 +268,5 @@ export function AdminJsonPreview({
         {formatAdminJson(value)}
       </pre>
     </AdminPanel>
-  );
-}
-
-/**
- * Visibly masks sensitive content when the admin app cannot safely show it.
- */
-export function AdminRedactedBlock({
-  children,
-  description,
-  title,
-}: AdminRedactedBlockProps) {
-  return (
-    <div className='relative overflow-hidden rounded-[20px]'>
-      <div className='pointer-events-none select-none opacity-25'>
-        {children}
-      </div>
-      <div className='absolute inset-0 flex items-center justify-center p-4'>
-        <div className='w-full rounded-[20px] border border-[var(--danger)] bg-[var(--danger-surface)] p-5 text-center'>
-          <p className='m-0 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--danger)]'>
-            {title}
-          </p>
-          <p className='mt-2 mb-0 text-sm leading-6 text-[var(--danger)] opacity-80'>
-            {description}
-          </p>
-        </div>
-      </div>
-    </div>
   );
 }

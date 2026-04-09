@@ -1,7 +1,7 @@
 /**
  * Shared pagination helpers for admin route search params and listing loaders.
  */
-export const DEFAULT_ADMIN_PAGE = 1;
+const DEFAULT_ADMIN_PAGE = 1;
 export const ADMIN_DIRECTORY_PAGE_SIZE = 25;
 export const ADMIN_AUDIT_PAGE_SIZE = 20;
 
@@ -41,7 +41,7 @@ export function getPaginationOffset(page: number, pageSize: number): number {
 /**
  * Returns the inclusive start and exclusive end indexes for a page slice.
  */
-export function getPaginationSliceBounds(page: number, pageSize: number) {
+function getPaginationSliceBounds(page: number, pageSize: number) {
   const normalizedPageSize =
     Number.isInteger(pageSize) && pageSize > 0
       ? pageSize
