@@ -1,13 +1,13 @@
 /* Marketing design tokens and base styles. */
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
 @layer theme, base, utilities;
-@import 'tailwindcss';
+@import "tailwindcss";
 @source "../../common/src";
-@import '../../common/src/client/shared-theme.css';
+@import "../../common/src/client/shared-theme.css";
 
 @theme {
-  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -19,7 +19,7 @@
   --shadow-soft: 0 32px 80px rgba(91, 72, 39, 0.12);
 }
 
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --ring: rgba(210, 176, 90, 0.26);
   --hero-a: rgba(210, 176, 90, 0.14);
   --hero-b: rgba(255, 255, 255, 0.06);
@@ -31,6 +31,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: clamp(5.5rem, 10vw, 7.5rem);
   }
 
   body {
@@ -91,7 +92,7 @@
   }
 
   .marketing-shell::before {
-    content: '';
+    content: "";
     pointer-events: none;
     position: absolute;
     inset: 0;
@@ -111,12 +112,52 @@
   }
 
   .marketing-main {
-    padding-block: clamp(1.25rem, 3vw, 2rem) clamp(5rem, 8vw, 7rem);
+    padding-block: 0 clamp(5rem, 8vw, 7rem);
   }
 
   .marketing-hero {
-    min-height: auto;
-    padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 7vw, 5rem);
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    min-height: 100svh;
+    padding-block: 0;
+  }
+
+  .marketing-hero::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--line) 22%, white),
+      transparent
+    );
+  }
+
+  .marketing-hero-stage {
+    display: grid;
+    min-height: inherit;
+    align-items: center;
+    padding-block: clamp(5.5rem, 10vw, 7rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .marketing-hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.03);
+    transition:
+      opacity 900ms ease,
+      transform 1200ms ease;
+  }
+
+  .marketing-hero-slide.is-active {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .marketing-section {
@@ -131,11 +172,5 @@
 @media (width >= 40rem) {
   .marketing-container {
     width: min(100% - 3rem, 1180px);
-  }
-}
-
-@media (width >= 64rem) {
-  .marketing-hero {
-    min-height: calc(100svh - clamp(6.25rem, 12vw, 7.75rem));
   }
 }
