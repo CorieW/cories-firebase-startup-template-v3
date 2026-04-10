@@ -184,8 +184,6 @@ const sharedDefaults = {
   FIRESTORE_EMULATOR_HOST: '127.0.0.1:8080',
   MY_FIRESTORE_EMULATOR_HOST: '127.0.0.1:8080',
   AUTUMN_SEAT_FEATURE_ID: 'seats',
-  SOCIAL_LINKS:
-    '[{"label":"X","url":"https://x.com/your-handle","icon":"x"},{"label":"GitHub","url":"https://github.com/your-org","icon":"github"}]',
 };
 
 const optionalEnvKeys = [

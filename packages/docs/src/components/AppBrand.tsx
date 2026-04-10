@@ -26,7 +26,6 @@ export default function AppBrand() {
       )}
       rootClassName='text-[var(--ink)]'
       size='compact'
-      subtitleClassName='tracking-[0.06em] uppercase'
       subtitle='Documentation'
     />
   );

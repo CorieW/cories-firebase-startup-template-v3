@@ -44,6 +44,31 @@ export const TEMPLATE_COPY = {
 } as const;
 
 /**
+ * Shared social links used by template footer surfaces.
+ */
+export interface TemplateSocialLinkConfig {
+  icon?: string;
+  label: string;
+  url: string;
+}
+
+/**
+ * Default social links meant to be customized early in a new project.
+ */
+export const TEMPLATE_SOCIAL_LINKS = [
+  {
+    label: 'X',
+    url: 'https://x.com/your-handle',
+    icon: 'x',
+  },
+  {
+    label: 'GitHub',
+    url: 'https://github.com/your-org',
+    icon: 'github',
+  },
+] as const satisfies readonly TemplateSocialLinkConfig[];
+
+/**
  * Shared support destinations meant to be customized early in a new project.
  */
 export const TEMPLATE_SUPPORT = {

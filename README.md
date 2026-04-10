@@ -134,7 +134,7 @@ firebase apphosting:backends:create --project <your-project-id>
 
 1. Customize the template for your product.
 
-- Rename the shared template branding, support contact details, and boilerplate constants in `packages/common/src/global.ts` first so the marketing, dashboard, and admin shells pick up your new product identity consistently
+- Rename the shared template branding, support contact details, boilerplate constants, and default footer social links in `packages/common/src/global.ts` first so the marketing, dashboard, and admin shells pick up your new product identity consistently
 - Update docs-specific metadata, starter pages, and content organization under `packages/docs/content/docs`
 - Refresh the marketing page layout, storytelling, and visual tokens in `packages/marketing/src/components/marketing` and `packages/marketing/src/styles.css`
 - Update branding, colors, copy, and static assets in `packages/dashboard`

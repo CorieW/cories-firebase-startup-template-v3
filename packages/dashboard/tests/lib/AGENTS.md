@@ -16,7 +16,7 @@ Unit tests for shared dashboard auth, environment, billing, routing, and theming
 - `chat-usage.test.ts`: Tests shared chat usage sizing and credit-cost helpers.
 - `env.test.ts`: Tests dashboard environment normalization for Firebase credentials.
 - `route-guards.test.ts`: Tests route guard helpers.
-- `social-links.test.ts`: Tests shared social link helpers.
+- `social-links.test.ts`: Tests dashboard footer social links derived from shared template globals.
 - `theme.test.ts`: Tests theme helpers.
 
 ## Writing Rules

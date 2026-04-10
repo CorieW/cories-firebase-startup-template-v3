@@ -589,7 +589,6 @@ describe('repository CI contracts', () => {
     expect(sharedEnvScriptContents).toMatch(
       /AUTUMN_SEAT_FEATURE_ID:\s*['"]seats['"]/
     );
-    expect(sharedEnvScriptContents).toContain('SOCIAL_LINKS:');
   });
 
   it('does not trigger the general coverage upload workflow on pull requests', () => {

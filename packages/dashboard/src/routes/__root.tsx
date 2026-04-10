@@ -29,7 +29,7 @@ import { getDashboardLogLevelServer } from '../lib/dashboard-log-level';
 import { showBetterAuthToast } from '../lib/auth-ui-toast';
 import { isPublicRoute } from '../lib/route-guards';
 import { isAuthRoutePath } from '../lib/route-paths';
-import { getFooterSocialLinksServer } from '../lib/social-links';
+import { getFooterSocialLinks } from '../lib/social-links';
 import { THEME_INIT_SCRIPT } from '../lib/theme';
 
 import appCss from '../styles.css?url';
@@ -59,7 +59,7 @@ export const Route = createRootRoute({
 
     configureLogger(dashboardLogLevel);
 
-    const footerSocialLinks = await getFooterSocialLinksServer();
+    const footerSocialLinks = getFooterSocialLinks();
 
     rootLogger.log(
       'LOADER',

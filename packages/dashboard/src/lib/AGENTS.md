@@ -26,7 +26,7 @@ Dashboard library modules for auth, routing, theming, and API helpers.
 - `route-paths.ts`: Centralized route path helpers and constants.
   Rules:
   - Add reused route constants here instead of duplicating path strings across route files.
-- `social-links.ts`: Social link data and helper functions.
+- `social-links.ts`: Maps shared template social links into dashboard footer link configs.
 - `theme.ts`: Theme state and DOM helpers.
 - `ui.ts`: Shared dashboard UI helper exports.
 

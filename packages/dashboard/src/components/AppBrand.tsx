@@ -27,6 +27,7 @@ export default function AppBrand({ to }: AppBrandProps) {
           {children}
         </Link>
       )}
+      subtitle='Dashboard'
     />
   );
 }

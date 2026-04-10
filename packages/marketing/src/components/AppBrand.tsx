@@ -9,7 +9,7 @@ interface AppBrandProps {
 }
 
 /**
- * Renders the starter brand used in the header and footer.
+ * Renders the starter brand used in the marketing header.
  */
 export default function AppBrand({
   className,

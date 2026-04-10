@@ -15,11 +15,11 @@ Shared presentation components grouped by product area.
 ## Files
 
 - `AppBrand.tsx`: Shared brand mark and text component.
-- `Footer.tsx`: Site footer shell component.
+- `Footer.tsx`: Dashboard wrapper around the shared site footer.
 - `Header.tsx`: Top navigation or header component.
 - `NotFoundPage.tsx`: Root 404 component.
 - `PageHeader.tsx`: Reusable page heading component.
-- `SocialLink.tsx`: Shared social link renderer.
+- `SocialLink.tsx`: Compatibility wrapper around the shared footer social link pill.
 - `ThemeToggle.tsx`: Theme switcher component.
 
 ## Writing Rules

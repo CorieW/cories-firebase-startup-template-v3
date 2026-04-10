@@ -9,7 +9,7 @@ Section components for the landing page, each responsible for one part of the pu
 ## Files
 
 - `MarketingFeatureGrid.tsx`: Feature card grid that explains the package's core benefits.
-- `MarketingFooter.tsx`: Footer with brand summary and section navigation shortcuts.
+- `MarketingFooter.tsx`: Marketing wrapper around the shared site footer.
 - `MarketingHeader.tsx`: Sticky top navigation with section links and auth calls to action.
 - `MarketingHero.tsx`: Hero section that introduces the template's launch-ready positioning.
 - `MarketingPricing.tsx`: Pricing handoff section that routes visitors into dashboard billing flows.
