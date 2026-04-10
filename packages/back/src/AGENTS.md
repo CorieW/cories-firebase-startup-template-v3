@@ -15,7 +15,7 @@ Backend runtime source for Firebase Fns, service integrations, and middleware.
 - `global.ts`: Backend environment/config accessors and shared constants.
   Rules:
   - Add new backend env accessors here instead of scattering raw `process.env` reads through runtime modules.
-- `index.ts`: Backend public entrypoint that re-exports deployed function modules.
+- `index.ts`: Backend public entrypoint that re-exports deployed fn modules.
 
 ## Writing Rules
 

@@ -1,6 +1,6 @@
 # packages/admin/tests/lib
 
-Unit tests for shared admin helper modules that do not need full route or server integration coverage.
+Unit tests for shared admin helper modules that Do not need full route or server integration coverage.
 
 ## Directories
 

@@ -8,7 +8,7 @@ Shell-component tests for authenticated navigation and layout behavior.
 
 ## Files
 
-- `SignedInSidebar.test.tsx`: Tests signed-in sidebar navigation, billing groups, and organization state.
+- `SignedInSidebar.test.tsx`: Tests signed-in sidebar navigation, billing groups, and org state.
 
 ## Writing Rules
 

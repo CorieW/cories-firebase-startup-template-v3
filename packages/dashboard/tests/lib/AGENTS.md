@@ -12,7 +12,7 @@ Unit tests for shared dashboard auth, environment, billing, routing, and theming
 - `auth-ui-toast.test.ts`: Tests Better Auth toast normalization and dashboard toast mapping.
 - `auth-user-normalization.test.ts`: Tests auth user write normalization before Firestore persistence.
 - `auth.test.ts`: Tests dashboard auth guard helpers.
-- `billing-api.test.ts`: Tests billing scope and Autumn provider key helpers for personal and organization switching.
+- `billing-api.test.ts`: Tests billing scope and Autumn provider key helpers for personal and org switching.
 - `chat-usage.test.ts`: Tests shared chat usage sizing and credit-cost helpers.
 - `env.test.ts`: Tests dashboard environment normalization for Firebase credentials.
 - `route-guards.test.ts`: Tests route guard helpers.

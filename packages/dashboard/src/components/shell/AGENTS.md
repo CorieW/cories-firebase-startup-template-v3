@@ -8,7 +8,7 @@ Authenticated and unauthenticated app shell components.
 
 ## Files
 
-- `SidebarAccountPanel.tsx`: Extracted signed-in sidebar account and organization switcher section.
+- `SidebarAccountPanel.tsx`: Extracted signed-in sidebar account and org switcher section.
 - `SidebarNavLink.tsx`: Reusable signed-in sidebar navigation link renderer.
 - `SignedInSidebar.tsx`: Authenticated navigation and sidebar shell.
 - `SignedOutHeader.tsx`: Signed-out header variant.

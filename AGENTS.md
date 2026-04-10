@@ -1,6 +1,6 @@
 # .
 
-Repo root for Firebase startup template monorepo. Start here for repo-wide policy, package layout, shared tooling, AGENTS hierarchy guide.
+Repo root for Firebase startup template monorepo. Start here. Repo-wide policy, package layout, shared tooling, AGENTS hierarchy guide.
 
 ## Directories
 
@@ -42,15 +42,15 @@ Repo root for Firebase startup template monorepo. Start here for repo-wide polic
 
 ## Writing Rules
 
-- Read file first, then descend into child AGENTS files for target area.
-- Keep repo-wide policy sections authoritative; child AGENTS files may narrow them locally.
-- Document only immediate children here and update entries when top-level inventory changes.
+- Read file first. Then go down child AGENTS files for target area.
+- Keep repo-wide policy sections authoritative. Child AGENTS files may narrow them locally.
+- Document only immediate children here. Update entries when top-level inventory changes.
 - Use `pnpm agents:check` and `pnpm agents:fix` for AGENTS-guided maintenance in repo.
 
 ## AGENTS Hierarchy
 
 - Read AGENTS files from root to leaf.
-- Let deeper AGENTS files override parent guide for their own subtree.
+- Let deeper AGENTS files override parent guide in their subtree.
 - Do not add nested `AGENTS.md` files inside `.codex/skills/`; repo-local skills should rely on `SKILL.md` and `references/` instead.
 - Treat tracked vendor/build outputs as excluded unless they are intentionally documented generated artifacts.
 - Exclude `.git`, all `node_modules`, `packages/back/lib`, `packages/common/lib`, `packages/dashboard/.output`, `packages/dashboard/.tanstack`, `packages/dashboard/playwright-report`, `packages/dashboard/test-results`, `packages/admin/.output`, `packages/admin/.tanstack`, `packages/admin/playwright-report`, and `packages/admin/test-results`.
@@ -61,9 +61,9 @@ Repo root for Firebase startup template monorepo. Start here for repo-wide polic
 
 ## Coding Policy
 
-- Treat repo as template for real future projects, not as long-lived legacy app.
+- Treat repo as template for real future projects, not long-lived legacy app.
 - Do not call code "legacy" or keep outdated patterns for backward-compat theater when cleaner template-level approach fits.
-- Prioritize testing for key functionality.
+- Prioritize tests for key functionality.
 - Do not add dedicated tests for minor behavior unless behavior is risky or business-critical.
 - For changes not strictly new features (refactors, fixes, removals), ask permission before adding new tests.
 - Minor functionality can still land in test coverage (E2E, integration, unit) when it fits existing tests.

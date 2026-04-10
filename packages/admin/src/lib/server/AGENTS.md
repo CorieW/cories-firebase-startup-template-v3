@@ -14,10 +14,10 @@ Server-only admin data access layer for auth, Firestore lookups, audit logging, 
 - `auth-server.email.ts`: Email delivery helpers used by admin Better Auth server.
 - `auth-server.firebase.ts`: Firebase Admin and Firestore initialization for admin app.
 - `auth-server.ts`: Better Auth server config for admin authentication routes.
-- `billing-data.ts`: Read-only Autumn helpers shared by admin user and organization detail billing summaries.
+- `billing-data.ts`: Read-only Autumn helpers shared by admin user and org detail billing summaries.
 - `env.ts`: Typed admin environment accessors for auth, billing, email, and Firebase credentials.
 - `firestore-serialization.ts`: Firestore document serialization helpers for loader-safe JSON.
-- `organization-data.ts`: Paginated organization dir loaders plus single-organization detail reads.
+- `organization-data.ts`: Paginated org dir loaders plus single-org detail reads.
 - `overview-data.ts`: Aggregated overview metrics and recent audit summary loaders.
 - `user-data.ts`: Paginated user dir loaders plus single-user detail reads.
 

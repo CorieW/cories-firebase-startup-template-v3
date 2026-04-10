@@ -10,7 +10,7 @@ Shared admin client and server-facing helpers for auth, route guarding, formatti
 
 - `admin-auth-client.ts`: Browser auth client wiring for admin sign-in and session-aware UI actions.
 - `admin-auth.ts`: Request-scoped admin session lookup and route guard helpers.
-- `admin-data.ts`: Server function wrappers that normalize loader inputs, including pagination, for admin routes.
+- `admin-data.ts`: Server fn wrappers that normalize loader inputs, including pagination, for admin routes.
 - `admin-log-level.ts`: Admin logging helpers and log-level selection utils.
 - `formatting.ts`: Shared formatting helpers for admin dates, numbers, text, and JSON output.
 - `pagination.ts`: Shared admin pagination helpers for search-param normalization and paginated list slicing.

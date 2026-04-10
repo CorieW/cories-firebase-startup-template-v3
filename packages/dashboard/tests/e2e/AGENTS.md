@@ -14,7 +14,7 @@ Playwright suites for primary dashboard user journeys.
 - `billing-core.spec.ts`: Billing route access, scope redirects, and primary billing page coverage.
 - `billing-navigation.spec.ts`: Billing sidebar link and navigation journey coverage.
 - `billing-ui.spec.ts`: Billing UI action coverage for shared portal affordances.
-- `billing.fixtures.ts`: Playwright auth and organization fixtures for billing-focused E2E coverage.
+- `billing.fixtures.ts`: Playwright auth and org fixtures for billing-focused E2E coverage.
 - `shell-mobile.spec.ts`: Mobile drawer and signed-in shell navigation coverage.
 - `support.spec.ts`: Support page and support-chat user journey coverage.
 

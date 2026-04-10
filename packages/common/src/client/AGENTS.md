@@ -22,6 +22,6 @@ Shared browser-only client helpers, brand primitives, theme UI, and shared front
 
 ## Writing Rules
 
-- Keep dir browser-safe and frontend-focused; do not pull server-only code or heavy app-specific deps into it.
+- Keep dir browser-safe and frontend-focused; Do not pull server-only code or heavy app-specific deps into it.
 - Treat exports here as shared frontend APIs and update downstream packages together when public surface changes.
 - Update file when `client/` gains, loses, renames, or repurposes in big way immediate child.
