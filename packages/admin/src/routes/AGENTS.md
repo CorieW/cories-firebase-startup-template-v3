@@ -14,7 +14,7 @@ File-based route modules for the admin app, including auth entry points and prot
 - `index.tsx`: Protected admin overview route with summary metrics and recent audit activity.
 - `organizations.$organizationId.tsx`: Protected organization detail route for a single tenant.
 - `organizations.tsx`: Protected organization directory route with search and pagination.
-- `sign-in.$.tsx`: Admin auth entry routes for sign-in, reset-password, and sign-out flows.
+- `sign-in.$.tsx`: Admin auth entry route for sign-in and email verification flows.
 - `users.$userId.tsx`: Protected user detail route for a single Better Auth user.
 - `users.tsx`: Protected user directory route with search and pagination.
 

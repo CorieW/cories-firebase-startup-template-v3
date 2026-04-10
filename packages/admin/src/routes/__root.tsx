@@ -24,7 +24,11 @@ import {
 } from '../lib/admin-auth';
 import { authClient, useAdminAuthSession } from '../lib/admin-auth-client';
 import { getAdminExternalToolLinks } from '../lib/server/env';
-import { isAdminPublicRoute } from '../lib/route-guards';
+import {
+  buildAdminRedirectTarget,
+  getAdminRedirectFromHref,
+  isAdminPublicRoute,
+} from '../lib/route-guards';
 import { ADMIN_THEME_CLASS_NAME, ADMIN_THEME_MODE } from '../lib/theme';
 import appCss from '../styles.css?url';
 import {
@@ -53,8 +57,19 @@ const emptyAdminSession = {
 
 export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
-    await enforceSignedOutAdmin(location.pathname);
-    await requireActiveAdmin(location.pathname);
+    await enforceSignedOutAdmin(
+      location.pathname,
+      getAdminSession,
+      getAdminRedirectFromHref(location.href)
+    );
+    await requireActiveAdmin(
+      location.pathname,
+      getAdminSession,
+      buildAdminRedirectTarget({
+        href: location.href,
+        pathname: location.pathname,
+      })
+    );
   },
   loader: async ({ location }) => {
     const adminSession = isAdminPublicRoute(location.pathname)
@@ -132,7 +147,7 @@ function AdminAuthProviders({ children }: { children: React.ReactNode }) {
     <AuthUIProviderTanstack
       authClient={authClient}
       basePath=''
-      credentials
+      credentials={{ forgotPassword: false }}
       emailVerification
       redirectTo={ADMIN_HOME_ROUTE_PATH}
       signUp={false}
@@ -141,12 +156,14 @@ function AdminAuthProviders({ children }: { children: React.ReactNode }) {
         showBetterAuthToast(input, toast.show);
       }}
       viewPaths={{
-        CALLBACK: `${ADMIN_SIGN_IN_ROUTE_PREFIX}/callback`,
+        CALLBACK: ADMIN_SIGN_IN_ROUTE_PREFIX,
         EMAIL_VERIFICATION: `${ADMIN_SIGN_IN_ROUTE_PREFIX}/email-verification`,
-        FORGOT_PASSWORD: `${ADMIN_SIGN_IN_ROUTE_PREFIX}/forgot-password`,
-        RESET_PASSWORD: `${ADMIN_SIGN_IN_ROUTE_PREFIX}/reset-password`,
+        FORGOT_PASSWORD: ADMIN_SIGN_IN_ROUTE_PREFIX,
+        RECOVER_ACCOUNT: ADMIN_SIGN_IN_ROUTE_PREFIX,
+        RESET_PASSWORD: ADMIN_SIGN_IN_ROUTE_PREFIX,
         SIGN_IN: ADMIN_SIGN_IN_ROUTE_PREFIX,
-        SIGN_OUT: `${ADMIN_SIGN_IN_ROUTE_PREFIX}/sign-out`,
+        SIGN_OUT: ADMIN_SIGN_IN_ROUTE_PREFIX,
+        TWO_FACTOR: ADMIN_SIGN_IN_ROUTE_PREFIX,
       }}
     >
       {children}

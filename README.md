@@ -69,10 +69,10 @@ Admin env (`packages/admin/.env`):
 - `APP_URL` should normally stay `http://localhost:3002` for local development.
 - `BETTER_AUTH_SECRET` should match the dashboard value so admin auth tokens are compatible across both apps.
 - The admin and dashboard apps use separate Better Auth cookie namespaces, so signing into one app does not automatically sign you into the other.
-- Optional now or later: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTUMN_SECRET_KEY`, `ADMIN_EXTERNAL_TOOLS`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
+- Optional now or later: `AUTUMN_SECRET_KEY`, `ADMIN_EXTERNAL_TOOLS`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
 - Leave `FIRESTORE_EMULATOR_HOST="127.0.0.1:8080"` in place for local emulator usage unless you intentionally changed the Firestore emulator port.
 - `FIREBASE_CLIENT_EMAIL` and `FIREBASE_PRIVATE_KEY` can stay unset locally when you are using the emulator or application default credentials.
-- If you are not setting up Google OAuth, Autumn, or Resend yet, delete those placeholder values or leave them unset. The admin app treats non-empty values as configured.
+- If you are not setting up Autumn or Resend yet, delete those placeholder values or leave them unset. The admin app treats non-empty values as configured.
 - `ADMIN_EXTERNAL_TOOLS` powers the optional admin sidebar shortcuts and accepts a JSON array like `[{"label":"Firebase","href":"https://console.firebase.google.com/project/your-project-id/overview"},{"label":"Autumn","href":"https://app.useautumn.com"}]`.
 
 Backend env (`packages/back/.env`):

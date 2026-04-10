@@ -10,14 +10,17 @@ import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeaders } from "@tanstack/react-start/server";
 import {
-  ADMIN_SIGN_OUT_ROUTE_PATH,
   ADMIN_HOME_ROUTE_PATH,
   ADMIN_SIGN_IN_ROUTE_PATH,
   getAdminAuthRouteParams,
   getAdminAuthRouteSearch,
 } from "./route-paths";
-import { normalizeAdminPathname } from "./route-guards";
-import { isAdminAuthRoute, isAdminPublicRoute } from "./route-guards";
+import {
+  buildAdminRedirectTarget,
+  isAdminAuthRoute,
+  isAdminPublicRoute,
+  normalizeAdminPathname,
+} from "./route-guards";
 import type { AdminSessionState } from "./server/admin-directory";
 
 const authLogger = createScopedLogger("ADMIN_AUTH");
@@ -157,6 +160,7 @@ async function auditAccessDenial(
 export async function requireActiveAdmin(
   pathname: string,
   readAdminSession: () => Promise<AdminSessionState> = getAdminSession,
+  redirectTo: string = pathname,
 ) {
   if (isAdminPublicRoute(pathname)) {
     return;
@@ -165,9 +169,15 @@ export async function requireActiveAdmin(
   const adminSession = await readAdminSession();
 
   if (!adminSession.isAuthenticated) {
+    const postAuthRedirect = buildAdminRedirectTarget({
+      pathname: redirectTo,
+    });
+
     throw redirect({
       params: getAdminAuthRouteParams(),
-      search: getAdminAuthRouteSearch(),
+      search: getAdminAuthRouteSearch({
+        redirectTo: postAuthRedirect,
+      }),
       to: ADMIN_SIGN_IN_ROUTE_PATH,
     });
   }
@@ -190,20 +200,24 @@ export async function requireActiveAdmin(
 export async function enforceSignedOutAdmin(
   pathname: string,
   readAdminSession: () => Promise<AdminSessionState> = getAdminSession,
+  redirectTo?: string,
 ) {
   const normalizedPath = normalizeAdminPathname(pathname);
-  if (normalizedPath === ADMIN_SIGN_OUT_ROUTE_PATH) {
-    return;
-  }
-
   if (!isAdminAuthRoute(pathname)) {
     return;
   }
 
   const adminSession = await readAdminSession();
   if (adminSession.isActiveAdmin) {
+    const postAuthRedirect =
+      typeof redirectTo === "string"
+        ? buildAdminRedirectTarget({
+            pathname: redirectTo,
+          })
+        : ADMIN_HOME_ROUTE_PATH;
+
     throw redirect({
-      to: ADMIN_HOME_ROUTE_PATH,
+      to: postAuthRedirect,
     });
   }
 }

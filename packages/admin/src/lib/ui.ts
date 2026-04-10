@@ -27,7 +27,7 @@ export const primaryButtonClass =
   "inline-flex items-center justify-center rounded-[16px] border border-transparent bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold text-[var(--primary-ink)] transition-[background-color,border-color,color] hover:bg-[var(--primary-strong)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)]";
 
 export const secondaryButtonClass =
-  "inline-flex items-center justify-center rounded-[16px] border border-[var(--line)] bg-[var(--surface)] px-4 py-2.5 text-sm font-semibold text-[var(--ink)] transition-[background-color,border-color,color] hover:border-[var(--line-strong)] hover:bg-[var(--surface-soft)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)] disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[16px] border border-[var(--line)] bg-[var(--surface)] px-4 py-2.5 text-sm font-semibold text-[var(--ink)] transition-[background-color,border-color,color] hover:border-[var(--line-strong)] hover:bg-[var(--surface-soft)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)] disabled:cursor-not-allowed disabled:opacity-60";
 
 export const badgeClass =
   "inline-flex items-center rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-2.5 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]";

@@ -8,7 +8,7 @@ Shared admin client and server-facing helpers for auth, route guarding, formatti
 
 ## Files
 
-- `admin-auth-client.ts`: Browser auth client wiring for admin sign-in and password flows.
+- `admin-auth-client.ts`: Browser auth client wiring for admin sign-in and session-aware UI actions.
 - `admin-auth.ts`: Request-scoped admin session lookup and route guard helpers.
 - `admin-data.ts`: Server function wrappers that normalize loader inputs, including pagination, for admin routes.
 - `admin-log-level.ts`: Admin logging helpers and log-level selection utilities.

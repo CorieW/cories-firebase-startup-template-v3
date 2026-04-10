@@ -8,7 +8,6 @@ export const ADMIN_ORGANIZATIONS_ROUTE_PATH = "/organizations";
 export const ADMIN_AUDIT_ROUTE_PATH = "/audit";
 export const ADMIN_SIGN_IN_ROUTE_PREFIX = "/sign-in";
 export const ADMIN_SIGN_IN_ROUTE_PATH = "/sign-in/$";
-export const ADMIN_SIGN_OUT_ROUTE_PATH = "/sign-in/sign-out";
 
 /**
  * Builds params for the typed admin auth splat route.
@@ -22,10 +21,12 @@ export function getAdminAuthRouteParams(splat = "") {
  */
 export function getAdminAuthRouteSearch(input?: {
   error?: string;
+  redirectTo?: string;
   token?: string;
 }) {
   return {
     error: input?.error ?? "",
+    redirectTo: input?.redirectTo ?? "",
     token: input?.token ?? "",
   };
 }

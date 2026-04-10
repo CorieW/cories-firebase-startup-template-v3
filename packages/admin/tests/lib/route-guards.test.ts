@@ -15,7 +15,7 @@ describe("admin route guards", () => {
   });
 
   it("treats sign-in and auth API paths as public", () => {
-    expect(isAdminAuthRoute("/sign-in/reset-password")).toBe(true);
+    expect(isAdminAuthRoute("/sign-in/email-verification")).toBe(true);
     expect(isAdminPublicRoute("/api/auth/session")).toBe(true);
   });
 

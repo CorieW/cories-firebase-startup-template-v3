@@ -17,7 +17,7 @@ async function sendEmail({
   html,
   text,
 }: {
-  template: "password-reset" | "verification";
+  template: "verification";
   to: string;
   subject: string;
   html: string;
@@ -94,28 +94,5 @@ export async function sendVerificationEmail({
     subject: "Verify your admin email address",
     text: `${greeting}\n\nVerify your admin sign-in by opening this link:\n${url}`,
     html: `<p>${greeting}</p><p>Verify your admin sign-in by opening the link below.</p><p><a href="${url}">${url}</a></p>`,
-  });
-}
-
-/**
- * Sends the admin password reset message.
- */
-export async function sendPasswordResetEmail({
-  email,
-  name,
-  url,
-}: {
-  email: string;
-  name?: string | null;
-  url: string;
-}) {
-  const greeting = name ? `Hi ${name},` : "Hi,";
-
-  await sendEmail({
-    template: "password-reset",
-    to: email,
-    subject: "Reset your admin password",
-    text: `${greeting}\n\nReset your admin password by opening this link:\n${url}\n\nIf you did not request this, you can ignore this message.`,
-    html: `<p>${greeting}</p><p>Reset your admin password by opening the link below.</p><p><a href="${url}">${url}</a></p><p>If you did not request this, you can ignore this message.</p>`,
   });
 }

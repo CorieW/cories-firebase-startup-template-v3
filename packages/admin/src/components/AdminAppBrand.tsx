@@ -20,6 +20,7 @@ export function AdminAppBrand() {
           {children}
         </Link>
       )}
+      subtitle='Admin'
     />
   );
 }

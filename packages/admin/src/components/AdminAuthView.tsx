@@ -1,10 +1,16 @@
 /**
  * Admin wrapper around the shared Better Auth route view.
  */
-import { SharedBetterAuthView } from '../../../common/src/client/SharedBetterAuthView';
+import {
+  SharedBetterAuthView,
+  type SharedBetterAuthViewMap,
+} from '../../../common/src/client/SharedBetterAuthView';
 import { AdminAppBrand } from './AdminAppBrand';
-import { ADMIN_HOME_ROUTE_PATH } from '../lib/route-paths';
 import { badgeClass, pageContainerClass } from '../lib/ui';
+
+const adminSignInViewMap = {
+  'email-verification': 'EMAIL_VERIFICATION',
+} satisfies SharedBetterAuthViewMap;
 
 const adminAuthViewClassNames = {
   base: 'w-full max-w-[560px] rounded-[24px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)]',
@@ -43,13 +49,14 @@ const adminAuthViewClassNames = {
 };
 
 interface AdminAuthViewProps {
+  redirectTo?: string;
   splat?: string;
 }
 
 /**
  * Renders the admin auth route view for the current sign-in sub-route.
  */
-export function AdminAuthView({ splat }: AdminAuthViewProps) {
+export function AdminAuthView({ redirectTo, splat }: AdminAuthViewProps) {
   return (
     <>
       <div className='fixed left-4 top-4 z-40'>
@@ -57,10 +64,10 @@ export function AdminAuthView({ splat }: AdminAuthViewProps) {
       </div>
       <SharedBetterAuthView
         authViewClassNames={adminAuthViewClassNames}
-        cardHeader={<span className={badgeClass}>Admin Auth</span>}
         containerClassName={`${pageContainerClass} grid min-h-screen place-items-center py-10`}
         mode='sign-in'
-        redirectTo={ADMIN_HOME_ROUTE_PATH}
+        redirectTo={redirectTo}
+        signInViewMap={adminSignInViewMap}
         splat={splat}
       />
     </>

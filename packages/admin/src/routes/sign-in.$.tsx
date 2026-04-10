@@ -1,8 +1,9 @@
 /**
- * Admin sign-in and password-management route module.
+ * Admin auth entry route module.
  */
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useRouterState } from '@tanstack/react-router';
 import { AdminAuthView } from '../components/AdminAuthView';
+import { getAdminRedirectFromHref } from '../lib/route-guards';
 
 export const Route = createFileRoute('/sign-in/$')({
   component: AdminSignInPage,
@@ -12,5 +13,14 @@ export const Route = createFileRoute('/sign-in/$')({
  * Renders the admin auth view for the current sign-in sub-route.
  */
 function AdminSignInPage() {
-  return <AdminAuthView splat={Route.useParams()._splat} />;
+  const href = useRouterState({
+    select: state => state.location.href,
+  });
+
+  return (
+    <AdminAuthView
+      redirectTo={getAdminRedirectFromHref(href)}
+      splat={Route.useParams()._splat}
+    />
+  );
 }

@@ -91,7 +91,7 @@ function isFirebasePrivateKeyPlaceholder(value: string): boolean {
 }
 
 /**
- * Returns the admin app origin used by Better Auth callback links.
+ * Returns the admin app origin used by Better Auth admin auth links.
  */
 export function getAdminAppUrl(): string {
   return readEnv("BETTER_AUTH_URL", "APP_URL") ?? DEFAULT_ADMIN_APP_URL;
@@ -102,28 +102,6 @@ export function getAdminAppUrl(): string {
  */
 export function getBetterAuthSecret(): string {
   return readEnv("BETTER_AUTH_SECRET") ?? DEFAULT_BETTER_AUTH_SECRET;
-}
-
-/**
- * Returns the Google OAuth client config when it is available.
- */
-export function getGoogleOAuthConfig():
-  | {
-      clientId: string;
-      clientSecret: string;
-    }
-  | undefined {
-  const clientId = readEnv("GOOGLE_CLIENT_ID");
-  const clientSecret = readEnv("GOOGLE_CLIENT_SECRET");
-
-  if (!clientId || !clientSecret) {
-    return undefined;
-  }
-
-  return {
-    clientId,
-    clientSecret,
-  };
 }
 
 /**
@@ -150,7 +128,7 @@ export function getAdminExternalToolLinks(): AdminExternalToolLinks {
 }
 
 /**
- * Returns Resend email config for password-reset and verification flows.
+ * Returns Resend email config for admin auth email flows.
  */
 export function getResendConfig():
   | {

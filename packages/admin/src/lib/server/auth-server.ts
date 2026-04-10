@@ -11,19 +11,16 @@ import { firestoreAdapter } from 'better-auth-firestore';
 import {
   getAdminAppUrl,
   getBetterAuthSecret,
-  getGoogleOAuthConfig,
 } from './env';
-import { sendPasswordResetEmail, sendVerificationEmail } from './auth-server.email';
+import { sendVerificationEmail } from './auth-server.email';
 import { firestore } from './auth-server.firebase';
 
 const authServerLogger = createScopedLogger('ADMIN_AUTH_SERVER');
-const googleOAuthConfig = getGoogleOAuthConfig();
 const AUTH_COOKIE_PREFIX = 'admin-auth';
 
 authServerLogger.action(
   'initializeBetterAuth',
   {
-    googleOAuthEnabled: Boolean(googleOAuthConfig),
     appUrl: getAdminAppUrl(),
   },
   'info'
@@ -55,14 +52,6 @@ export const auth = betterAuth({
     autoSignIn: false,
     disableSignUp: true,
     requireEmailVerification: true,
-    revokeSessionsOnPasswordReset: true,
-    sendResetPassword: async ({ user, url }) => {
-      await sendPasswordResetEmail({
-        email: user.email,
-        name: user.name,
-        url,
-      });
-    },
   },
   emailVerification: {
     autoSignInAfterVerification: true,
@@ -76,14 +65,6 @@ export const auth = betterAuth({
       });
     },
   },
-  socialProviders: googleOAuthConfig
-    ? {
-        google: {
-          ...googleOAuthConfig,
-          disableSignUp: true,
-        },
-      }
-    : {},
   plugins: [tanstackStartCookies()],
   advanced: {
     cookiePrefix: AUTH_COOKIE_PREFIX,

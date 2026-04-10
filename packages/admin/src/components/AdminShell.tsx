@@ -1,8 +1,8 @@
 /**
  * Shared authenticated shell for the admin console.
  */
-import { Link, useRouterState } from '@tanstack/react-router';
-import type { ReactNode } from 'react';
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
+import { type ReactNode, useState } from 'react';
 import { AdminAppBrand } from './AdminAppBrand';
 import {
   ADMIN_AUDIT_ROUTE_PATH,
@@ -13,6 +13,7 @@ import {
   getAdminAuthRouteParams,
   getAdminAuthRouteSearch,
 } from '../lib/route-paths';
+import { authClient } from '../lib/admin-auth-client';
 import { formatAdminText } from '../lib/formatting';
 import {
   cardClass,
@@ -59,13 +60,34 @@ export function AdminShell({
   children,
   externalToolLinks,
 }: AdminShellProps) {
+  const navigate = useNavigate();
   const pathname = useRouterState({
     select: state => state.location.pathname,
   });
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const containerClass =
     pathname === ADMIN_HOME_ROUTE_PATH
       ? widePageContainerClass
       : pageContainerClass;
+
+  async function handleSignOut() {
+    if (isSigningOut) {
+      return;
+    }
+
+    setIsSigningOut(true);
+
+    try {
+      await authClient.signOut();
+      await navigate({
+        params: getAdminAuthRouteParams(),
+        search: getAdminAuthRouteSearch(),
+        to: ADMIN_SIGN_IN_ROUTE_PATH,
+      });
+    } finally {
+      setIsSigningOut(false);
+    }
+  }
 
   return (
     <div className='min-h-screen'>
@@ -133,14 +155,16 @@ export function AdminShell({
                 </p>
               </div>
 
-              <Link
+              <button
                 className={`${secondaryButtonClass} w-full`}
-                params={getAdminAuthRouteParams('sign-out')}
-                search={getAdminAuthRouteSearch()}
-                to={ADMIN_SIGN_IN_ROUTE_PATH}
+                disabled={isSigningOut}
+                onClick={() => {
+                  void handleSignOut();
+                }}
+                type='button'
               >
-                Sign out
-              </Link>
+                {isSigningOut ? 'Signing out...' : 'Sign out'}
+              </button>
             </div>
           </div>
         </aside>

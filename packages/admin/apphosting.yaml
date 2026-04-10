@@ -25,10 +25,6 @@ outputFiles:
 #     secret: betterAuthSecret
 #   - variable: AUTUMN_SECRET_KEY
 #     secret: autumnSecretKey
-#   - variable: GOOGLE_CLIENT_ID
-#     secret: googleClientId
-#   - variable: GOOGLE_CLIENT_SECRET
-#     secret: googleClientSecret
 #   - variable: RESEND_API_KEY
 #     secret: resendApiKey
 #   - variable: RESEND_FROM_EMAIL
