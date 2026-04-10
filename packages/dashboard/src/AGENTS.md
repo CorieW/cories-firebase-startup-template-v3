@@ -1,12 +1,12 @@
 # packages/dashboard/src
 
-Dashboard application source for routing, shared UI, and app bootstrap.
+Dashboard app source for routing, shared UI, and app bootstrap.
 
 ## Directories
 
 - `components/`: Shared presentation components grouped by product area.
 - `lib/`: Reusable app logic for auth, theming, routing, and API access.
-- `routes/`: File-based route modules for the dashboard app.
+- `routes/`: File-based route modules for dashboard app.
 
 ## Files
 
@@ -22,6 +22,6 @@ Dashboard application source for routing, shared UI, and app bootstrap.
 
 ## Writing Rules
 
-- Keep app bootstrap, shared libraries, routes, and components separated by responsibility.
+- Keep app bootstrap, shared libs, routes, and components separated by responsibility.
 - Treat generated router output as read-only and update docs when new source subtrees are added.
 - Keep app-wide startup concerns in `start.ts` and router registration in `router.tsx` instead of folding them into feature subtrees.

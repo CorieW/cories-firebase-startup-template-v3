@@ -1,6 +1,6 @@
 # config
 
-Shared repository formatting and linting configuration.
+Shared repo formatting and linting config.
 
 ## Directories
 
@@ -9,8 +9,8 @@ Shared repository formatting and linting configuration.
 ## Files
 
 - `.prettierignore`: Shared Prettier ignore patterns.
-- `.prettierrc`: Shared Prettier configuration.
-- `eslint.config.js`: Shared ESLint configuration.
+- `.prettierrc`: Shared Prettier config.
+- `eslint.config.js`: Shared ESLint config.
 
 ## Writing Rules
 

@@ -15,5 +15,5 @@ Package-level admin tests grouped by source area and end-to-end admin flows.
 ## Writing Rules
 
 - Keep tests in this package-scoped tree instead of colocating them with runtime source files.
-- Mirror the source-area layout when adding new suites so ownership stays easy to follow.
+- Mirror source-area layout when adding new suites so ownership stays easy to follow.
 - Treat access control, billing visibility, and audit reads as high-value contracts to cover directly.

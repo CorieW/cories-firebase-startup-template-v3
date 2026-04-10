@@ -1,6 +1,6 @@
 # packages/dashboard/.vscode
 
-Workspace-specific VS Code settings for the dashboard package.
+Workspace-specific VS Code settings for dashboard package.
 
 ## Directories
 

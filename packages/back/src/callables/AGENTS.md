@@ -1,6 +1,6 @@
 # packages/back/src/callables
 
-Firebase callable entrypoint definitions exposed by the backend.
+Firebase callable entrypoint defs exposed by backend.
 
 ## Directories
 
@@ -12,5 +12,5 @@ Firebase callable entrypoint definitions exposed by the backend.
 
 ## Writing Rules
 
-- Define exported callable functions here and avoid non-callable helper functions in this directory.
-- Keep callable modules thin and push parsing, branching, and reusable logic into services or utilities.
+- Define exported callable fns here. Avoid non-callable helper fns in dir.
+- Keep callable modules thin and push parsing, branching, and reusable logic into services or utils.

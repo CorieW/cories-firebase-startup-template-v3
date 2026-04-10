@@ -1,6 +1,6 @@
 # .github/actions/setup-workflow-env
 
-Reusable action for injecting shared environment configuration into workflows.
+Reusable action for injecting shared environment config into workflows.
 
 ## Directories
 
@@ -8,7 +8,7 @@ Reusable action for injecting shared environment configuration into workflows.
 
 ## Files
 
-- `action.yml`: GitHub Action definition used across workflows. Rules: Keep required inputs aligned with workflow usage and repository secrets.
+- `action.yml`: GitHub Action def used across workflows. Rules: Keep required inputs aligned with workflow usage and repo secrets.
 
 ## Writing Rules
 

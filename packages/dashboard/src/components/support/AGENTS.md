@@ -1,6 +1,6 @@
 # packages/dashboard/src/components/support
 
-Support-page cards, content, and search or presentation components.
+Support-page cards, content, search and presentation components.
 
 ## Directories
 
@@ -15,5 +15,5 @@ Support-page cards, content, and search or presentation components.
 
 ## Writing Rules
 
-- Keep reusable support copy and card composition here instead of scattering it through routes.
+- Keep reusable support copy and card composition here, not scattered through routes.
 - Prefer data-driven content modules for repeated support copy.

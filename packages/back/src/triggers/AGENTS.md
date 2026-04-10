@@ -12,5 +12,5 @@ Firebase background trigger entrypoint exports.
 
 ## Writing Rules
 
-- Define exported trigger functions here and avoid non-trigger helper functions in this directory.
-- Keep trigger modules thin and move reusable logic into services or utilities.
+- Define exported trigger fns here. Avoid non-trigger helper fns in dir.
+- Keep trigger modules thin and move reusable logic into services or utils.

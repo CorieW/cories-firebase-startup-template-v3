@@ -1,6 +1,6 @@
 # packages/common/src/client-api
 
-Client-side API surface exported by the common package.
+Client-side API surface exported by common package.
 
 ## Directories
 
@@ -13,4 +13,4 @@ Client-side API surface exported by the common package.
 ## Writing Rules
 
 - Keep browser-safe exports here.
-- Avoid pulling backend-only dependencies into this subtree.
+- Avoid pulling backend-only deps into this subtree.

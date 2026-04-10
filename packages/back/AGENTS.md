@@ -1,6 +1,6 @@
 # packages/back
 
-Firebase Functions backend workspace for callable APIs, webhooks, and backend tests.
+Firebase Fns backend workspace for callable APIs, webhooks, and backend tests.
 
 ## Directories
 
@@ -9,15 +9,15 @@ Firebase Functions backend workspace for callable APIs, webhooks, and backend te
 
 ## Files
 
-- `.env.example`: Example backend environment variables.
+- `.env.example`: Example backend env vars.
   Rules:
-  - Keep keys aligned with runtime environment checks and deployment secrets.
-- `package.json`: Backend workspace manifest and scripts.
+  - Keep keys aligned with runtime environment checks and deploy secrets.
+- `package.json`: Backend workspace manifest, scripts.
   Rules:
   - Keep scripts aligned with root orchestration.
-- `tsconfig.json`: Backend TypeScript compile configuration.
-- `vitest.config.ts`: Backend unit-test configuration.
-- `vitest.integration.config.ts`: Backend integration-test configuration.
+- `tsconfig.json`: Backend TypeScript compile config.
+- `vitest.config.ts`: Backend unit-test config.
+- `vitest.integration.config.ts`: Backend integration-test config.
 
 ## Writing Rules
 

@@ -15,4 +15,4 @@ Package-scoped verification for docs rendering, content loading, and smoke journ
 ## Writing Rules
 
 - Keep test coverage focused on shell behavior, source correctness, and authoring contracts instead of brittle implementation details.
-- Update this file when `tests/` gains, loses, renames, or materially repurposes an immediate child.
+- Update file when `tests/` gains, loses, renames, or repurposes in big way immediate child.

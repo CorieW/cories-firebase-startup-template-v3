@@ -1,6 +1,6 @@
 # .changeset
 
-Changesets configuration and contributor guidance for workspace versioning.
+Changesets config and contributor guide for workspace versioning.
 
 ## Directories
 
@@ -9,9 +9,9 @@ Changesets configuration and contributor guidance for workspace versioning.
 ## Files
 
 - `README.md`: Brief contributor instructions for adding and applying changesets.
-- `config.json`: Changesets configuration for this monorepo. Rules: Keep private-package behavior and base branch aligned with the repository release workflow.
+- `config.json`: Changesets config for this monorepo. Rules: Keep private-package behavior and base branch aligned with repo release workflow.
 
 ## Writing Rules
 
-- Keep this directory focused on Changesets configuration and contributor guidance only.
-- Prefer repo-specific guidance here over the generic Changesets scaffold text.
+- Keep dir focused on Changesets config and contributor guide only.
+- Prefer repo-specific guide here over generic Changesets scaffold text.

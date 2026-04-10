@@ -1,6 +1,6 @@
 # packages/common/src/utils
 
-Shared utility modules used across the monorepo.
+Shared util modules used across monorepo.
 
 ## Directories
 
@@ -8,13 +8,13 @@ Shared utility modules used across the monorepo.
 
 ## Files
 
-- `index.ts`: Utility export barrel.
+- `index.ts`: Util export barrel.
 - `logger.ts`: Logger implementation helpers.
-- `logging.ts`: Shared logging utilities.
+- `logging.ts`: Shared logging utils.
 - `search.ts`: Shared search-field normalization and Firestore prefix helpers.
 - `utils.ts`: General-purpose shared helpers.
 
 ## Writing Rules
 
-- Keep utilities portable across frontend and backend usage.
+- Keep utils portable across frontend and backend usage.
 - Split modules when responsibilities stop being obviously shared.

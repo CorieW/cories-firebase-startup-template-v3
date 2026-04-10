@@ -12,5 +12,5 @@ Authentication-specific dashboard wrappers and page-level auth UI components.
 
 ## Writing Rules
 
-- Keep auth route wrappers thin and let Better Auth UI own the form internals.
+- Keep auth route wrappers thin and let Better Auth UI own form internals.
 - Put reusable auth view mapping logic here instead of duplicating it across route modules.

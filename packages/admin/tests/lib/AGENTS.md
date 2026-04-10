@@ -16,4 +16,4 @@ Unit tests for shared admin helper modules that do not need full route or server
 ## Writing Rules
 
 - Keep tests here focused on reusable helper behavior with small, deterministic inputs.
-- Update this file when helper test files are added, removed, renamed, or materially repurposed.
+- Update file when helper test files are added, removed, renamed, or repurposed in big way.

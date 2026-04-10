@@ -12,5 +12,5 @@ Reusable GitHub Actions grouped by action name.
 
 ## Writing Rules
 
-- Add one child directory per reusable action.
+- Add one child dir per reusable action.
 - Keep action names stable because workflows reference them directly.

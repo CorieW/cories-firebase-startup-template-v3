@@ -13,4 +13,4 @@ Shell-component tests for authenticated navigation and layout behavior.
 ## Writing Rules
 
 - Keep shell tests focused on navigation state, auth-driven rendering, and other layout behavior shared across routes.
-- Update this file when additional shell suites are added or existing shell test helpers are introduced here.
+- Update file when additional shell suites are added or existing shell test helpers are introduced here.

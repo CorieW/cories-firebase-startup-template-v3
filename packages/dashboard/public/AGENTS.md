@@ -1,6 +1,6 @@
 # packages/dashboard/public
 
-Static assets served directly by the dashboard app.
+Static assets served directly by dashboard app.
 
 ## Directories
 

@@ -12,5 +12,5 @@ Reusable backend test helpers for emulator or integration setup.
 
 ## Writing Rules
 
-- Keep future helpers generic enough to support multiple suites.
-- Avoid hiding critical assertions inside helpers.
+- Keep future helpers generic enough for multiple suites.
+- Do not hide critical assertions inside helpers.

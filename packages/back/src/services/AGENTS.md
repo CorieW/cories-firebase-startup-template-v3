@@ -13,4 +13,4 @@ Backend service layer for third-party integrations and domain workflows.
 ## Writing Rules
 
 - Keep future service modules focused on integration and domain orchestration, not transport wrappers.
-- Document new service dependencies or required config in parent package docs when they are added.
+- Document new service deps or required config in parent package docs when they are added.

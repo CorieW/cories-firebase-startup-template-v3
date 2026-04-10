@@ -1,6 +1,6 @@
 # packages/dashboard/src/components/ui
 
-Low-level UI primitives used across the dashboard.
+Low-level UI primitives used across dashboard.
 
 ## Directories
 
@@ -17,4 +17,4 @@ Low-level UI primitives used across the dashboard.
 ## Writing Rules
 
 - Keep primitives styling-focused and broadly reusable.
-- Avoid product-specific business logic in this directory.
+- Avoid product-specific business logic in dir.

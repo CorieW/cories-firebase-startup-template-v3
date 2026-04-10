@@ -13,4 +13,4 @@ Playwright smoke coverage for real docs app journeys.
 ## Writing Rules
 
 - Keep E2E coverage focused on primary docs journeys and avoid overfitting tests to layout internals.
-- Update this file when this directory gains, loses, renames, or materially repurposes an immediate file.
+- Update file when dir gains, loses, renames, or repurposes in big way immediate file.

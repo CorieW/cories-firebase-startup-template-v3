@@ -1,12 +1,12 @@
 # packages/back/src
 
-Backend runtime source for Firebase Functions, service integrations, and middleware.
+Backend runtime source for Firebase Fns, service integrations, and middleware.
 
 ## Directories
 
-- `callables/`: Firebase callable entrypoint definitions.
+- `callables/`: Firebase callable entrypoint defs.
 - `triggers/`: Background trigger entrypoint exports.
-- `utils/`: Reusable backend helpers and middleware utilities.
+- `utils/`: Reusable backend helpers and middleware utils.
 - `webhooks/`: Webhook entrypoints and provider handlers.
 
 ## Files
@@ -20,6 +20,6 @@ Backend runtime source for Firebase Functions, service integrations, and middlew
 ## Writing Rules
 
 - Keep module boundaries narrow: callables orchestrate, services integrate, and utils stay reusable.
-- Keep `callables/`, `triggers/`, and `webhooks/` focused on exported Firebase entrypoints; move helper functions into services or utilities.
+- Keep `callables/`, `triggers/`, and `webhooks/` focused on exported Firebase entrypoints; move helper fns into services or utils.
 - Centralize backend environment variable validation and normalization in root config helpers instead of repeating raw env access.
-- Prefer child directories for feature-specific logic instead of growing flat top-level files.
+- Prefer child dirs for feature-specific logic instead of growing flat top-level files.

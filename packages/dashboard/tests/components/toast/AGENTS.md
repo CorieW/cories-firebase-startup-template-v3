@@ -13,4 +13,4 @@ Toast provider tests for shared notification behavior.
 ## Writing Rules
 
 - Keep toast assertions focused on provider behavior that other feature tests can rely on.
-- Update this file when new toast-related suites or helper fixtures are added.
+- Update file when new toast-related suites or helper fixtures are added.

@@ -12,7 +12,7 @@ Billing UI components for pricing, summaries, wallet activity, and billing actio
 - `BillingPage.tsx`: Page-level billing layout and orchestration component.
 - `BillingPlansSection.tsx`: Extracted subscriptions summary and plan card section.
 - `BillingWalletSection.tsx`: Extracted wallet summary, top-up, and activity section.
-- `billing-dashboard.lib.ts`: Billing dashboard formatting, parsing, and wallet helper functions.
+- `billing-dashboard.lib.ts`: Billing dashboard formatting, parsing, and wallet helper fns.
 - `billing-dashboard.logging.ts`: Billing dashboard logging and toast reporting helpers.
 - `billing-dashboard.types.ts`: Billing dashboard Autumn model aliases and internal UI types.
 - `use-billing-dashboard-actions.ts`: Billing dashboard portal and checkout action handlers.

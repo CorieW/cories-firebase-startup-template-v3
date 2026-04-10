@@ -13,11 +13,11 @@ Component and feature tests for shared dashboard UI grouped by product area.
 ## Files
 
 - `Header.test.tsx`: Tests header auth-shell gating behavior.
-- `NotFoundPage.test.tsx`: Tests the dashboard not-found experience.
+- `NotFoundPage.test.tsx`: Tests dashboard not-found experience.
 - `ThemeToggle.test.tsx`: Tests theme toggle state and document updates.
 
 ## Writing Rules
 
-- Keep tests grouped by the component area they exercise, even when the suite uses shared providers or mocks.
+- Keep tests grouped by component area they exercise, even when suite uses shared providers or mocks.
 - Move test-only helpers into this subtree rather than leaving them under `src`.
-- Update this file when shared component test coverage expands into a new feature subdirectory or new root suite.
+- Update file when shared component test coverage expands into new feature subdirectory or new root suite.

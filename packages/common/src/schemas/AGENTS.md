@@ -12,5 +12,5 @@ Shared validation schema exports.
 
 ## Writing Rules
 
-- Keep schema exports explicit and stable for downstream callers.
+- Keep schema exports explicit, stable for downstream callers.
 - Add new shared schemas here only when more than one package benefits.

@@ -23,4 +23,4 @@ Unit tests for shared dashboard auth, environment, billing, routing, and theming
 
 - Keep these suites focused on exported helper contracts and normalization behavior rather than internal implementation details.
 - Add new shared helper tests here instead of colocating them with `src/lib` modules.
-- Update this file when new helper suites are added, removed, or materially repurposed.
+- Update file when new helper suites are added, removed, or repurposed in big way.

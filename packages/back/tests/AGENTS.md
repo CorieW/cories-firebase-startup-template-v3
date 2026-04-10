@@ -1,6 +1,6 @@
 # packages/back/tests
 
-Backend unit and integration tests for the Firebase Functions workspace, plus shared test helpers.
+Backend unit and integration tests for Firebase Fns workspace, plus shared test helpers.
 
 ## Directories
 
@@ -10,7 +10,7 @@ Backend unit and integration tests for the Firebase Functions workspace, plus sh
 
 - `callable-response.test.ts`: Tests shared callable response helpers.
 - `domain-errors.test.ts`: Tests backend domain error mapping.
-- `utils.test.ts`: Tests small backend utilities.
+- `utils.test.ts`: Tests small backend utils.
 
 ## Writing Rules
 

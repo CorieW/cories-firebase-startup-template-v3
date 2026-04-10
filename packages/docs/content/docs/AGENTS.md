@@ -1,6 +1,6 @@
 # packages/docs/content/docs
 
-Root MDX docs tree used to build the public page hierarchy, sidebar navigation, and search index.
+Root MDX docs tree used to build public page hierarchy, sidebar navigation, and search index.
 
 ## Directories
 
@@ -11,9 +11,9 @@ Root MDX docs tree used to build the public page hierarchy, sidebar navigation, 
 ## Files
 
 - `index.mdx`: Docs landing page content for `/`.
-- `meta.json`: Root navigation metadata for the docs tree.
+- `meta.json`: Root navigation metadata for docs tree.
 
 ## Writing Rules
 
 - Keep sections organized with `index.mdx` pages plus nearby `meta.json` files so navigation and URLs stay predictable.
-- Update this file when top-level docs sections or root content files are added, removed, or repurposed.
+- Update file when top-level docs sections or root content files are added, removed, or repurposed.
