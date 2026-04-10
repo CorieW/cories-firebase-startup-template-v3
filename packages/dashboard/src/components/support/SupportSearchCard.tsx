@@ -98,7 +98,7 @@ export default function SupportSearchCard({
       >
         <div className='relative flex-1'>
           <Search
-            className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ink-soft)]'
+            className='pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[var(--ink-soft)]'
             aria-hidden='true'
           />
           <input
@@ -108,7 +108,7 @@ export default function SupportSearchCard({
               setSearchQuery(event.target.value);
             }}
             placeholder='Search docs, FAQ, and troubleshooting guides'
-            className='h-11 w-full rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] pl-9 pr-3 text-sm text-[var(--ink)] outline-none transition-[border-color,background-color,color] focus:border-[var(--line-strong)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)]'
+            className='h-11 w-full rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] pr-3 pl-9 text-sm text-[var(--ink)] transition-[border-color,background-color,color] outline-none focus:border-[var(--line-strong)] focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)] focus:outline-none'
             aria-label='Search support resources'
           />
         </div>

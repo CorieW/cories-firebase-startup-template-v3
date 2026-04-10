@@ -165,20 +165,20 @@ export default function MarketingHero() {
               style={{ backgroundImage: slide.background.glow }}
             />
             <div
-              className='absolute -right-28 top-[16%] h-[20rem] w-[20rem] rounded-full blur-3xl sm:h-[24rem] sm:w-[24rem] lg:right-[8%] lg:top-[12%] lg:h-[28rem] lg:w-[28rem]'
+              className='absolute top-[16%] -right-28 h-[20rem] w-[20rem] rounded-full blur-3xl sm:h-[24rem] sm:w-[24rem] lg:top-[12%] lg:right-[8%] lg:h-[28rem] lg:w-[28rem]'
               style={{
                 background: `radial-gradient(circle, ${slide.background.accent}, transparent 68%)`,
               }}
             />
             <div
-              className='absolute bottom-[-8%] right-[-10%] h-[18rem] w-[18rem] rounded-full blur-3xl lg:bottom-[2%] lg:right-[16%] lg:h-[24rem] lg:w-[24rem]'
+              className='absolute right-[-10%] bottom-[-8%] h-[18rem] w-[18rem] rounded-full blur-3xl lg:right-[16%] lg:bottom-[2%] lg:h-[24rem] lg:w-[24rem]'
               style={{
                 background:
                   'radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 70%)',
               }}
             />
             <div
-              className='absolute bottom-[12%] right-[8%] hidden h-[16rem] w-[20rem] rounded-[2.5rem] border border-white/12 shadow-[0_28px_70px_rgba(0,0,0,0.28)] lg:block'
+              className='absolute right-[8%] bottom-[12%] hidden h-[16rem] w-[20rem] rounded-[2.5rem] border border-white/12 shadow-[0_28px_70px_rgba(0,0,0,0.28)] lg:block'
               style={{ background: slide.background.panel }}
             />
           </div>
@@ -195,7 +195,7 @@ export default function MarketingHero() {
                 {activeSlide.badge}
               </Badge>
               <div className='space-y-4 text-white'>
-                <p className='m-0 text-xs font-semibold uppercase tracking-[0.18em] text-white/72'>
+                <p className='m-0 text-xs font-semibold tracking-[0.18em] text-white/72 uppercase'>
                   {activeSlide.eyebrow}
                 </p>
                 <h1 className='m-0 max-w-[12ch] text-[clamp(3.1rem,8vw,6.1rem)] leading-[0.88] font-extrabold tracking-[-0.08em] text-white'>
@@ -268,7 +268,7 @@ export default function MarketingHero() {
           <div className='relative z-10 space-y-4 rounded-[2rem] border border-white/12 bg-[color-mix(in_srgb,rgba(8,12,18,0.72)_76%,transparent)] p-4 text-white shadow-[0_22px_80px_rgba(0,0,0,0.26)] backdrop-blur-xl lg:rounded-[2.25rem] lg:p-5'>
             <div className='flex items-center justify-between gap-4'>
               <div>
-                <p className='m-0 text-xs font-semibold uppercase tracking-[0.18em] text-white/56'>
+                <p className='m-0 text-xs font-semibold tracking-[0.18em] text-white/56 uppercase'>
                   Slideshow scenes
                 </p>
                 <p className='mt-2 text-sm leading-5.5 text-white/72'>

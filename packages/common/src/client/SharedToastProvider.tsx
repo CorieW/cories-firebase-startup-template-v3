@@ -294,7 +294,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       <div
         aria-atomic='false'
         aria-live='polite'
-        className='pointer-events-none fixed right-4 top-4 z-[220] grid w-[min(25rem,calc(100vw-2rem))] gap-2 min-[980px]:top-20'
+        className='pointer-events-none fixed top-4 right-4 z-[220] grid w-[min(25rem,calc(100vw-2rem))] gap-2 min-[980px]:top-20'
       >
         {toasts.map(toast => {
           const variantMeta = TOAST_VARIANT_META[toast.variant];
@@ -314,7 +314,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 <div className='min-w-0 flex-1'>
                   <p className='m-0 text-sm font-semibold'>{toast.title}</p>
                   {toast.description ? (
-                    <p className='mb-0 mt-1 text-xs leading-5 text-[var(--ink-soft)]'>
+                    <p className='mt-1 mb-0 text-xs leading-5 text-[var(--ink-soft)]'>
                       {toast.description}
                     </p>
                   ) : null}

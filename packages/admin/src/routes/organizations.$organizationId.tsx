@@ -128,7 +128,7 @@ function OrganizationDetailPage() {
           <div className='overflow-x-auto'>
             <table className='min-w-full border-separate border-spacing-0 text-sm'>
               <thead>
-                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                <tr className='text-left text-[0.72rem] tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                   <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Member
                   </th>
@@ -277,7 +277,7 @@ function OrganizationDetailPage() {
           <div className='overflow-x-auto'>
             <table className='min-w-full border-separate border-spacing-0 text-sm'>
               <thead>
-                <tr className='text-left text-[0.72rem] uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                <tr className='text-left text-[0.72rem] tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                   <th className='border-b border-[var(--line)] px-3 py-3 font-semibold'>
                     Plan
                   </th>
@@ -304,7 +304,7 @@ function OrganizationDetailPage() {
                           subscription.planName ?? subscription.planId
                         )}
                       </div>
-                      <div className='mt-1 break-all font-mono text-xs text-[var(--ink-soft)]'>
+                      <div className='mt-1 font-mono text-xs break-all text-[var(--ink-soft)]'>
                         {subscription.planId}
                       </div>
                     </td>

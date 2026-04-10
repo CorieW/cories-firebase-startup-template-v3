@@ -52,7 +52,7 @@ export default function MarketingStoryGrid() {
           support={
             <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-1'>
               <div className='rounded-[20px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[var(--surface)] px-5 py-4 shadow-[var(--shadow-card)]'>
-                <p className='m-0 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]'>
+                <p className='m-0 text-xs font-semibold tracking-[0.12em] text-[var(--ink-soft)] uppercase'>
                   Public narrative
                 </p>
                 <p className='m-0 mt-2 text-sm leading-6 text-[var(--ink)]'>
@@ -61,7 +61,7 @@ export default function MarketingStoryGrid() {
                 </p>
               </div>
               <div className='rounded-[20px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[color-mix(in_srgb,var(--surface-soft)_76%,var(--surface)_24%)] px-5 py-4 shadow-[var(--shadow-card)]'>
-                <p className='m-0 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]'>
+                <p className='m-0 text-xs font-semibold tracking-[0.12em] text-[var(--ink-soft)] uppercase'>
                   Product surface
                 </p>
                 <p className='m-0 mt-2 text-sm leading-6 text-[var(--ink)]'>
@@ -94,7 +94,7 @@ export default function MarketingStoryGrid() {
                     />
                   </div>
                   <div>
-                    <p className='m-0 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]'>
+                    <p className='m-0 text-xs font-semibold tracking-[0.12em] text-[var(--ink-soft)] uppercase'>
                       Step {index + 1}
                     </p>
                     <h3 className='m-0 mt-1 text-lg font-semibold tracking-[-0.03em] text-[var(--ink)]'>

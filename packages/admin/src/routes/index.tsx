@@ -109,10 +109,10 @@ function AdminHomePage() {
                   key={stat.label}
                   className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'
                 >
-                  <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                  <p className='m-0 text-[0.72rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                     {stat.label}
                   </p>
-                  <p className='mt-3 mb-1 break-words text-4xl font-semibold tracking-[-0.04em]'>
+                  <p className='mt-3 mb-1 text-4xl font-semibold tracking-[-0.04em] break-words'>
                     {stat.value}
                   </p>
                   <p className='m-0 text-sm leading-6 text-[var(--ink-soft)]'>
@@ -138,11 +138,11 @@ function AdminHomePage() {
 
           <div className='mt-5 grid gap-3'>
             <div className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'>
-              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+              <p className='m-0 text-[0.72rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                 Billing
               </p>
               <p
-                className={`mt-3 mb-1 break-words text-2xl font-semibold tracking-[-0.03em] ${
+                className={`mt-3 mb-1 text-2xl font-semibold tracking-[-0.03em] break-words ${
                   overview.billingConfigured ? '' : 'text-[var(--danger)]'
                 }`}
               >
@@ -161,10 +161,10 @@ function AdminHomePage() {
             </div>
 
             <div className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'>
-              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+              <p className='m-0 text-[0.72rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                 Access
               </p>
-              <p className='mt-3 mb-1 break-words text-2xl font-semibold tracking-[-0.03em]'>
+              <p className='mt-3 mb-1 text-2xl font-semibold tracking-[-0.03em] break-words'>
                 {formatAdminNumber(overview.stats.activeAdmins)} active
               </p>
               <p className='m-0 text-sm leading-6 text-[var(--ink-soft)]'>
@@ -174,10 +174,10 @@ function AdminHomePage() {
             </div>
 
             <div className='min-w-0 rounded-[20px] border border-[var(--line)] bg-[var(--bg)]/35 p-4'>
-              <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+              <p className='m-0 text-[0.72rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                 Audit log
               </p>
-              <p className='mt-3 mb-1 break-words text-2xl font-semibold tracking-[-0.03em]'>
+              <p className='mt-3 mb-1 text-2xl font-semibold tracking-[-0.03em] break-words'>
                 {formatAdminNumber(overview.stats.audits)}
               </p>
               <p className='m-0 text-sm leading-6 text-[var(--ink-soft)]'>
@@ -204,7 +204,7 @@ function AdminHomePage() {
             </div>
 
             <div className='mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between'>
-              <p className='m-0 break-words text-lg font-semibold tracking-[-0.02em]'>
+              <p className='m-0 text-lg font-semibold tracking-[-0.02em] break-words'>
                 {card.metric}
               </p>
               <Link className={secondaryButtonClass} to={card.href}>

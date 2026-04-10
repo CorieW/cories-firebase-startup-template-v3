@@ -228,7 +228,7 @@ export function AdminKeyValueList({ items }: AdminKeyValueListProps) {
             className={`${isDanger ? dangerCardClass : subtleCardClass} space-y-1 p-4 text-sm`}
           >
             <dt
-              className={`text-[0.72rem] font-semibold uppercase tracking-[0.08em] ${
+              className={`text-[0.72rem] font-semibold tracking-[0.08em] uppercase ${
                 isDanger ? dangerMutedTextClass : 'text-[var(--ink-soft)]'
               }`}
             >

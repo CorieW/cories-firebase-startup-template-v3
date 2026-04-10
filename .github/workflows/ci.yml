@@ -74,6 +74,40 @@ jobs:
       - name: Run linter
         run: pnpm run lint
 
+  knip:
+    name: Cleanup Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Load shared workflow environment
+        uses: ./.github/actions/setup-workflow-env
+        with:
+          github-vars-json: ${{ toJSON(vars) }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          better-auth-secret: ${{ secrets.BETTER_AUTH_SECRET }}
+          google-client-secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          autumn-secret-key: ${{ secrets.AUTUMN_SECRET_KEY }}
+          resend-api-key: ${{ secrets.RESEND_API_KEY }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run cleanup checks
+        run: pnpm run lint:knip
+
   type-check:
     name: Type Check
     runs-on: ubuntu-latest

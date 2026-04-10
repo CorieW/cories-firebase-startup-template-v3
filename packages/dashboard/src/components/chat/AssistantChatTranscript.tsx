@@ -15,7 +15,7 @@ export default function AssistantChatTranscript({
     <article className={`${panelClass} overflow-hidden`}>
       <div className='border-b border-[var(--line)] p-4'>
         <h2 className='m-0 text-lg font-bold text-[var(--ink)]'>Assistant</h2>
-        <p className='mb-0 mt-2 text-sm leading-6 text-[var(--ink-soft)]'>
+        <p className='mt-2 mb-0 text-sm leading-6 text-[var(--ink-soft)]'>
           Start a conversation below. Replies are currently lightweight local
           placeholders.
         </p>
@@ -37,7 +37,7 @@ export default function AssistantChatTranscript({
               >
                 <p className='m-0'>{message.text}</p>
                 <p
-                  className={`mb-0 mt-1 text-xs ${
+                  className={`mt-1 mb-0 text-xs ${
                     message.sender === 'user'
                       ? 'text-[var(--primary-ink)]'
                       : 'text-[var(--ink-soft)]'

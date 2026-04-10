@@ -258,7 +258,7 @@ function AuditPage() {
                       {entry.actorUid}
                     </p>
                   </div>
-                  <div className='flex flex-wrap gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                  <div className='flex flex-wrap gap-2 text-[0.72rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                     <span>{entry.resourceType}</span>
                     <span>{entry.result}</span>
                   </div>

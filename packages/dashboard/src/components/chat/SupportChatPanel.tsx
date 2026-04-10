@@ -184,7 +184,7 @@ export default function SupportChatPanel({
               </p>
             </div>
           </div>
-          <p className='mb-0 mt-3 text-sm leading-6 text-[var(--ink-soft)]'>
+          <p className='mt-3 mb-0 text-sm leading-6 text-[var(--ink-soft)]'>
             {context.description}
           </p>
         </header>
@@ -205,7 +205,7 @@ export default function SupportChatPanel({
                 >
                   <p className='m-0'>{message.text}</p>
                   <p
-                    className={`mb-0 mt-1 text-xs ${
+                    className={`mt-1 mb-0 text-xs ${
                       message.sender === 'user'
                         ? 'text-[var(--primary-ink)]'
                         : 'text-[var(--ink-soft)]'
@@ -239,7 +239,7 @@ export default function SupportChatPanel({
               }}
               placeholder='Write a message to support'
               maxLength={MAX_CHAT_MESSAGE_LENGTH}
-              className='h-10 flex-1 rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] px-3 text-sm text-[var(--ink)] outline-none transition-[border-color,background-color,color] focus:border-[var(--line-strong)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)]'
+              className='h-10 flex-1 rounded-[12px] border border-[var(--line)] bg-[var(--surface-soft)] px-3 text-sm text-[var(--ink)] transition-[border-color,background-color,color] outline-none focus:border-[var(--line-strong)] focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)] focus:outline-none'
               aria-label='Chat message'
             />
             <button

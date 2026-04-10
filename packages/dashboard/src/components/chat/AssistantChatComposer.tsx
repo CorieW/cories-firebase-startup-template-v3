@@ -42,7 +42,7 @@ export default function AssistantChatComposer({
         placeholder='Ask anything...'
         maxLength={500}
         rows={4}
-        className='min-h-28 w-full resize-y rounded-[14px] border border-[var(--line)] bg-[var(--surface-soft)] px-3.5 py-3 text-sm text-[var(--ink)] outline-none transition-[border-color,background-color,color] focus:border-[var(--line-strong)] focus:outline-none focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)]'
+        className='min-h-28 w-full resize-y rounded-[14px] border border-[var(--line)] bg-[var(--surface-soft)] px-3.5 py-3 text-sm text-[var(--ink)] transition-[border-color,background-color,color] outline-none focus:border-[var(--line-strong)] focus:outline-2 focus:outline-offset-0 focus:outline-[var(--line-strong)] focus:outline-none'
       />
       <div className='mt-3 flex flex-wrap items-center justify-between gap-3'>
         <p className='m-0 text-sm text-[var(--ink-soft)]'>

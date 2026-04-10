@@ -126,7 +126,7 @@ export function AdminShell({
 
             {externalToolLinks.length > 0 ? (
               <div className='space-y-3'>
-                <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                <p className='m-0 text-[0.72rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                   External Tools
                 </p>
                 <div className='space-y-3'>
@@ -147,10 +147,10 @@ export function AdminShell({
 
             <div className='mt-auto space-y-4 border-t border-[var(--line)] pt-4 text-sm'>
               <div>
-                <p className='m-0 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+                <p className='m-0 text-[0.72rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
                   Signed in as
                 </p>
-                <p className='mt-2 mb-0 break-words font-medium'>
+                <p className='mt-2 mb-0 font-medium break-words'>
                   {formatAdminText(adminSession.email ?? adminSession.name)}
                 </p>
               </div>

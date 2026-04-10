@@ -66,10 +66,10 @@ export default function SupportOptionsGrid({
               <h2 className='m-0 text-base font-bold text-[var(--ink)]'>
                 {option.title}
               </h2>
-              <p className='mb-0 mt-2 text-sm leading-6 text-[var(--ink-soft)]'>
+              <p className='mt-2 mb-0 text-sm leading-6 text-[var(--ink-soft)]'>
                 {option.description}
               </p>
-              <p className='mb-0 mt-3 text-sm font-semibold text-[var(--ink)]'>
+              <p className='mt-3 mb-0 text-sm font-semibold text-[var(--ink)]'>
                 {option.cta}
               </p>
             </button>
@@ -96,10 +96,10 @@ export default function SupportOptionsGrid({
             <h2 className='m-0 text-base font-bold text-[var(--ink)]'>
               {option.title}
             </h2>
-            <p className='mb-0 mt-2 text-sm leading-6 text-[var(--ink-soft)]'>
+            <p className='mt-2 mb-0 text-sm leading-6 text-[var(--ink-soft)]'>
               {option.description}
             </p>
-            <p className='mb-0 mt-3 text-sm font-semibold text-[var(--ink)]'>
+            <p className='mt-3 mb-0 text-sm font-semibold text-[var(--ink)]'>
               {option.cta}
             </p>
           </a>

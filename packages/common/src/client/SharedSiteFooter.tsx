@@ -52,7 +52,7 @@ export function SharedSiteFooter({
   const shouldRenderLegalSuffix = hasContent(legalSuffix);
 
   return (
-    <footer className={joinClassNames('mt-auto px-0 pb-6 pt-4', className)}>
+    <footer className={joinClassNames('mt-auto px-0 pt-4 pb-6', className)}>
       <div
         className={joinClassNames(containerClassName, 'flex justify-center')}
       >

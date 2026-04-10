@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @layer theme, base, utilities;
 @import 'tailwindcss';
-@source "../../common/src";
+@source '../../common/src';
 @import '@daveyplate/better-auth-ui/css';
 @import '../../common/src/client/shared-theme.css';
 

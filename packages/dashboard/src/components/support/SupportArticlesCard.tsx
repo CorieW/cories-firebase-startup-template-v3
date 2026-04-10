@@ -14,7 +14,7 @@ export default function SupportArticlesCard() {
       <h2 className='m-0 text-xl font-bold text-[var(--ink)]'>
         Popular articles
       </h2>
-      <p className='mb-0 mt-2 text-sm leading-6 text-[var(--ink-soft)]'>
+      <p className='mt-2 mb-0 text-sm leading-6 text-[var(--ink-soft)]'>
         Start with these guides for the most common support topics.
       </p>
       <div className='mt-3 grid gap-2'>

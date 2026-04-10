@@ -70,7 +70,7 @@ export default function SignedInSidebar({
       {!isMenuOpen ? (
         <button
           type='button'
-          className='fixed left-3 top-3 z-[70] inline-flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] min-[980px]:hidden'
+          className='fixed top-3 left-3 z-[70] inline-flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] min-[980px]:hidden'
           onClick={() => setIsMenuOpen(true)}
           aria-label='Open navigation menu'
         >
@@ -78,7 +78,7 @@ export default function SignedInSidebar({
         </button>
       ) : null}
 
-      <div className='fixed right-4 top-4 z-40 hidden min-[980px]:block'>
+      <div className='fixed top-4 right-4 z-40 hidden min-[980px]:block'>
         <ThemeToggle />
       </div>
 

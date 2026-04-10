@@ -65,7 +65,7 @@ function WalletTopUpCard({
 
       <div className='flex flex-wrap items-end gap-3'>
         <div className='grid min-w-[180px] gap-2'>
-          <p className='m-0 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+          <p className='m-0 text-xs font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
             Balance to add
           </p>
           <Input

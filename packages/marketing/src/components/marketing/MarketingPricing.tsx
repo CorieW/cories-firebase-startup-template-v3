@@ -56,10 +56,10 @@ export default function MarketingPricing() {
                 before opening checkout.
               </div>
               <div className='flex flex-wrap gap-3'>
-                <div className='rounded-full border border-[color-mix(in_srgb,var(--line)_60%,transparent)] bg-[var(--surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]'>
+                <div className='rounded-full border border-[color-mix(in_srgb,var(--line)_60%,transparent)] bg-[var(--surface)] px-4 py-2 text-xs font-semibold tracking-[0.12em] text-[var(--ink-soft)] uppercase'>
                   Static site
                 </div>
-                <div className='rounded-full border border-[color-mix(in_srgb,var(--line)_60%,transparent)] bg-[var(--surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]'>
+                <div className='rounded-full border border-[color-mix(in_srgb,var(--line)_60%,transparent)] bg-[var(--surface)] px-4 py-2 text-xs font-semibold tracking-[0.12em] text-[var(--ink-soft)] uppercase'>
                   Live billing handoff
                 </div>
               </div>

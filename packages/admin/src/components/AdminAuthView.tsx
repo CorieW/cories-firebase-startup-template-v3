@@ -6,7 +6,7 @@ import {
   type SharedBetterAuthViewMap,
 } from '../../../common/src/client/SharedBetterAuthView';
 import { AdminAppBrand } from './AdminAppBrand';
-import { badgeClass, pageContainerClass } from '../lib/ui';
+import { pageContainerClass } from '../lib/ui';
 
 const adminSignInViewMap = {
   'email-verification': 'EMAIL_VERIFICATION',
@@ -59,7 +59,7 @@ interface AdminAuthViewProps {
 export function AdminAuthView({ redirectTo, splat }: AdminAuthViewProps) {
   return (
     <>
-      <div className='fixed left-4 top-4 z-40'>
+      <div className='fixed top-4 left-4 z-40'>
         <AdminAppBrand />
       </div>
       <SharedBetterAuthView

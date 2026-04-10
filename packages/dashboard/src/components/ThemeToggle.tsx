@@ -113,7 +113,7 @@ export default function ThemeToggle() {
           aria-label={`Theme preference: ${activeLabel}`}
           title={`Theme: ${activeLabel}`}
           className={cn(
-            'inline-flex h-10 w-10 items-center justify-center rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] transition-[background-color,border-color,color] duration-150 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)] hover:border-[var(--line-strong)] hover:bg-[var(--surface-soft)] data-[state=open]:border-[var(--line-strong)] data-[state=open]:bg-[var(--surface-soft)]'
+            'inline-flex h-10 w-10 items-center justify-center rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] transition-[background-color,border-color,color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--surface-soft)] focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)] focus-visible:outline-none data-[state=open]:border-[var(--line-strong)] data-[state=open]:bg-[var(--surface-soft)]'
           )}
         >
           <ActiveIcon aria-hidden='true' className='h-4.5 w-4.5' />
@@ -127,7 +127,7 @@ export default function ThemeToggle() {
           sideOffset={10}
           className='z-[80] min-w-44 rounded-[18px] border border-[var(--line)] bg-[var(--surface)] p-1.5 shadow-[0_18px_40px_rgba(15,23,42,0.18)]'
         >
-          <DropdownMenu.Label className='px-3 pb-1 pt-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+          <DropdownMenu.Label className='px-3 pt-1.5 pb-1 text-[0.7rem] font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
             Theme
           </DropdownMenu.Label>
 
@@ -141,7 +141,7 @@ export default function ThemeToggle() {
               <DropdownMenu.RadioItem
                 key={optionMode}
                 value={optionMode}
-                className='flex w-full items-center gap-2.5 rounded-[12px] px-3 py-2 text-sm font-semibold text-[var(--ink-soft)] outline-none transition-[background-color,color] data-[highlighted]:bg-[var(--surface-soft)] data-[highlighted]:text-[var(--ink)]'
+                className='flex w-full items-center gap-2.5 rounded-[12px] px-3 py-2 text-sm font-semibold text-[var(--ink-soft)] transition-[background-color,color] outline-none data-[highlighted]:bg-[var(--surface-soft)] data-[highlighted]:text-[var(--ink)]'
               >
                 <Icon aria-hidden='true' className='h-4 w-4 shrink-0' />
                 <span className='flex-1'>{label}</span>

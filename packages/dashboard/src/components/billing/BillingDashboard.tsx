@@ -176,7 +176,7 @@ export default function BillingDashboard({
     >
       <div className='flex flex-wrap items-center justify-between gap-3'>
         <div>
-          <p className='m-0 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--ink-soft)]'>
+          <p className='m-0 text-xs font-semibold tracking-[0.08em] text-[var(--ink-soft)] uppercase'>
             {scopeTitleMap[scope]}
           </p>
           <h2 className='m-0 mt-1 text-xl font-bold text-[var(--ink)]'>

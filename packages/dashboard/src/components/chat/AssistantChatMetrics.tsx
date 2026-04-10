@@ -23,37 +23,37 @@ export default function AssistantChatMetrics({
   return (
     <div className='grid gap-3 min-[820px]:grid-cols-[repeat(3,minmax(0,1fr))]'>
       <article className={`${panelMutedClass} p-4`}>
-        <p className='m-0 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-soft)]'>
+        <p className='m-0 text-xs font-semibold tracking-[0.14em] text-[var(--ink-soft)] uppercase'>
           Wallet balance
         </p>
-        <p className='mb-0 mt-2 text-2xl font-bold tracking-[-0.03em] text-[var(--ink)]'>
+        <p className='mt-2 mb-0 text-2xl font-bold tracking-[-0.03em] text-[var(--ink)]'>
           {isCustomerPending ? 'Loading...' : remainingBalanceLabel}
         </p>
-        <p className='mb-0 mt-2 text-sm text-[var(--ink-soft)]'>
+        <p className='mt-2 mb-0 text-sm text-[var(--ink-soft)]'>
           {walletBalanceDescription}
         </p>
       </article>
 
       <article className={`${panelMutedClass} p-4`}>
-        <p className='m-0 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-soft)]'>
+        <p className='m-0 text-xs font-semibold tracking-[0.14em] text-[var(--ink-soft)] uppercase'>
           Current draft cost
         </p>
-        <p className='mb-0 mt-2 text-2xl font-bold tracking-[-0.03em] text-[var(--ink)]'>
+        <p className='mt-2 mb-0 text-2xl font-bold tracking-[-0.03em] text-[var(--ink)]'>
           {isCustomerPending ? 'Loading...' : draftCostLabel}
         </p>
-        <p className='mb-0 mt-2 text-sm text-[var(--ink-soft)]'>
+        <p className='mt-2 mb-0 text-sm text-[var(--ink-soft)]'>
           {draftCostDescription}
         </p>
       </article>
 
       <article className={`${panelMutedClass} p-4`}>
-        <p className='m-0 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-soft)]'>
+        <p className='m-0 text-xs font-semibold tracking-[0.14em] text-[var(--ink-soft)] uppercase'>
           Chat access
         </p>
-        <p className='mb-0 mt-2 text-2xl font-bold tracking-[-0.03em] text-[var(--ink)]'>
+        <p className='mt-2 mb-0 text-2xl font-bold tracking-[-0.03em] text-[var(--ink)]'>
           {isCustomerPending ? 'Loading...' : messageAllowanceLabel}
         </p>
-        <p className='mb-0 mt-2 text-sm text-[var(--ink-soft)]'>
+        <p className='mt-2 mb-0 text-sm text-[var(--ink-soft)]'>
           {allowanceDescription}
         </p>
       </article>

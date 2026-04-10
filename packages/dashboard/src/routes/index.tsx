@@ -63,7 +63,7 @@ function DashboardHomePage() {
         <div className='grid gap-3 md:grid-cols-3'>
           {homeHighlights.map(item => (
             <article key={item.label} className={`${panelMutedClass} p-4`}>
-              <p className='text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]'>
+              <p className='text-[0.72rem] font-semibold tracking-[0.12em] text-[var(--ink-soft)] uppercase'>
                 {item.label}
               </p>
               <h2 className='mt-3 text-lg font-semibold tracking-[-0.02em] text-[var(--ink)]'>

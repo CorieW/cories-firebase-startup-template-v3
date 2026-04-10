@@ -112,7 +112,7 @@ export function SharedThemeToggle({
           title={label}
           aria-pressed={mode === optionMode}
           className={joinClassNames(
-            'inline-flex items-center justify-center gap-1.5 rounded-[999px] border px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition duration-150 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)] [&_svg]:h-[0.95rem] [&_svg]:w-[0.95rem]',
+            'inline-flex items-center justify-center gap-1.5 rounded-[999px] border px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition duration-150 focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--line-strong)] focus-visible:outline-none [&_svg]:h-[0.95rem] [&_svg]:w-[0.95rem]',
             buttonClassName,
             fullWidth ? 'w-full' : undefined,
             mode === optionMode

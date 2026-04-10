@@ -168,7 +168,7 @@ firebase apphosting:backends:create --project <your-project-id>
 - Admin (`packages/admin`): TanStack Start, Better Auth, Better Auth UI, Firebase Admin, read-only admin tooling
 - Backend (`packages/back`): Firebase Functions, Firebase Admin, TypeScript
 - Shared (`packages/common`): shared API types, constants, utilities, and messages
-- Tooling: pnpm workspaces, ESLint, Prettier, Vitest, Playwright, Firebase Emulator Suite
+- Tooling: pnpm workspaces, ESLint, Knip, Prettier, prettier-plugin-tailwindcss, Vitest, Playwright, Firebase Emulator Suite
 
 ## Architecture
 
@@ -197,8 +197,11 @@ firebase apphosting:backends:create --project <your-project-id>
 - Build all workspaces: `pnpm build`
 - Typecheck: `pnpm typecheck`
 - Lint: `pnpm lint`
+- Unused files, exports, and dependencies: `pnpm lint:knip`
+- Full cleanup check: `pnpm cleanup:check`
 - Format check: `pnpm format:check`
 - Format write: `pnpm format`
+- Prettier formatting also sorts Tailwind utility classes through `prettier-plugin-tailwindcss`
 - Check AGENTS hierarchy: `pnpm agents:check`
 - Fix AGENTS hierarchy docs: `pnpm agents:fix`
 - Add a changeset: `pnpm changeset`

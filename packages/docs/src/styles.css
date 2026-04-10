@@ -5,9 +5,9 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
-@source "../../common/src";
+@source '../../common/src';
 @import '../../common/src/client/shared-theme.css';
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
 @theme {
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;

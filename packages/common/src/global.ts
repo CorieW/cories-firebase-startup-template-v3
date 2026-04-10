@@ -188,7 +188,7 @@ export function getAdminAuditLogsPath() {
  * utilities.
  * @default 30000
  */
-export let NETWORK_REQUEST_TIMEOUT_MS = 30_000;
+export const NETWORK_REQUEST_TIMEOUT_MS = 30_000;
 
 // ===========================================================================
 // TESTING CONFIGURATION
@@ -199,9 +199,9 @@ export let NETWORK_REQUEST_TIMEOUT_MS = 30_000;
  * This is useful for testing the loading state of the application
  * @default 0
  */
-export let ARTIFICIAL_CALLABLE_DELAY = 0;
+export const ARTIFICIAL_CALLABLE_DELAY = 0;
 /**
  * Skips shared client-side validation when tests or local debugging need it.
  * @default false
  */
-export let DISABLE_CLIENT_SIDE_VALIDATION = false;
+export const DISABLE_CLIENT_SIDE_VALIDATION = false;

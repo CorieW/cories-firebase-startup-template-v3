@@ -89,7 +89,7 @@ export default function MarketingFeatureGrid() {
               } ${featureCardClasses[index]}`}
             >
               <CardHeader className='gap-4'>
-                <p className='m-0 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink-soft)]'>
+                <p className='m-0 text-xs font-semibold tracking-[0.14em] text-[var(--ink-soft)] uppercase'>
                   0{index + 1}
                 </p>
                 <div className='inline-flex h-12 w-12 items-center justify-center rounded-[18px] border border-[color-mix(in_srgb,var(--line)_58%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,var(--surface-soft))]'>

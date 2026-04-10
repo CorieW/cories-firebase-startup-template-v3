@@ -44,13 +44,13 @@ export default function NotFoundPage() {
     <main className={`${pageContainerClass} ${contentWrapClass}`}>
       <section className={`${panelClass} grid gap-6 p-6 sm:p-8`}>
         <div className='grid gap-3'>
-          <p className='m-0 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]'>
+          <p className='m-0 text-[0.68rem] font-semibold tracking-[0.14em] text-[var(--accent)] uppercase'>
             Error 404
           </p>
           <h1 className='m-0 text-[clamp(1.9rem,4vw,2.9rem)] leading-[1.04] font-extrabold tracking-[-0.03em]'>
             We could not find {pathLabel}
           </h1>
-          <p className='m-0 max-w-[64ch] text-[var(--ink-soft)] leading-[1.65]'>
+          <p className='m-0 max-w-[64ch] leading-[1.65] text-[var(--ink-soft)]'>
             The link may be outdated, or the page may have moved. Use one of the
             options below to keep going.
           </p>

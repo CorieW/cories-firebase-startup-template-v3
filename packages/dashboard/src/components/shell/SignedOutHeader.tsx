@@ -18,10 +18,10 @@ export default function SignedOutHeader({ isAuthRoute }: SignedOutHeaderProps) {
 
   return (
     <>
-      <div className='fixed left-4 top-4 z-40'>
+      <div className='fixed top-4 left-4 z-40'>
         <AppBrand to={null} />
       </div>
-      <div className='fixed right-4 top-4 z-40'>
+      <div className='fixed top-4 right-4 z-40'>
         <ThemeToggle />
       </div>
     </>
