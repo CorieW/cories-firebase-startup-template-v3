@@ -87,12 +87,17 @@ export function useBillingDashboardData({
   const {
     data: customer,
     isPending,
+    isRefetchError: isCustomerRefetchError,
     openCustomerPortal,
     attach,
     updateSubscription,
     error: customerError,
   } = useCustomer();
-  const { data: plans, error: plansError } = useListPlans();
+  const {
+    data: plans,
+    error: plansError,
+    isRefetchError: isPlansRefetchError,
+  } = useListPlans();
   const activeMember = useActiveMember();
 
   const canManageOrgBilling =
@@ -333,25 +338,56 @@ export function useBillingDashboardData({
       refetchOnMount: true,
     },
   });
+  // Keep background refresh failures from surfacing as blocking UI when we
+  // already have cached billing data on screen.
+  const hasCustomerData = typeof customer !== 'undefined';
+  const hasPlansData = typeof plans !== 'undefined';
+  const hasWalletEventsData = typeof walletEvents.data !== 'undefined';
 
   const customerErrorMessage = useMemo(() => {
-    return customerError
-      ? getAutumnErrorMessage(customerError, 'Unable to load billing details.')
-      : null;
-  }, [customerError]);
+    if (!customerError) {
+      return null;
+    }
+
+    if (isCustomerRefetchError && hasCustomerData) {
+      return null;
+    }
+
+    return getAutumnErrorMessage(
+      customerError,
+      'Unable to load billing details.'
+    );
+  }, [customerError, hasCustomerData, isCustomerRefetchError]);
   const plansErrorMessage = useMemo(() => {
-    return plansError
-      ? getAutumnErrorMessage(plansError, 'Unable to load billing plans.')
-      : null;
-  }, [plansError]);
+    if (!plansError) {
+      return null;
+    }
+
+    if (isPlansRefetchError && hasPlansData) {
+      return null;
+    }
+
+    return getAutumnErrorMessage(plansError, 'Unable to load billing plans.');
+  }, [hasPlansData, isPlansRefetchError, plansError]);
   const walletEventsErrorMessage = useMemo(() => {
-    return walletEvents.error
-      ? getAutumnErrorMessage(
-          walletEvents.error,
-          'Unable to load recent wallet activity.'
-        )
-      : null;
-  }, [walletEvents.error]);
+    if (!walletEvents.error) {
+      return null;
+    }
+
+    if (walletEvents.isRefetchError && hasWalletEventsData) {
+      return null;
+    }
+
+    return getAutumnErrorMessage(
+      walletEvents.error,
+      'Unable to load recent wallet activity.'
+    );
+  }, [
+    hasWalletEventsData,
+    walletEvents.data,
+    walletEvents.error,
+    walletEvents.isRefetchError,
+  ]);
 
   const walletPurchaseTransactions = useMemo<WalletTransaction[]>(() => {
     return (customer?.purchases ?? [])

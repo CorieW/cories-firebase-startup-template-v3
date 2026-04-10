@@ -309,6 +309,15 @@ export function parseAutumnErrorBody(body: unknown) {
   }
 }
 
+function isInternalQueryDataUndefinedMessage(message: string) {
+  const normalizedMessage = message.trim();
+
+  return (
+    normalizedMessage.startsWith('Query data cannot be undefined.') ||
+    /^\[[\s\S]+\] data is undefined$/.test(normalizedMessage)
+  );
+}
+
 export function getAutumnErrorMessage(
   caughtError: unknown,
   fallbackMessage: string
@@ -349,6 +358,10 @@ export function getAutumnErrorMessage(
   }
 
   if (typeof typedError.message === 'string' && typedError.message.trim()) {
+    if (isInternalQueryDataUndefinedMessage(typedError.message)) {
+      return fallbackMessage;
+    }
+
     return sanitizeBillingMessage(typedError.message);
   }
 
