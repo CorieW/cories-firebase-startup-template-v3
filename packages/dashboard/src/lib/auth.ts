@@ -9,8 +9,10 @@ import { createServerFn } from '@tanstack/react-start'
 import { getRequestHeaders } from '@tanstack/react-start/server'
 import {
   BILLING_ROUTE_PATH,
+  ROOT_ROUTE_PATH,
 } from './route-paths'
 import {
+  buildAuthRedirectTarget,
   isAuthEntryRoute,
   isPublicRoute,
   SIGN_IN_PATH,
@@ -74,7 +76,8 @@ export const getAuthState = createServerFn({ method: 'GET' }).handler(async () =
  */
 export async function enforceAuthentication(
   pathname: string,
-  readAuthState: () => Promise<AuthState> = getAuthState
+  readAuthState: () => Promise<AuthState> = getAuthState,
+  redirectTo: string = pathname
 ): Promise<void> {
   if (isPublicRoute(pathname)) {
     authLogger.action(
@@ -90,11 +93,16 @@ export async function enforceAuthentication(
 
   const authState = await readAuthState()
   if (!authState.isAuthenticated) {
+    const postAuthRedirect = buildAuthRedirectTarget({
+      pathname: redirectTo,
+    })
+
     authLogger.action(
       'enforceAuthenticationRedirect',
       {
         pathname,
         redirectTo: SIGN_IN_PATH,
+        returnTo: postAuthRedirect,
       },
       'warn'
     )
@@ -102,6 +110,9 @@ export async function enforceAuthentication(
       to: SIGN_IN_PATH,
       params: {
         _splat: '',
+      },
+      search: {
+        redirectTo: postAuthRedirect,
       },
     })
   }
@@ -122,7 +133,8 @@ export async function enforceAuthentication(
  */
 export async function enforceSignedOut(
   pathname: string,
-  readAuthState: () => Promise<AuthState> = getAuthState
+  readAuthState: () => Promise<AuthState> = getAuthState,
+  redirectTo?: string
 ): Promise<void> {
   if (!isAuthEntryRoute(pathname)) {
     authLogger.action(
@@ -138,17 +150,24 @@ export async function enforceSignedOut(
 
   const authState = await readAuthState()
   if (authState.isAuthenticated) {
+    const postAuthRedirect =
+      typeof redirectTo === 'string'
+        ? buildAuthRedirectTarget({
+            pathname: redirectTo,
+          })
+        : ROOT_ROUTE_PATH
+
     authLogger.action(
       'enforceSignedOutRedirect',
       {
         pathname,
-        redirectTo: '/',
+        redirectTo: postAuthRedirect,
         userId: authState.userId,
       },
       'info'
     )
     throw redirect({
-      to: '/',
+      to: postAuthRedirect,
     })
   }
 
@@ -166,7 +185,8 @@ export async function enforceSignedOut(
  */
 export async function enforceActiveOrganization(
   pathname: string,
-  readAuthState: () => Promise<AuthState> = getAuthState
+  readAuthState: () => Promise<AuthState> = getAuthState,
+  redirectTo: string = pathname
 ): Promise<void> {
   if (isPublicRoute(pathname)) {
     authLogger.action(
@@ -182,11 +202,16 @@ export async function enforceActiveOrganization(
 
   const authState = await readAuthState()
   if (!authState.isAuthenticated) {
+    const postAuthRedirect = buildAuthRedirectTarget({
+      pathname: redirectTo,
+    })
+
     authLogger.action(
       'enforceActiveOrganizationRedirectUnauthenticated',
       {
         pathname,
         redirectTo: SIGN_IN_PATH,
+        returnTo: postAuthRedirect,
       },
       'warn'
     )
@@ -194,6 +219,9 @@ export async function enforceActiveOrganization(
       to: SIGN_IN_PATH,
       params: {
         _splat: '',
+      },
+      search: {
+        redirectTo: postAuthRedirect,
       },
     })
   }
@@ -229,7 +257,8 @@ export async function enforceActiveOrganization(
  */
 export async function enforceNoActiveOrganization(
   pathname: string,
-  readAuthState: () => Promise<AuthState> = getAuthState
+  readAuthState: () => Promise<AuthState> = getAuthState,
+  redirectTo: string = pathname
 ): Promise<void> {
   if (isPublicRoute(pathname)) {
     authLogger.action(
@@ -245,11 +274,16 @@ export async function enforceNoActiveOrganization(
 
   const authState = await readAuthState()
   if (!authState.isAuthenticated) {
+    const postAuthRedirect = buildAuthRedirectTarget({
+      pathname: redirectTo,
+    })
+
     authLogger.action(
       'enforceNoActiveOrganizationRedirectUnauthenticated',
       {
         pathname,
         redirectTo: SIGN_IN_PATH,
+        returnTo: postAuthRedirect,
       },
       'warn'
     )
@@ -257,6 +291,9 @@ export async function enforceNoActiveOrganization(
       to: SIGN_IN_PATH,
       params: {
         _splat: '',
+      },
+      search: {
+        redirectTo: postAuthRedirect,
       },
     })
   }

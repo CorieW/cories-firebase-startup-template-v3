@@ -68,12 +68,18 @@ describe('enforceAuthentication', () => {
       params: {
         _splat: '',
       },
+      search: {
+        redirectTo: '/pricing',
+      },
       to: '/sign-in/$',
     });
 
     expect(mocks.redirect).toHaveBeenCalledWith({
       params: {
         _splat: '',
+      },
+      search: {
+        redirectTo: '/pricing',
       },
       to: '/sign-in/$',
     });
@@ -82,9 +88,34 @@ describe('enforceAuthentication', () => {
       expect.objectContaining({
         pathname: '/pricing',
         redirectTo: '/sign-in/$',
+        returnTo: '/pricing',
       }),
       'warn'
     );
+  });
+
+  it('preserves the full protected location when redirecting to sign-in', async () => {
+    const readAuthState = vi.fn().mockResolvedValue({
+      isAuthenticated: false,
+      userId: null,
+      orgId: null,
+    });
+
+    await expect(
+      enforceAuthentication(
+        '/pricing/subscriptions',
+        readAuthState,
+        '/pricing/subscriptions?plan=pro#details'
+      )
+    ).rejects.toEqual({
+      params: {
+        _splat: '',
+      },
+      search: {
+        redirectTo: '/pricing/subscriptions?plan=pro#details',
+      },
+      to: '/sign-in/$',
+    });
   });
 
   it('allows authenticated users on protected routes', async () => {
@@ -119,12 +150,18 @@ describe('enforceActiveOrganization', () => {
       params: {
         _splat: '',
       },
+      search: {
+        redirectTo: '/pricing/subscriptions',
+      },
       to: '/sign-in/$',
     });
 
     expect(mocks.redirect).toHaveBeenCalledWith({
       params: {
         _splat: '',
+      },
+      search: {
+        redirectTo: '/pricing/subscriptions',
       },
       to: '/sign-in/$',
     });
@@ -196,6 +233,42 @@ describe('enforceSignedOut', () => {
     });
   });
 
+  it('redirects authenticated users to the preserved protected destination', async () => {
+    const readAuthState = vi.fn().mockResolvedValue({
+      isAuthenticated: true,
+      userId: 'user_1',
+      orgId: null,
+    });
+
+    await expect(
+      enforceSignedOut(
+        '/sign-in',
+        readAuthState,
+        '/pricing/subscriptions?plan=pro#details'
+      )
+    ).rejects.toEqual({
+      to: '/pricing/subscriptions?plan=pro#details',
+    });
+
+    expect(mocks.redirect).toHaveBeenCalledWith({
+      to: '/pricing/subscriptions?plan=pro#details',
+    });
+  });
+
+  it('falls back to the dashboard home when the preserved destination is another auth route', async () => {
+    const readAuthState = vi.fn().mockResolvedValue({
+      isAuthenticated: true,
+      userId: 'user_1',
+      orgId: null,
+    });
+
+    await expect(
+      enforceSignedOut('/sign-in', readAuthState, '/sign-up')
+    ).rejects.toEqual({
+      to: '/',
+    });
+  });
+
   it('allows signed-out users to reach auth entry routes', async () => {
     const readAuthState = vi.fn().mockResolvedValue({
       isAuthenticated: false,
@@ -226,12 +299,18 @@ describe('enforceNoActiveOrganization', () => {
       params: {
         _splat: '',
       },
+      search: {
+        redirectTo: '/pricing/subscriptions',
+      },
       to: '/sign-in/$',
     });
 
     expect(mocks.redirect).toHaveBeenCalledWith({
       params: {
         _splat: '',
+      },
+      search: {
+        redirectTo: '/pricing/subscriptions',
       },
       to: '/sign-in/$',
     });

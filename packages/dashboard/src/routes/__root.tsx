@@ -27,7 +27,7 @@ import { enforceAuthentication, getAuthState } from '../lib/auth';
 import { getAutumnCustomerScopeKey } from '../lib/billing-api';
 import { getDashboardLogLevelServer } from '../lib/dashboard-log-level';
 import { showBetterAuthToast } from '../lib/auth-ui-toast';
-import { isPublicRoute } from '../lib/route-guards';
+import { buildAuthRedirectTarget, isPublicRoute } from '../lib/route-guards';
 import { isAuthRoutePath } from '../lib/route-paths';
 import { getFooterSocialLinks } from '../lib/social-links';
 import { THEME_INIT_SCRIPT } from '../lib/theme';
@@ -44,7 +44,14 @@ const rootLogger = createScopedLogger('DASHBOARD_APP');
 
 export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
-    await enforceAuthentication(location.pathname);
+    await enforceAuthentication(
+      location.pathname,
+      getAuthState,
+      buildAuthRedirectTarget({
+        href: location.href,
+        pathname: location.pathname,
+      })
+    );
   },
   loader: async ({ location }) => {
     const startedAt = Date.now();

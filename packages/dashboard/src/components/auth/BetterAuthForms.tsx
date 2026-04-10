@@ -44,9 +44,11 @@ const authViewClassNames = {
 
 export default function BetterAuthForms({
   mode,
+  redirectTo,
   splat,
 }: {
   mode: SharedBetterAuthMode;
+  redirectTo?: string;
   splat?: string;
 }) {
   return (
@@ -54,7 +56,7 @@ export default function BetterAuthForms({
       authViewClassNames={authViewClassNames}
       containerClassName='grid min-h-full w-full flex-1 place-items-center px-4 py-10 sm:px-6'
       mode={mode}
-      redirectTo='/'
+      redirectTo={redirectTo}
       socialLayout='vertical'
       splat={splat}
     />
