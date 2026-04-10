@@ -1,13 +1,13 @@
 /* Marketing design tokens and base styles. */
 
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @layer theme, base, utilities;
-@import "tailwindcss";
+@import 'tailwindcss';
 @source "../../common/src";
-@import "../../common/src/client/shared-theme.css";
+@import '../../common/src/client/shared-theme.css';
 
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -19,7 +19,7 @@
   --shadow-soft: 0 32px 80px rgba(91, 72, 39, 0.12);
 }
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --ring: rgba(210, 176, 90, 0.26);
   --hero-a: rgba(210, 176, 90, 0.14);
   --hero-b: rgba(255, 255, 255, 0.06);
@@ -92,7 +92,7 @@
   }
 
   .marketing-shell::before {
-    content: "";
+    content: '';
     pointer-events: none;
     position: absolute;
     inset: 0;
@@ -124,7 +124,7 @@
   }
 
   .marketing-hero::after {
-    content: "";
+    content: '';
     pointer-events: none;
     position: absolute;
     inset-inline: 0;

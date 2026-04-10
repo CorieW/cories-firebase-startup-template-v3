@@ -17,7 +17,9 @@ function joinClassNames(...values: Array<string | undefined>): string {
 }
 
 function hasContent(value: ReactNode | undefined): boolean {
-  return value !== null && value !== undefined && value !== false && value !== '';
+  return (
+    value !== null && value !== undefined && value !== false && value !== ''
+  );
 }
 
 export interface SharedSiteFooterSocialLink {
@@ -51,7 +53,9 @@ export function SharedSiteFooter({
 
   return (
     <footer className={joinClassNames('mt-auto px-0 pb-6 pt-4', className)}>
-      <div className={joinClassNames(containerClassName, 'flex justify-center')}>
+      <div
+        className={joinClassNames(containerClassName, 'flex justify-center')}
+      >
         <div className='inline-flex w-fit max-w-full flex-wrap items-center justify-center gap-[0.8rem] rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 min-[501px]:rounded-[999px]'>
           {(shouldRenderOwnerName || shouldRenderLegalSuffix) && (
             <p className='m-0 text-center text-sm text-[var(--ink-soft)]'>

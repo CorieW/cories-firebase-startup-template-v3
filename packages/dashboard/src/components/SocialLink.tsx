@@ -1,9 +1,7 @@
 /**
  * Compatibility wrapper around the shared site footer social link pill.
  */
-import {
-  SharedSiteFooterSocialLinkButton,
-} from '@cories-firebase-startup-template-v3/common/client';
+import { SharedSiteFooterSocialLinkButton } from '@cories-firebase-startup-template-v3/common/client';
 
 interface SocialLinkProps {
   href: string;
