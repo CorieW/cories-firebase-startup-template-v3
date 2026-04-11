@@ -1,6 +1,7 @@
 /**
  * Dashboard wrapper around the shared Better Auth route view.
  */
+import { AuthView } from '@daveyplate/better-auth-ui';
 import {
   SharedBetterAuthView,
   type SharedBetterAuthMode,
@@ -53,6 +54,7 @@ export default function BetterAuthForms({
 }) {
   return (
     <SharedBetterAuthView
+      AuthViewComponent={AuthView}
       authViewClassNames={authViewClassNames}
       containerClassName='grid min-h-full w-full flex-1 place-items-center px-4 py-10 sm:px-6'
       mode={mode}

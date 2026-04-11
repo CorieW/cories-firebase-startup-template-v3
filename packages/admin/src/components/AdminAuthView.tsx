@@ -1,16 +1,10 @@
 /**
  * Admin wrapper around the shared Better Auth route view.
  */
-import {
-  SharedBetterAuthView,
-  type SharedBetterAuthViewMap,
-} from '../../../common/src/client/SharedBetterAuthView';
+import { AuthView } from '@daveyplate/better-auth-ui';
+import { SharedBetterAuthView } from '../../../common/src/client/SharedBetterAuthView';
 import { AdminAppBrand } from './AdminAppBrand';
 import { pageContainerClass } from '../lib/ui';
-
-const adminSignInViewMap = {
-  'email-verification': 'EMAIL_VERIFICATION',
-} satisfies SharedBetterAuthViewMap;
 
 const adminAuthViewClassNames = {
   base: 'w-full max-w-[560px] rounded-[24px] border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)]',
@@ -63,11 +57,11 @@ export function AdminAuthView({ redirectTo, splat }: AdminAuthViewProps) {
         <AdminAppBrand />
       </div>
       <SharedBetterAuthView
+        AuthViewComponent={AuthView}
         authViewClassNames={adminAuthViewClassNames}
         containerClassName={`${pageContainerClass} grid min-h-screen place-items-center py-10`}
         mode='sign-in'
         redirectTo={redirectTo}
-        signInViewMap={adminSignInViewMap}
         splat={splat}
       />
     </>

@@ -19,7 +19,6 @@ import {
   buildAdminRedirectTarget,
   isAdminAuthRoute,
   isAdminPublicRoute,
-  normalizeAdminPathname,
 } from "./route-guards";
 import type { AdminSessionState } from "./server/admin-directory";
 
@@ -202,7 +201,6 @@ export async function enforceSignedOutAdmin(
   readAdminSession: () => Promise<AdminSessionState> = getAdminSession,
   redirectTo?: string,
 ) {
-  const normalizedPath = normalizeAdminPathname(pathname);
   if (!isAdminAuthRoute(pathname)) {
     return;
   }

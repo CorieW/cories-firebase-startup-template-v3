@@ -1,17 +1,40 @@
 /**
  * Shared Better Auth route view wrapper for frontend auth entry pages.
  */
-import {
-  AuthView,
-  type AuthViewProps,
-  type AuthViewPaths,
-} from '@daveyplate/better-auth-ui';
+import type { ComponentType, ReactNode } from 'react';
 
 export type SharedBetterAuthMode = 'sign-in' | 'sign-up';
-export type SharedBetterAuthPath = keyof AuthViewPaths;
+export type SharedBetterAuthPath =
+  | 'ACCEPT_INVITATION'
+  | 'CALLBACK'
+  | 'EMAIL_OTP'
+  | 'EMAIL_VERIFICATION'
+  | 'FORGOT_PASSWORD'
+  | 'MAGIC_LINK'
+  | 'RECOVER_ACCOUNT'
+  | 'RESET_PASSWORD'
+  | 'SIGN_IN'
+  | 'SIGN_OUT'
+  | 'SIGN_UP'
+  | 'TWO_FACTOR';
 export type SharedBetterAuthViewMap = Partial<
   Record<string, SharedBetterAuthPath>
 >;
+
+interface SharedAuthViewComponentProps {
+  callbackURL?: string;
+  cardFooter?: ReactNode;
+  cardHeader?: ReactNode;
+  className?: string;
+  classNames?: Record<string, unknown>;
+  localization?: Record<string, unknown>;
+  otpSeparators?: 0 | 1 | 2;
+  path?: string;
+  pathname?: string;
+  redirectTo?: string;
+  socialLayout?: 'auto' | 'grid' | 'horizontal' | 'vertical';
+  view?: SharedBetterAuthPath;
+}
 
 const defaultSignInViewMap = {
   callback: 'CALLBACK',
@@ -56,20 +79,21 @@ export function resolveSharedBetterAuthView({
 }
 
 export interface SharedBetterAuthViewProps {
-  authViewClassName?: AuthViewProps['className'];
-  authViewClassNames?: AuthViewProps['classNames'];
-  callbackURL?: AuthViewProps['callbackURL'];
-  cardFooter?: AuthViewProps['cardFooter'];
-  cardHeader?: AuthViewProps['cardHeader'];
+  AuthViewComponent: ComponentType<SharedAuthViewComponentProps>;
+  authViewClassName?: SharedAuthViewComponentProps['className'];
+  authViewClassNames?: SharedAuthViewComponentProps['classNames'];
+  callbackURL?: SharedAuthViewComponentProps['callbackURL'];
+  cardFooter?: SharedAuthViewComponentProps['cardFooter'];
+  cardHeader?: SharedAuthViewComponentProps['cardHeader'];
   containerClassName?: string;
-  localization?: AuthViewProps['localization'];
+  localization?: SharedAuthViewComponentProps['localization'];
   mode: SharedBetterAuthMode;
-  otpSeparators?: AuthViewProps['otpSeparators'];
-  path?: AuthViewProps['path'];
-  pathname?: AuthViewProps['pathname'];
-  redirectTo?: AuthViewProps['redirectTo'];
+  otpSeparators?: SharedAuthViewComponentProps['otpSeparators'];
+  path?: SharedAuthViewComponentProps['path'];
+  pathname?: SharedAuthViewComponentProps['pathname'];
+  redirectTo?: SharedAuthViewComponentProps['redirectTo'];
   signInViewMap?: SharedBetterAuthViewMap;
-  socialLayout?: AuthViewProps['socialLayout'];
+  socialLayout?: SharedAuthViewComponentProps['socialLayout'];
   splat?: string;
 }
 
@@ -77,6 +101,7 @@ export interface SharedBetterAuthViewProps {
  * Renders a shared Better Auth route view with app-level styling overrides.
  */
 export function SharedBetterAuthView({
+  AuthViewComponent,
   authViewClassName,
   authViewClassNames,
   callbackURL,
@@ -95,7 +120,7 @@ export function SharedBetterAuthView({
 }: SharedBetterAuthViewProps) {
   return (
     <main className={containerClassName}>
-      <AuthView
+      <AuthViewComponent
         callbackURL={callbackURL}
         cardFooter={cardFooter}
         cardHeader={cardHeader}

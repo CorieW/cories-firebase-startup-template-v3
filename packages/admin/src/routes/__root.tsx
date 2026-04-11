@@ -13,10 +13,7 @@ import {
 } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AdminShell } from '../components/AdminShell';
-import {
-  ADMIN_HOME_ROUTE_PATH,
-  ADMIN_SIGN_IN_ROUTE_PREFIX,
-} from '../lib/route-paths';
+import { ADMIN_HOME_ROUTE_PATH } from '../lib/route-paths';
 import {
   enforceSignedOutAdmin,
   getAdminSession,
@@ -156,14 +153,14 @@ function AdminAuthProviders({ children }: { children: React.ReactNode }) {
         showBetterAuthToast(input, toast.show);
       }}
       viewPaths={{
-        CALLBACK: ADMIN_SIGN_IN_ROUTE_PREFIX,
-        EMAIL_VERIFICATION: `${ADMIN_SIGN_IN_ROUTE_PREFIX}/email-verification`,
-        FORGOT_PASSWORD: ADMIN_SIGN_IN_ROUTE_PREFIX,
-        RECOVER_ACCOUNT: ADMIN_SIGN_IN_ROUTE_PREFIX,
-        RESET_PASSWORD: ADMIN_SIGN_IN_ROUTE_PREFIX,
-        SIGN_IN: ADMIN_SIGN_IN_ROUTE_PREFIX,
-        SIGN_OUT: ADMIN_SIGN_IN_ROUTE_PREFIX,
-        TWO_FACTOR: ADMIN_SIGN_IN_ROUTE_PREFIX,
+        CALLBACK: 'sign-in/callback',
+        EMAIL_VERIFICATION: 'sign-in/email-verification',
+        FORGOT_PASSWORD: 'sign-in/forgot-password',
+        RECOVER_ACCOUNT: 'sign-in/recover-account',
+        RESET_PASSWORD: 'sign-in/reset-password',
+        SIGN_IN: 'sign-in',
+        SIGN_OUT: 'sign-in/sign-out',
+        TWO_FACTOR: 'sign-in/two-factor',
       }}
     >
       {children}
